@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Montserrat, Noto_Sans_Georgian } from "next/font/google";
 import "./globals.css";
-
+import { ThemeProvider } from "next-themes";
 const notoSansGeorgian = Noto_Sans_Georgian({
-  variable : "--font-noto-sans-georgian",
+  variable: "--font-noto-sans-georgian",
   subsets: ["georgian"],
 });
 const montserrat = Montserrat({
@@ -22,8 +22,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={` ${montserrat.variable} ${notoSansGeorgian.variable} antialiased`}>{children}</body>
+    <html lang="en" suppressHydrationWarning={true}>
+      <body
+        className={` ${montserrat.variable} ${notoSansGeorgian.variable} antialiased bg-white dark:bg-black text-black dark:text-white transition-colors duration-200 ease-in`}
+      >
+        <ThemeProvider defaultTheme="system" enableSystem attribute="class">
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
