@@ -13,9 +13,11 @@
     --foreground: #ededed;
   }
 }
-
+html[lang="ka"] body {
+  font-family: var(--font-noto-sans-georgian);
+}
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: var(--font-montserrat), sans-serif; 
+  font-family: var(--font-montserrat), sans-serif;
 }
