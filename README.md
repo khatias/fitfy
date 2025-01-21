@@ -10,3 +10,16 @@
 ### Technical Details:
 - Uses the `next-themes` package for theme management.
 - Smooth transitions between themes for a better user experience.
+
+
+# Localization with `next-intl`
+
+This project is now localized for English (`en`) and Georgian (`ka`) using `next-intl`.
+
+## Features
+
+- **Dynamic Locale Handling**: Routes like `/en` and `/ka` for English and Georgian.
+- **Translation Files**: Localization files in `/messages/` for each language.
+
+## Folder Structure
+

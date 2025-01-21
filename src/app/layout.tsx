@@ -1,7 +1,9 @@
+// app/layout.tsx
 import type { Metadata } from "next";
 import { Montserrat, Noto_Sans_Georgian } from "next/font/google";
-import "./globals.css";
 import { ThemeProvider } from "next-themes";
+import "./globals.css";
+
 const notoSansGeorgian = Noto_Sans_Georgian({
   variable: "--font-noto-sans-georgian",
   subsets: ["georgian"],
@@ -10,17 +12,18 @@ const montserrat = Montserrat({
   variable: "--font-montserrat",
   subsets: ["latin"],
 });
+
 export const metadata: Metadata = {
-  title: "fitify App",
+  title: "Fitify App",
   description:
     "Fitify is an online store offering a wide range of stylish clothing. Shop the latest trends and find your perfect fit!",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <body
