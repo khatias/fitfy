@@ -25,7 +25,7 @@ const ThemeSwitcher = () => {
           className="sr-only"
         />
         <div
-          className={`w-12 h-7 flex items-center justify- bg-customGray  dark:bg-gray-700 rounded-full p-1 transition-all duration-300 ease-in-out`}
+          className={`w-12 h-7 flex items-center  bg-customGray  dark:bg-gray-700 rounded-full p-1 transition-all duration-300 ease-in-out`}
         >
           <SunIcon
             className={`w-6 h-6 text-gray-400 transform transition-all duration-500 ease-in-out ${
