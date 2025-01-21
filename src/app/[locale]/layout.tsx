@@ -5,9 +5,8 @@ import { routing } from "@/i18n/routing";
 
 interface LocaleLayoutProps {
   children: React.ReactNode;
-  params: {
-    locale: string;
-  };
+  params: Promise<{ locale: string }>;
+
 }
 
 export default async function LocaleLayout({
