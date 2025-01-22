@@ -1,21 +1,19 @@
 "use client";
-
 import React, { useState } from "react";
 import Input from "@/components/inputs/Input";
 import SubmitButton from "@/components/buttons/SubmitButton";
 import { handleAuthSubmit } from "@/utils/auth/handleAuthSubmit";
-
-const SignUp = () => {
+const LoginPage = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   return (
     <div>
       <form
-        className="max-w-96 flex flex-col"
-        onSubmit={(e) => handleAuthSubmit(e, "signup", setErrorMessage)}
+        className="max-w-96 flex flex-col "
+        onSubmit={(e) => handleAuthSubmit(e, "login", setErrorMessage)}
       >
         <Input
-          data-cy={`signup-email-input`}
+          data-cy="login-email-input"
           label="Email Address"
           type="email"
           placeholder="Enter your email"
@@ -24,17 +22,16 @@ const SignUp = () => {
         />
 
         <Input
-          data-cy={`signup-password-input`}
+          data-cy="login-password-input"
           label="Password"
           type="password"
           placeholder="Enter your password"
           name="password"
           required={true}
         />
-
         {errorMessage && (
           <div
-            data-cy={`signup-error-message`}
+            data-cy="login-error-message"
             className="text-center text-red-500 mt-4"
           >
             <strong>{errorMessage}</strong>
@@ -46,4 +43,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default LoginPage;
