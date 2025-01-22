@@ -21,7 +21,7 @@ const Input: React.FC<InputProps> = ({
         onChange={onChange}
         name={name}
         required={required}
-        className="w-full p-4 rounded-lg border border-gray-400  dark:bg-customBlueGray dark:text-white focus:outline-none focus:ring-1 focus:ring-black"
+        className="w-full p-4 mb-4 rounded-lg border border-gray-400  dark:bg-customBlueGray dark:text-white focus:outline-none focus:ring-1 focus:ring-black"
       />
     </div>
   );
