@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import Input from "@/components/inputs/Input";
 import SubmitButton from "@/components/buttons/SubmitButton";
 import { handleAuthSubmit } from "@/utils/auth/handleAuthSubmit";
+import { handleGithubLogin } from "@/utils/auth/handleGithubLogin";
+
 const LoginPage = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -38,6 +40,8 @@ const LoginPage = () => {
           </div>
         )}
         <SubmitButton text="Log In" />
+
+        <button onClick={handleGithubLogin}>sing in with github</button>
       </form>
     </div>
   );
