@@ -52,7 +52,7 @@ const LoginPage = () => {
           <button
             type="button"
             onClick={() => setIsResetView(true)}
-            className="mt-4 text-blue-500"
+            className="mt-4 text-gray-400 cursor-pointer hover:underline"
           >
             Forgot Password?
           </button>
@@ -60,9 +60,7 @@ const LoginPage = () => {
       )}
       {isResetView && (
         <>
-          <button type="submit" className="mt-4 bg-blue-500 text-white px-4 py-2">
-            Send Reset Email
-          </button>
+           <SubmitButton text="send email" />
           <button
             type="button"
             onClick={() => setIsResetView(false)}
