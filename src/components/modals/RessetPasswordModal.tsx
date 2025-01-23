@@ -2,6 +2,7 @@
 
 import React from "react";
 import { XMarkIcon } from "@heroicons/react/20/solid";
+import { Link } from "@/i18n/routing";
 
 interface ResetPasswordModalProps {
   email: string;
@@ -48,6 +49,9 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
           Didn&apos;t receive the email? Check your spam folder or try again
           later.
         </p>
+        <button onClick={onClose}>
+          <Link href="/login">Go to Login</Link>
+        </button>
       </div>
     </div>
   );
