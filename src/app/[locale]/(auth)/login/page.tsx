@@ -7,7 +7,7 @@ import { handleAuthSubmit } from "@/utils/auth/handleAuthSubmit";
 import { handleGithubLogin } from "@/utils/auth/handleGithubLogin";
 import { sendResetPassword } from "@/utils/auth/sendResetPassword";
 import RessetPasswordModal from "@/components/modals/RessetPasswordModal";
-
+import { handleGoogleLogin } from "@/utils/auth/handleGoogleLogin";
 const LoginPage = () => {
   const [isResetView, setIsResetView] = useState(false);
   const [email, setEmail] = useState("");
@@ -67,6 +67,13 @@ const LoginPage = () => {
               className="mt-4 text-blue-500 hover:underline"
             >
               Sign in with GitHub
+            </button>
+            <button
+              type="button"
+              onClick={handleGoogleLogin}
+              className="mt-4 text-blue-500 hover:underline"
+            >
+              Sign in with google
             </button>
             <button
               type="button"
