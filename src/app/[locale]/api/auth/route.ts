@@ -17,7 +17,6 @@ export async function POST(req: NextRequest) {
       });
 
       if (signInError) {
-        console.error("Login error:", signInError.message);
         return NextResponse.json(
           { error: signInError.message },
           { status: 400 }
@@ -37,7 +36,6 @@ export async function POST(req: NextRequest) {
       });
 
       if (signUpError) {
-        console.error("Sign-up error:", signUpError.message);
         return NextResponse.json(
           { error: signUpError.message },
           { status: 400 }

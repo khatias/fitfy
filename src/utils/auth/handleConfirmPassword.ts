@@ -6,19 +6,14 @@ interface FormData {
 
 export const handleConfirmPassword = async (
   formData: FormData
-): Promise<void> => {
-  try {
-    const { data, error } = await supabase.auth.updateUser({
-      password: formData.password,
-    });
+): Promise<string | null> => {
+  const { error } = await supabase.auth.updateUser({
+    password: formData.password,
+  });
 
-    if (error) {
-      throw new Error(`Error resetting password: ${error.message}`);
-    }
-
-    console.log("Password updated successfully:", data);
-  } catch (err) {
-    console.error("Unexpected error:", err);
-    throw err;
+  if (error) {
+    return error.message;
   }
+
+  return null;
 };

@@ -24,7 +24,7 @@ const ResetPasswordPage: React.FC = () => {
     setError(null);
   };
 
-  const handleSubmit = (e: React.FormEvent): void => {
+  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
 
     if (data.password !== data.confirmPassword) {
@@ -32,13 +32,12 @@ const ResetPasswordPage: React.FC = () => {
       return;
     }
 
-    try {
-      // Simulate password change API call
-      handleConfirmPassword({ password: data.password });
-      setIsModalOpen(true); // Open success modal
-    } catch (err) {
-      setError("An error occurred while resetting the password.");
-      console.error(err);
+    const error = await handleConfirmPassword({ password: data.password });
+
+    if (error) {
+      setError(error);
+    } else {
+      setIsModalOpen(true);
     }
   };
 
@@ -48,7 +47,7 @@ const ResetPasswordPage: React.FC = () => {
         className="max-w-96 flex flex-col items-center justify-center"
         onSubmit={handleSubmit}
       >
-        <h2 className="text-2xl mb-4 font-semibold up">Change your password</h2>
+        <h2 className="text-2xl mb-4 font-semibold">Change your password</h2>
         <p className="text-gray-400 text-center text-md pb-4">
           Enter a new password below to change your password
         </p>
@@ -78,7 +77,6 @@ const ResetPasswordPage: React.FC = () => {
         </div>
       </form>
 
-      {/* Success Modal */}
       <SuccessPasswordChangeModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
