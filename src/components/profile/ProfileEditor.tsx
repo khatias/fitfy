@@ -8,10 +8,9 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 import { Profile } from "@/types/profile";
-import { uploadAvatar } from "@/utils/profile/uploadAvatar";
 import { handleProfileFieldChange } from "@/utils/profile/handleProfileFieldChange";
 import { handleSubmitProfileChange } from "@/utils/profile/handleSubmitProfileChange";
-
+import { uploadFile } from "@/utils/files/uploadFile";
 export default function ProfileEditor({ profile }: { profile: Profile }) {
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState<Profile>(profile);
@@ -25,12 +24,17 @@ export default function ProfileEditor({ profile }: { profile: Profile }) {
 
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      const uploadedAvatarUrl = (await uploadAvatar(e.target.files[0])) || "";
-      setFormData((prevData) => ({
-        ...prevData,
-        avatar_url: uploadedAvatarUrl,
-      }));
-      setAvatarPreview(uploadedAvatarUrl);
+      try {
+        const uploadedAvatarUrl =
+          (await uploadFile(e.target.files[0], "avatars")) || "";
+        setFormData((prevData) => ({
+          ...prevData,
+          avatar_url: uploadedAvatarUrl,
+        }));
+        setAvatarPreview(uploadedAvatarUrl);
+      } catch (error) {
+        console.error("Failed to upload avatar:", error);
+      }
     }
   };
 
