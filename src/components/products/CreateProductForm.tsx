@@ -1,11 +1,25 @@
-// Client Side (CreateProductForm)
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { uploadFile } from "@/utils/files/uploadFile";
 import { createProduct } from "@/utils/products/productCreator";
 
+import { fetchCategories } from "@/utils/fetchDatas/fetchProductData";
 export function CreateProductForm() {
+  interface Category {
+    product_category_id: number;
+    category_name: string;
+  }
+  const [productType, setProductType] = useState<number | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    const getProductDetails = async () => {
+      const fetchedCategories = (await fetchCategories()) || [];
+      setCategories(fetchedCategories);
+    };
+    getProductDetails();
+  }, []);
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -15,6 +29,8 @@ export function CreateProductForm() {
     if (imageUrl) {
       formData.append("image", imageUrl);
     }
+
+    formData.append("productType", productType?.toString() || "");
 
     const response = await createProduct(formData);
 
@@ -37,14 +53,58 @@ export function CreateProductForm() {
     }
   };
 
-  return (
-    <div className="w-full max-w-3xl mx-auto p-6 bg-zinc-100 rounded-md">
-      <h2 className="text-2xl text-center font-semibold text-gray-800 dark:text-gray-100 mb-6">
-        Create Product
-      </h2>
+  const handleProductTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setProductType(Number(e.target.value));
+  };
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Form fields */}
+  return (
+    <div className="w-full m-auto container ">
+      {/* form title */}
+      <div className="flex flex-col space-y-4">
+        <h2 className="text-2xl text-center font-bold mb-6">Sell an item</h2>
+        <p className="text-center text-gray-600 dark:text-gray-300">
+          Give your wardrobe a second life. List in minutes. Ship for free.
+          Start earning effortlessly.
+        </p>
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-6 flex flex-col mt-6 ">
+        {/* product gender */}
+        <div className="flex space-x-6">
+          <div>
+            <p>What type of item are you selling?</p>
+            <div className="flex space-x-4 ">
+              <div className="border py-3 px-4 flex items-center gap-2 mt-2">
+                <input
+                  type="radio"
+                  id="men"
+                  name="gender"
+                  value="2"
+                  checked={productType === 2}
+                  onChange={handleProductTypeChange}
+                />
+
+                <label htmlFor="men" className="mr-2">
+                  Menswear
+                </label>
+              </div>
+              <div className="border py-3 px-4 flex items-center gap-2 mt-2">
+                <input
+                  type="radio"
+                  id="women"
+                  name="gender"
+                  value="1" // ID for Women
+                  checked={productType === 1}
+                  onChange={handleProductTypeChange}
+                />
+
+                <label htmlFor="women" className="mr-2">
+                  Womenswear
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
         <div className="flex flex-col space-y-2">
           <label
             htmlFor="name"
@@ -61,7 +121,6 @@ export function CreateProductForm() {
             required
           />
         </div>
-
         <div className="flex flex-col space-y-2">
           <label
             htmlFor="price"
@@ -94,6 +153,29 @@ export function CreateProductForm() {
             placeholder="Enter the product brand"
             required
           />
+        </div>
+
+        <div>
+          <label htmlFor="category" className="block font-medium">
+            Category
+          </label>
+          <select
+            id="category"
+            name="category"
+            required
+            className="w-full border rounded p-2"
+          >
+            <option value="">Select a category</option>{" "}
+            {/* Placeholder option */}
+            {categories.map((category) => (
+              <option
+                key={category.product_category_id}
+                value={category.product_category_id}
+              >
+                {category.category_name}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className="flex flex-col space-y-2">
