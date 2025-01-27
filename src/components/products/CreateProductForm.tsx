@@ -10,6 +10,7 @@ import {
 } from "@/utils/fetchDatas/fetchProductData";
 import { GeneralStep } from "./GeneralStep";
 import { ProductDetailsStep } from "./ProductDetailsStep";
+
 export function CreateProductForm() {
   interface Category {
     product_category_id: number;
@@ -32,6 +33,7 @@ export function CreateProductForm() {
   const [materials, setMaterials] = useState<Material[]>([]);
   const [colors, setColors] = useState<Color[]>([]);
   const [conditions, setConditions] = useState<Condition[]>([]);
+  const [isVintage, setIsVintage] = useState(false); // State for vintage checkbox
 
   const [formData, setFormData] = useState<{
     name: string;
@@ -44,6 +46,7 @@ export function CreateProductForm() {
     material: string;
     condition: string;
     color: string;
+    size:string; 
   }>({
     name: "",
     price: "",
@@ -55,6 +58,7 @@ export function CreateProductForm() {
     productType: null,
     condition: "",
     color: "",
+    size:"",
   });
   const [step, setStep] = useState(1);
 
@@ -81,8 +85,6 @@ export function CreateProductForm() {
       ...prev,
       productType: value,
     }));
-
-    console.log("Product Type selected:", value);
   };
 
   const handleInputChange = (
@@ -93,7 +95,6 @@ export function CreateProductForm() {
       ...prev,
       [name]: value,
     }));
-    console.log(value);
   };
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -136,11 +137,12 @@ export function CreateProductForm() {
     formDataToSubmit.append("condition", formData.condition);
     formDataToSubmit.append("gender", formData.productType?.toString() || "");
     formDataToSubmit.append("color", formData.color);
+    formDataToSubmit.append("vintage", String(isVintage));
+    formDataToSubmit.append("size", formData.size);
     if (formData.image) {
-      formDataToSubmit.append("image", formData.image);
+      formDataToSubmit.append("primary_image", formData.image);
     }
 
-    console.log(formData);
     const response = await createProduct(formDataToSubmit);
 
     if (response?.success) {
@@ -155,7 +157,6 @@ export function CreateProductForm() {
 
   return (
     <div className="w-full m-auto container">
-      {/* Step navigation */}
       <div className="flex space-x-4 mb-6">
         <button
           onClick={prevStep}
@@ -185,7 +186,7 @@ export function CreateProductForm() {
         />
       )}
 
-      {/* Step 2: Product Name, Price, Brand */}
+      {/* Step 2: Product Details */}
       {step === 2 && (
         <ProductDetailsStep
           formData={formData}
@@ -193,6 +194,8 @@ export function CreateProductForm() {
           handleProductTypeChange={handleProductTypeChange}
           handleInputChange={handleInputChange}
           handleUploadImage={handleUploadImage}
+          isVintage={isVintage} // Passed isVintage
+          setIsVintage={setIsVintage} // Passed setIsVintage
           categories={categories}
           materials={materials}
           conditions={conditions}
@@ -200,11 +203,9 @@ export function CreateProductForm() {
         />
       )}
 
-      {/* Step 3: Category */}
-      {step === 3 && <div>asd</div>}
-
-      {/* Step 4: Image and Description */}
-      {step === 4 && <div>sdf</div>}
+      {/* Additional Steps */}
+      {step === 3 && <div>Step 3</div>}
+      {step === 4 && <div>Step 4</div>}
 
       {/* Submit Button */}
       {step === 4 && (

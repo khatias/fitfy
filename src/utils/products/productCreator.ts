@@ -7,7 +7,7 @@ export async function createProduct(formData: FormData) {
   const supabase = await createClient();
 
   const name = formData.get("name") as string;
-  const image = formData.get("image") as string;
+
   const price = Number(formData.get("price"));
   const product_gender_id = Number(formData.get("gender"));
   const product_category_id = Number(formData.get("category"));
@@ -15,13 +15,16 @@ export async function createProduct(formData: FormData) {
   const product_color_id = Number(formData.get("color"));
   const product_material_id = Number(formData.get("material"));
   const userResponse = await supabase.auth.getUser();
+  const description = formData.get("description") as string;
   const user_id = userResponse.data?.user?.id;
-
+  const vintage = formData.get("vintage") as string;
+  const size = formData.get("size") as string;
+  const primary_image = formData.get("primary_image") as string;
   try {
     const stripeProduct = await stripe.products.create({
       name,
 
-      images: [image],
+      images: [primary_image],
     });
     console.log({ stripeProduct });
 
@@ -44,6 +47,10 @@ export async function createProduct(formData: FormData) {
         stripe_product_id: stripeProduct.id,
         stripe_price_id: stripePrice.id,
         product_gender_id,
+        description,
+        vintage,
+        size,
+        primary_image,
       })
       .single();
 
