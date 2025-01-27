@@ -2,223 +2,222 @@
 import React, { useState, useEffect } from "react";
 import { uploadFile } from "@/utils/files/uploadFile";
 import { createProduct } from "@/utils/products/productCreator";
-
-import { fetchCategories } from "@/utils/fetchDatas/fetchProductData";
+import {
+  fetchCategories,
+  fetchMaterials,
+  fetchConditions,
+  fetchColors,
+} from "@/utils/fetchDatas/fetchProductData";
+import { GeneralStep } from "./GeneralStep";
+import { ProductDetailsStep } from "./ProductDetailsStep";
 export function CreateProductForm() {
   interface Category {
     product_category_id: number;
     category_name: string;
   }
-  const [productType, setProductType] = useState<number | null>(null);
+  interface Material {
+    product_material_id: number;
+    material_name: string;
+  }
+  interface Condition {
+    product_condition_id: number;
+    condition_name: string;
+  }
+  interface Color {
+    product_color_id: number;
+    color_name: string;
+  }
+
   const [categories, setCategories] = useState<Category[]>([]);
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [materials, setMaterials] = useState<Material[]>([]);
+  const [colors, setColors] = useState<Color[]>([]);
+  const [conditions, setConditions] = useState<Condition[]>([]);
+
+  const [formData, setFormData] = useState<{
+    name: string;
+    price: string;
+    brand: string;
+    description: string;
+    category: string;
+    image: string | null;
+    productType: number | null;
+    material: string;
+    condition: string;
+    color: string;
+  }>({
+    name: "",
+    price: "",
+    brand: "",
+    description: "",
+    category: "",
+    material: "",
+    image: null,
+    productType: null,
+    condition: "",
+    color: "",
+  });
+  const [step, setStep] = useState(1);
 
   useEffect(() => {
     const getProductDetails = async () => {
-      const fetchedCategories = (await fetchCategories()) || [];
-      setCategories(fetchedCategories);
+      const fetchedCategories = await fetchCategories();
+      setCategories(fetchedCategories || []);
+
+      const fetchedMaterials = await fetchMaterials();
+      setMaterials(fetchedMaterials || []);
+
+      const fetchedConditions = await fetchConditions();
+      setConditions(fetchedConditions || []);
+
+      const fetchedColors = await fetchColors();
+      setColors(fetchedColors || []);
     };
     getProductDetails();
   }, []);
 
-  async function handleSubmit(event: React.FormEvent) {
-    event.preventDefault();
+  const handleProductTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number(e.target.value);
+    setFormData((prev) => ({
+      ...prev,
+      productType: value,
+    }));
 
-    const formData = new FormData(event.target as HTMLFormElement);
+    console.log("Product Type selected:", value);
+  };
 
-    if (imageUrl) {
-      formData.append("image", imageUrl);
-    }
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+    console.log(value);
+  };
 
-    formData.append("productType", productType?.toString() || "");
-
-    const response = await createProduct(formData);
-
-    if (response?.success) {
-      console.log("Product created successfully");
-    } else {
-      console.log("Error:", response?.message || "Unknown error");
-    }
-  }
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   const handleUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       try {
         const uploadedImageUrl = await uploadFile(file, "products");
-        setImageUrl(uploadedImageUrl);
+        setFormData((prev) => ({
+          ...prev,
+          image: uploadedImageUrl,
+        }));
       } catch (error) {
         console.error("Error uploading image:", error);
       }
     }
   };
 
-  const handleProductTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setProductType(Number(e.target.value));
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!formData.image) {
+      console.log("Please upload an image");
+      return;
+    }
+
+    const formDataToSubmit = new FormData();
+    formDataToSubmit.append("name", formData.name);
+    formDataToSubmit.append("price", formData.price);
+    formDataToSubmit.append("brand", formData.brand);
+    formDataToSubmit.append("description", formData.description);
+    formDataToSubmit.append("category", formData.category);
+    formDataToSubmit.append("material", formData.material);
+    formDataToSubmit.append("condition", formData.condition);
+    formDataToSubmit.append("gender", formData.productType?.toString() || "");
+    formDataToSubmit.append("color", formData.color);
+    if (formData.image) {
+      formDataToSubmit.append("image", formData.image);
+    }
+
+    console.log(formData);
+    const response = await createProduct(formDataToSubmit);
+
+    if (response?.success) {
+      console.log("Product created successfully");
+    } else {
+      console.log("Error:", response?.message || "Unknown error");
+    }
   };
 
+  const nextStep = () => setStep((prevStep) => Math.min(prevStep + 1, 4));
+  const prevStep = () => setStep((prevStep) => Math.max(prevStep - 1, 1));
+
   return (
-    <div className="w-full m-auto container ">
-      {/* form title */}
-      <div className="flex flex-col space-y-4">
-        <h2 className="text-2xl text-center font-bold mb-6">Sell an item</h2>
-        <p className="text-center text-gray-600 dark:text-gray-300">
-          Give your wardrobe a second life. List in minutes. Ship for free.
-          Start earning effortlessly.
-        </p>
+    <div className="w-full m-auto container">
+      {/* Step navigation */}
+      <div className="flex space-x-4 mb-6">
+        <button
+          onClick={prevStep}
+          disabled={step === 1}
+          className="px-4 py-2 bg-gray-300 rounded"
+        >
+          Previous
+        </button>
+        <button
+          onClick={nextStep}
+          disabled={step === 4}
+          className="px-4 py-2 bg-gray-300 rounded"
+        >
+          Next
+        </button>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6 flex flex-col mt-6 ">
-        {/* product gender */}
-        <div className="flex space-x-6">
-          <div>
-            <p>What type of item are you selling?</p>
-            <div className="flex space-x-4 ">
-              <div className="border py-3 px-4 flex items-center gap-2 mt-2">
-                <input
-                  type="radio"
-                  id="men"
-                  name="gender"
-                  value="2"
-                  checked={productType === 2}
-                  onChange={handleProductTypeChange}
-                />
+      <h2 className="text-2xl text-center font-bold mb-6">Sell an item</h2>
 
-                <label htmlFor="men" className="mr-2">
-                  Menswear
-                </label>
-              </div>
-              <div className="border py-3 px-4 flex items-center gap-2 mt-2">
-                <input
-                  type="radio"
-                  id="women"
-                  name="gender"
-                  value="1" // ID for Women
-                  checked={productType === 1}
-                  onChange={handleProductTypeChange}
-                />
+      {/* Step 1: Item Type */}
+      {step === 1 && (
+        <GeneralStep
+          formData={formData}
+          handleProductTypeChange={handleProductTypeChange}
+          handleInputChange={handleInputChange}
+          handleUploadImage={handleUploadImage}
+        />
+      )}
 
-                <label htmlFor="women" className="mr-2">
-                  Womenswear
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-col space-y-2">
-          <label
-            htmlFor="name"
-            className="text-sm font-medium text-gray-700 dark:text-gray-300"
-          >
-            Name
-          </label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            className="w-full p-3 rounded border"
-            placeholder="Enter the product name"
-            required
-          />
-        </div>
-        <div className="flex flex-col space-y-2">
-          <label
-            htmlFor="price"
-            className="text-sm font-medium text-gray-700 dark:text-gray-300"
-          >
-            Price
-          </label>
-          <input
-            type="number"
-            id="price"
-            name="price"
-            className="w-full p-3 rounded border"
-            placeholder="Enter the product price"
-            required
-          />
-        </div>
+      {/* Step 2: Product Name, Price, Brand */}
+      {step === 2 && (
+        <ProductDetailsStep
+          formData={formData}
+          handleSelectChange={handleSelectChange}
+          handleProductTypeChange={handleProductTypeChange}
+          handleInputChange={handleInputChange}
+          handleUploadImage={handleUploadImage}
+          categories={categories}
+          materials={materials}
+          conditions={conditions}
+          colors={colors}
+        />
+      )}
 
-        <div className="flex flex-col space-y-2">
-          <label
-            htmlFor="brand"
-            className="text-sm font-medium text-gray-700 dark:text-gray-300"
-          >
-            Brand
-          </label>
-          <input
-            type="text"
-            id="brand"
-            name="brand"
-            className="w-full p-3 rounded border"
-            placeholder="Enter the product brand"
-            required
-          />
-        </div>
+      {/* Step 3: Category */}
+      {step === 3 && <div>asd</div>}
 
-        <div>
-          <label htmlFor="category" className="block font-medium">
-            Category
-          </label>
-          <select
-            id="category"
-            name="category"
-            required
-            className="w-full border rounded p-2"
-          >
-            <option value="">Select a category</option>{" "}
-            {/* Placeholder option */}
-            {categories.map((category) => (
-              <option
-                key={category.product_category_id}
-                value={category.product_category_id}
-              >
-                {category.category_name}
-              </option>
-            ))}
-          </select>
-        </div>
+      {/* Step 4: Image and Description */}
+      {step === 4 && <div>sdf</div>}
 
-        <div className="flex flex-col space-y-2">
-          <label
-            htmlFor="image"
-            className="text-sm font-medium text-gray-700 dark:text-gray-300"
-          >
-            Image
-          </label>
-          <input
-            type="file"
-            accept="image/*"
-            id="file_input"
-            onChange={handleUploadImage}
-            className="w-full p-3 rounded border"
-          />
-        </div>
-
-        <div className="flex flex-col space-y-2">
-          <label
-            htmlFor="description"
-            className="text-sm font-medium text-gray-700 dark:text-gray-300"
-          >
-            Description
-          </label>
-          <textarea
-            id="description"
-            name="description"
-            className="w-full p-3 rounded border"
-            placeholder="Enter product description"
-            required
-          ></textarea>
-        </div>
-
-        <div className="flex justify-center">
+      {/* Submit Button */}
+      {step === 4 && (
+        <div className="flex justify-center mt-6">
           <button
             type="submit"
+            onClick={handleSubmit}
             className="px-16 py-3 bg-purple-800 text-white rounded-md hover:bg-purple-700"
           >
             Submit
           </button>
         </div>
-      </form>
+      )}
     </div>
   );
 }

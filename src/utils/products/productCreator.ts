@@ -8,11 +8,12 @@ export async function createProduct(formData: FormData) {
 
   const name = formData.get("name") as string;
   const image = formData.get("image") as string;
-
   const price = Number(formData.get("price"));
   const product_gender_id = Number(formData.get("gender"));
   const product_category_id = Number(formData.get("category"));
-
+  const product_condition_id = Number(formData.get("condition"));
+  const product_color_id = Number(formData.get("color"));
+  const product_material_id = Number(formData.get("material"));
   const userResponse = await supabase.auth.getUser();
   const user_id = userResponse.data?.user?.id;
 
@@ -36,6 +37,9 @@ export async function createProduct(formData: FormData) {
         name,
         price,
         product_category_id,
+        product_condition_id,
+        product_color_id,
+        product_material_id,
         user_id,
         stripe_product_id: stripeProduct.id,
         stripe_price_id: stripePrice.id,
