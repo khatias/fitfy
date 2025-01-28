@@ -17,7 +17,7 @@ export async function middleware(req: NextRequest) {
   const session = data?.session;
 
   const isLoginPage = req.nextUrl.pathname.includes("/login");
-  const isRestrictedPage = ["/profile"].some((path) =>
+  const isRestrictedPage = ["/profile","create-product"].some((path) =>
     req.nextUrl.pathname.includes(path)
   );
 

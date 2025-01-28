@@ -1,6 +1,59 @@
 {
-    "HomePage": {
-      "title": "გამარჯობა!",
-      "about": "გადადი მთავარ გვედზე"
-    }
+  "HomePage": {
+    "title": "მოგესალმებით ჩვენს მაღაზიაში!",
+    "about": "გაიგეთ მეტი ჩვენ შესახებ"
+  },
+  "createProductForm":{
+    "title":"გაყიდე პროდუქტი",
+    "general": "ზოგადი ინფორმაცია",
+    "details": "პროდუქტის დეტალები",
+    "images": "სურათები",
+    "next": "შემდეგი",
+    "previous": "წინა",
+    "submit": "დადასტურება"
+  },
+  "GeneralStep": {
+    "question": "რა ტიპის პროდუქტი ყიდით?",
+    "name": "პროდუქტის სახელი",
+    "price": "პროდუქტის ფასი",
+    "brand": "ბრენდის სახელი",
+    "image": "პროდუქტის სურათი",
+    "description": "პროდუქტის აღწერა",
+    "menswear": "მამაკაცის ტანსაცმელი",
+    "womenswear": "ქალის ტანსაცმელი",
+    "nameplacholder": "შეიყვანეთ პროდუქტის სახელი",
+    "priceplacholder": "შეიყვანეთ ფასი",
+    "brandplacholder": "შეიყვანეთ ბრენდის სახელი",
+    "descriptionplacholder": "შეიყვანეთ მოკლე აღწერა პროდუქტის შესახებ"
+  },
+  "ProductDetailsStep": {
+    "category": "კატეგორია",
+    "selectcategory": "აირჩიე კატეგორია",
+    "material": "ქსოვილი",
+    "selectmaterial": "აირჩიე ქსოვილი",
+    "condition": "მდგომარეობა",
+    "selectcondition": " აირჩიე მდგომარეობა",
+    "color": "ფერი",
+    "selectcolor": " აირჩიე ფერი",
+    "vintage": " ვინტაჟურია",
+    "size": "ზომა",
+  "sizeplaceholder":"შეიყვანეთ პროდუქტის ზომა"
+  },
+  "ImagesStep":{
+    "uploadImages": "ატვირთე დამატებითი ფოტოები"
+  },
+  "FormErrors":{
+    "required": "ეს ველი სავალდებულოა.",
+    "priceError": "ფასი უნდა იყოს დადებითი რიცხვი.",
+    "imageError": "გთხოვთ, ატვირთოთ სურათი.",
+    "pricenotError":"ფასი არ არსებობს",
+    "nameError": "სახელი არ არსებობს",
+    "brandError": "ბრენდი არ არსებობს",
+    "descriptionError": "აღწერა არ არსებობს",
+    "categoryError": "კატეგორია არ არსებობს",
+    "materialError": "მასალა არ არსებობს",
+    "conditionError": "პარამეტრი არ არსებობს",
+    "colorError": "ფერი არ არსებობს",
+    "sizeError": "ზომა არ არსებობს"
   }
+}
