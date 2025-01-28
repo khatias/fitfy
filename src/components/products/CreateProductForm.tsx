@@ -23,9 +23,11 @@ export function CreateProductForm() {
 
   const [formData, setFormData] = useState<formDataType>({
     name: "",
+    name_ka:"",
     price: "",
     brand: "",
-    description: "",
+    description_en: "",
+    description_ka: "",
     category: "",
     material: "",
     image: null,
@@ -137,9 +139,10 @@ export function CreateProductForm() {
 
     // Validate required fields
     if (!formData.name) errors.name = te("nameError");
+    if (!formData.name_ka) errors.name = te("nameError");
     if (!formData.price) errors.price = te("pricenotError");
     if (!formData.brand) errors.brand = te("brandError");
-    if (!formData.description) errors.description = te("descriptionError");
+    if (!formData.description_en) errors.description = te("descriptionError");
     if (!formData.category) errors.category = te("categoryError");
     if (!formData.material) errors.material = te("materialError");
     if (!formData.condition) errors.condition = te("conditionError");
@@ -150,9 +153,10 @@ export function CreateProductForm() {
     if (Object.keys(errors).length > 0) return;
     const formDataToSubmit = new FormData();
     formDataToSubmit.append("name", formData.name);
+    formDataToSubmit.append("name_ka", formData.name_ka);
     formDataToSubmit.append("price", formData.price);
     formDataToSubmit.append("brand", formData.brand);
-    formDataToSubmit.append("description", formData.description);
+    formDataToSubmit.append("description_en", formData.description_en);
     formDataToSubmit.append("category", formData.category);
     formDataToSubmit.append("material", formData.material);
     formDataToSubmit.append("condition", formData.condition);
@@ -160,6 +164,7 @@ export function CreateProductForm() {
     formDataToSubmit.append("color", formData.color);
     formDataToSubmit.append("vintage", String(isVintage));
     formDataToSubmit.append("size", formData.size);
+    formDataToSubmit.append("description_ka", formData.description_ka);
 
     if (formData.image) {
       formDataToSubmit.append("primary_image", formData.image);

@@ -7,7 +7,7 @@ export async function createProduct(formData: FormData) {
   const supabase = await createClient();
 
   const name = formData.get("name") as string;
-
+  const name_ka = formData.get("name_ka") as string;
   const price = Number(formData.get("price"));
   const product_gender_id = Number(formData.get("gender"));
   const product_category_id = Number(formData.get("category"));
@@ -15,7 +15,8 @@ export async function createProduct(formData: FormData) {
   const product_color_id = Number(formData.get("color"));
   const product_material_id = Number(formData.get("material"));
   const userResponse = await supabase.auth.getUser();
-  const description = formData.get("description") as string;
+  const description_en = formData.get("description_en") as string;
+  const description_ka = formData.get("description_ka") as string;
   const user_id = userResponse.data?.user?.id;
   const vintage = formData.get("vintage") as string;
   const size = formData.get("size") as string;
@@ -46,6 +47,7 @@ console.log(formData)
       .from("products")
       .insert({
         name,
+        name_ka,
         price,
         product_category_id,
         product_condition_id,
@@ -55,11 +57,12 @@ console.log(formData)
         stripe_product_id: stripeProduct.id,
         stripe_price_id: stripePrice.id,
         product_gender_id,
-        description,
+        description_en,
         vintage,
         size,
         primary_image,
         images,
+        description_ka
       })
       .single();
 

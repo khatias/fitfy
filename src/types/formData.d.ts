@@ -1,8 +1,10 @@
 export interface formDataType{
     name: string;
+    name_ka:string;
     price: string;
     brand: string;
-    description: string;
+    description_en: string;
+    description_ka: string;
     category: string;
     image: string | null;
     productType: number | null;

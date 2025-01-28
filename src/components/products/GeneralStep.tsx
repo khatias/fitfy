@@ -1,4 +1,3 @@
-"use client";
 import React, { useState } from "react";
 import { useTranslations } from "next-intl";
 import { formDataType } from "@/types/formData";
@@ -20,9 +19,8 @@ export function GeneralStep({
 }: GeneralStepProps) {
   const t = useTranslations("GeneralStep");
   const te = useTranslations("FormErrors");
-  const [errors, setErrors] = useState<{
-    [key: string]: string;
-  }>({});
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [showGeorgian, setShowGeorgian] = useState(false);
 
   const validateField = (
     name: string,
@@ -31,6 +29,7 @@ export function GeneralStep({
     let error = "";
     switch (name) {
       case "name":
+      case "name_ka":
         if (!value || value.toString().trim() === "") {
           error = te("required");
         }
@@ -40,8 +39,6 @@ export function GeneralStep({
           error = te("required");
         } else if (Number(value) <= 0) {
           error = te("priceError");
-        } else {
-          error = "";
         }
         break;
       case "brand":
@@ -50,6 +47,7 @@ export function GeneralStep({
         }
         break;
       case "description":
+      case "description_ka":
         if (!value || value.toString().trim().length < 10) {
           error = te("required");
         }
@@ -73,8 +71,24 @@ export function GeneralStep({
     setErrors((prev) => ({ ...prev, [name]: error }));
   };
 
+  const handleToggle = () => {
+    setShowGeorgian(!showGeorgian);
+  };
+
   return (
     <div className="lg:w-[576px] lg:h-[490px] justify-between">
+      {/* Toggle Language Button */}
+      <button
+        type="button"
+        onClick={handleToggle}
+        className={`mt-2 p-3 rounded-full text-sm font-semibold shadow-md mb-2 ${
+          showGeorgian
+            ? "bg-green-600 text-white hover:bg-green-700"
+            : "bg-gray-300 text-gray-800 hover:bg-gray-400"
+        } transition-all duration-300 transform `}
+      >
+        {showGeorgian ? "Switch to English" : "Switch to Georgian"}
+      </button>
       <p>{t("question")}</p>
       <div className="flex space-x-4">
         <div className="border py-3 px-4 flex items-center gap-2 mt-2">
@@ -104,30 +118,40 @@ export function GeneralStep({
           </label>
         </div>
       </div>
-      <div>
+
+      <div className="space-y-4">
+        {/* Name Input */}
         <div className="flex flex-col space-y-2">
           <label
-            htmlFor="name"
+            htmlFor={showGeorgian ? "name_ka" : "name"}
             className="text-sm font-medium text-gray-700 dark:text-gray-300"
           >
             {t("name")}
           </label>
           <input
             type="text"
-            id="name"
-            name="name"
+            id={showGeorgian ? "name_ka" : "name"}
+            name={showGeorgian ? "name_ka" : "name"}
             className={`w-full p-3 rounded border ${
-              errors.name ? "border-red-500" : "border-gray-300"
+              errors[showGeorgian ? "name_ka" : "name"]
+                ? "border-red-500"
+                : "border-gray-300"
             }`}
-            placeholder={t("nameplacholder")}
-            value={formData.name}
+            placeholder={
+              showGeorgian ? "შეიყვანე პროდუქტის სახელი" : t("nameplacholder")
+            }
+            value={showGeorgian ? formData.name_ka : formData.name}
             onChange={handleInputChange}
             onBlur={handleBlur}
           />
-          {errors.name && (
-            <span className="text-red-500 text-sm">{errors.name}</span>
+          {errors[showGeorgian ? "name_ka" : "name"] && (
+            <span className="text-red-500 text-sm">
+              {errors[showGeorgian ? "name_ka" : "name"]}
+            </span>
           )}
         </div>
+
+        {/* Price Input */}
         <div className="flex flex-col space-y-2">
           <label
             htmlFor="price"
@@ -151,6 +175,8 @@ export function GeneralStep({
             <span className="text-red-500 text-sm">{errors.price}</span>
           )}
         </div>
+
+        {/* Brand Input */}
         <div className="flex flex-col space-y-2">
           <label
             htmlFor="brand"
@@ -174,9 +200,8 @@ export function GeneralStep({
             <span className="text-red-500 text-sm">{errors.brand}</span>
           )}
         </div>
-      </div>
 
-      <div>
+        {/* Image Input */}
         <div className="flex flex-col space-y-2">
           <label
             htmlFor="image"
@@ -198,26 +223,38 @@ export function GeneralStep({
             <span className="text-red-500 text-sm">{errors.image}</span>
           )}
         </div>
+
+        {/* Description Input */}
         <div className="flex flex-col space-y-2">
           <label
-            htmlFor="description"
+            htmlFor={showGeorgian ? "description_ka" : "description_en"}
             className="text-sm font-medium text-gray-700 dark:text-gray-300"
           >
             {t("description")}
           </label>
           <textarea
-            id="description"
-            name="description"
-            className={`w-full p-3 rounded border ${
-              errors.description ? "border-red-500" : "border-gray-300"
-            }`}
-            placeholder={t("descriptionplacholder")}
-            value={formData.description}
+            id={showGeorgian ? "description_ka" : "description_en"}
+            name={showGeorgian ? "description_ka" : "description_en"}
+            className={`w-full p-4 rounded-lg border ${
+              errors[showGeorgian ? "description_ka" : "description_en"]
+                ? "border-red-500"
+                : "border-gray-300"
+            } focus:outline-none focus:ring-2 focus:ring-blue-500`}
+            placeholder={
+              showGeorgian
+                ? "შეიყვანეთ მოკლე აღწერა პროდუქტის შესახებ"
+                : t("descriptionplacholder")
+            }
+            value={
+              showGeorgian ? formData.description_ka : formData.description_en
+            }
             onChange={handleInputChange}
             onBlur={handleBlur}
           ></textarea>
-          {errors.description && (
-            <span className="text-red-500 text-sm">{errors.description}</span>
+          {errors[showGeorgian ? "description_ka" : "description_en"] && (
+            <span className="text-red-500 text-sm">
+              {errors[showGeorgian ? "description_ka" : "description_en"]}
+            </span>
           )}
         </div>
       </div>
