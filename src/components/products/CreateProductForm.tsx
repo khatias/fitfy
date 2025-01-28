@@ -17,27 +17,26 @@ export function CreateProductForm() {
   interface Category {
     product_category_id: number;
     category_name: string;
-    category_en:string;
-    category_ka:string;
-
+    category_en: string;
+    category_ka: string;
   }
   interface Material {
     product_material_id: number;
     material_name: string;
-   material_en:string;
-    material_ka:string;
+    material_en: string;
+    material_ka: string;
   }
   interface Condition {
     product_condition_id: number;
     condition_name: string;
-    condition_en:string;
-    condition_ka:string;
+    condition_en: string;
+    condition_ka: string;
   }
   interface Color {
     product_color_id: number;
     color_name: string;
-    color_en:string;
-    color_ka:string;
+    color_en: string;
+    color_ka: string;
   }
 
   const [categories, setCategories] = useState<Category[]>([]);
@@ -210,77 +209,131 @@ export function CreateProductForm() {
   const prevStep = () => setStep((prevStep) => Math.max(prevStep - 1, 1));
 
   return (
-    <div className="w-full m-auto container">
-      <div className="flex space-x-4 mb-6">
-        <button
-          onClick={prevStep}
-          disabled={step === 1}
-          className="px-4 py-2 bg-gray-300 rounded"
-        >
-          Previous
-        </button>
-        <button
-          onClick={nextStep}
-          disabled={step === 4}
-          className="px-4 py-2 bg-gray-300 rounded"
-        >
-          Next
-        </button>
-      </div>
-
+    <div className="w-full m-auto container max-w-5xl">
       <h2 className="text-2xl text-center font-bold mb-6">{t("title")}</h2>
-
-      {/* Step 1: Item Type */}
-      {step === 1 && (
-        <GeneralStep
-          formData={formData}
-          handleProductTypeChange={handleProductTypeChange}
-          handleInputChange={handleInputChange}
-          handleUploadImage={handleUploadImage}
-        />
-      )}
-
-      {/* Step 2: Product Details */}
-      {step === 2 && (
-        <ProductDetailsStep
-          formData={formData}
-          handleSelectChange={handleSelectChange}
-          handleProductTypeChange={handleProductTypeChange}
-          handleInputChange={handleInputChange}
-          handleUploadImage={handleUploadImage}
-          isVintage={isVintage}
-          setIsVintage={setIsVintage}
-          categories={categories}
-          materials={materials}
-          conditions={conditions}
-          colors={colors}
-        />
-      )}
-
-      {/* Step 3: Images */}
-      {step === 3 && (
-        <ImagesStep
-          formData={formData}
-          handleUploadImage={handleUploadImage}
-          handleMultipleImageUpload={handleMultipleImageUpload}
-        />
-      )}
-
-      {/* Step 4: Confirmation */}
-      {step === 4 && <div>Step 4</div>}
-
-      {/* Submit Button */}
-      {step === 4 && (
-        <div className="flex justify-center mt-6">
+      <div className="lg:flex  m-auto lg:justify-between max-w-5xl ">
+        <div className="flex items-center justify-start gap-8 pb-8 lg:flex-col lg:items-start lg:min-w-60">
           <button
-            type="submit"
-            onClick={handleSubmit}
-            className="px-16 py-3 bg-purple-800 text-white rounded-md hover:bg-purple-700"
+            onClick={() => setStep(1)}
+            className={`w-10 h-10 rounded-full transition-colors duration-300 lg:w-auto lg:h-auto   ${
+              step === 1
+                ? "bg-black border-[1px] border-gray-200  lg:bg-gray-200 lg:rounded-none lg: py-2 lg:border-none lg:min-w-full lg:font-semibold "
+                : "bg-white border-2 border-gray-200 lg:border-none   lg:px-6 py-2 "
+            } flex items-center justify-center lg:justify-start lg:items-start lg:pl-2`}
           >
-            Submit
+            <span
+              className={`text-md lg:hidden ${
+                step === 1 ? "text-white" : "text-black "
+              }`}
+            >
+              1
+            </span>
+            <span className="hidden lg:block">General info</span>
+          </button>
+          <button
+            onClick={() => setStep(2)}
+            className={`w-10 h-10 rounded-full transition-colors duration-300 lg:w-auto lg:h-auto ${
+              step === 2
+                ? "bg-black border-[1px] border-gray-200  lg:bg-gray-200 lg:rounded-none lg:py-2 lg:border-none lg:min-w-full lg:font-semibold"
+                : "bg-white border-2 border-gray-200 lg:border-none "
+            } flex items-center justify-center lg:justify-start lg:items-start lg:pl-2`}
+          >
+            <span
+              className={`text-md lg:hidden ${
+                step === 2 ? "text-white" : "text-black"
+              }`}
+            >
+              2
+            </span>
+            <span className="hidden lg:block">Product Details</span>
+          </button>
+          <button
+            onClick={() => setStep(3)}
+            className={`w-10 h-10 rounded-full transition-colors duration-300 lg:w-auto lg:h-auto${
+              step === 3
+                ? "bg-black border-[1px] border-gray-200  lg:bg-gray-200 lg:rounded-none lg:py-2 lg:border-none lg:min-w-full lg:font-semibold"
+                : "bg-white border-2 border-gray-200 lg:border-none "
+            } flex items-center justify-center lg:justify-start lg:items-start lg:pl-2`}
+          >
+            <span
+              className={`text-md lg:hidden ${
+                step === 3 ? "text-white" : "text-black "
+              }`}
+            >
+              3
+            </span>
+            <span className="hidden lg:block">Images</span>
           </button>
         </div>
-      )}
+
+        {/* Step 1: Item Type */}
+        {step === 1 && (
+          <GeneralStep
+            formData={formData}
+            handleProductTypeChange={handleProductTypeChange}
+            handleInputChange={handleInputChange}
+            handleUploadImage={handleUploadImage}
+          />
+        )}
+
+        {/* Step 2: Product Details */}
+        {step === 2 && (
+          <ProductDetailsStep
+            formData={formData}
+            handleSelectChange={handleSelectChange}
+            handleProductTypeChange={handleProductTypeChange}
+            handleInputChange={handleInputChange}
+            handleUploadImage={handleUploadImage}
+            isVintage={isVintage}
+            setIsVintage={setIsVintage}
+            categories={categories}
+            materials={materials}
+            conditions={conditions}
+            colors={colors}
+          />
+        )}
+
+        {/* Step 3: Images */}
+        {step === 3 && (
+          <div className="flex flex-col lg:w-[576px] lg:h-[490px] justify-between items-end">
+            <ImagesStep
+              formData={formData}
+              handleUploadImage={handleUploadImage}
+              handleMultipleImageUpload={handleMultipleImageUpload}
+            />
+            <div className="flex justify-center mt-6">
+              <button
+                type="submit"
+                onClick={handleSubmit}
+                className="px-16 py-3 bg-black text-white rounded-sm"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+      <div className="flex space-x-4 mt-8  lg:justify-end">
+        {step !== 3 && step > 1 && (
+          <button
+            onClick={prevStep}
+            disabled={step === 1}
+            className="px-4 py-2 bg-black text-white rounded-sm"
+          >
+            Previous
+          </button>
+        )}
+
+        {step !== 3 && (
+          <button
+            onClick={nextStep}
+            disabled={step === 3}
+            className="px-4 py-2 bg-black text-white rounded-sm"
+          >
+            Next
+          </button>
+        )}
+      </div>
     </div>
   );
 }

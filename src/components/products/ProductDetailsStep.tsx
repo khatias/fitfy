@@ -45,7 +45,7 @@ export function ProductDetailsStep({
   const locale = window.location.pathname.split("/")[1];
   const t = useTranslations("ProductDetailsStep");
   return (
-    <div className="space-y-6">
+    <div className="space-y-6  lg:w-[576px] lg:h-[490px] justify-between">
       {/* Category */}
       <div>
         <label htmlFor="category" className="block font-medium">

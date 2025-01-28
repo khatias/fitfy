@@ -28,7 +28,7 @@ export function GeneralStep({
   const t = useTranslations("GeneralStep");
 
   return (
-    <div>
+    <div className="lg:w-[576px] lg:h-[490px] justify-between">
       <p>{t("question")}</p>
       <div className="flex space-x-4">
         <div className="border py-3 px-4 flex items-center gap-2 mt-2">

@@ -2,6 +2,7 @@
 import React from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { ArrowTrendingDownIcon } from "@heroicons/react/20/solid";
 interface ImagesStepProps {
   formData: {
     images: string[]; // Array to store image URLs
@@ -14,53 +15,50 @@ interface ImagesStepProps {
 
 export function ImagesStep({
   formData,
-
   handleMultipleImageUpload,
 }: ImagesStepProps) {
-    const t = useTranslations("ImagesStep");
+  const t = useTranslations("ImagesStep");
+
   return (
-    <div>
+    <div className="space-y-6">
       <label
         htmlFor="image"
-        className="block text-sm font-medium text-gray-700"
+        className="block text-lg font-semibold text-gray-800"
       >
         {t("uploadImages")}
       </label>
-      <div className="mt-2 grid grid-cols-2 gap-4">
+
+      <div className="mt-4 grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4">
         {Array(4)
           .fill(null)
           .map((_, index) => (
-            <div key={index} className="flex items-center space-x-4">
-              <span className="h-24 w-24 overflow-hidden bg-gray-100 flex items-center justify-center">
+            <div key={index} className="relative group">
+              <div
+                className={`h-32 w-32 bg-gray-100 rounded-lg flex items-center justify-center shadow-md transition-all duration-300 ${
+                  formData.images[index] ? "border-2 border-green-500" : ""
+                }`}
+              >
                 {formData.images[index] ? (
                   <Image
                     src={formData.images[index]}
                     alt={`Uploaded Image ${index + 1}`}
                     width={100}
                     height={100}
-                    className="object-cover"
+                    className="object-cover rounded-lg"
                   />
                 ) : (
-                  <svg
-                    className="h-12 w-12 text-gray-300"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M12 2C6.48 2 2 6.48 2 12c0 5.52 4.48 10 10 10 5.52 0 10-4.48-4.48-10zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-2-9h4v2h-4v-2z"
-                    />
-                  </svg>
+                  <ArrowTrendingDownIcon className="h-16 w-16 text-gray-400" />
                 )}
-              </span>
+              </div>
+
               <input
                 type="file"
                 id={`image-${index}`}
                 accept="image/*"
                 onChange={handleMultipleImageUpload}
-                className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
+                className="absolute inset-0 opacity-0 cursor-pointer z-10" // Ensure the input is clickable by setting a higher z-index
               />
+              <div className="absolute inset-0 bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
             </div>
           ))}
       </div>
