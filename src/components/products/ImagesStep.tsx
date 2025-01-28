@@ -56,7 +56,7 @@ export function ImagesStep({
                 id={`image-${index}`}
                 accept="image/*"
                 onChange={handleMultipleImageUpload}
-                className="absolute inset-0 opacity-0 cursor-pointer z-10" // Ensure the input is clickable by setting a higher z-index
+                className="absolute inset-0 opacity-0 cursor-pointer z-10" 
               />
               <div className="absolute inset-0 bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
             </div>

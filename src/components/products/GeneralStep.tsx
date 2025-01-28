@@ -1,17 +1,10 @@
 "use client";
 import React from "react";
 import { useTranslations } from "next-intl";
-
+import { formDataType } from "@/types/formData";
 interface GeneralStepProps {
-  formData: {
-    name: string;
-    price: string;
-    brand: string;
-    description: string;
-    category: string;
-    image: string | null;
-    productType: number | null;
-  };
+  formData: formDataType;
+
   handleProductTypeChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleInputChange: (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

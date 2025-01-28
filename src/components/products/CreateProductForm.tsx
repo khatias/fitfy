@@ -12,53 +12,16 @@ import {
 import { GeneralStep } from "./GeneralStep";
 import { ProductDetailsStep } from "./ProductDetailsStep";
 import { ImagesStep } from "./ImagesStep";
-
+import { Category, Material, Condition, Color } from "@/types/product";
+import { formDataType } from "@/types/formData";
 export function CreateProductForm() {
-  interface Category {
-    product_category_id: number;
-    category_name: string;
-    category_en: string;
-    category_ka: string;
-  }
-  interface Material {
-    product_material_id: number;
-    material_name: string;
-    material_en: string;
-    material_ka: string;
-  }
-  interface Condition {
-    product_condition_id: number;
-    condition_name: string;
-    condition_en: string;
-    condition_ka: string;
-  }
-  interface Color {
-    product_color_id: number;
-    color_name: string;
-    color_en: string;
-    color_ka: string;
-  }
-
   const [categories, setCategories] = useState<Category[]>([]);
   const [materials, setMaterials] = useState<Material[]>([]);
   const [colors, setColors] = useState<Color[]>([]);
   const [conditions, setConditions] = useState<Condition[]>([]);
-  const [isVintage, setIsVintage] = useState(false); // State for vintage checkbox
+  const [isVintage, setIsVintage] = useState(false);
 
-  const [formData, setFormData] = useState<{
-    name: string;
-    price: string;
-    brand: string;
-    description: string;
-    category: string;
-    image: string | null;
-    productType: number | null;
-    material: string;
-    condition: string;
-    color: string;
-    size: string;
-    images: string[]; // Fixed typing for images to an array of strings
-  }>({
+  const [formData, setFormData] = useState<formDataType>({
     name: "",
     price: "",
     brand: "",
@@ -70,7 +33,7 @@ export function CreateProductForm() {
     condition: "",
     color: "",
     size: "",
-    images: [], // Initialize images as an empty array
+    images: [],
   });
 
   const [step, setStep] = useState(1);
@@ -118,7 +81,6 @@ export function CreateProductForm() {
     }));
   };
 
-  // Single image upload handler
   const handleUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
@@ -126,7 +88,7 @@ export function CreateProductForm() {
         const uploadedImageUrl = await uploadFile(file, "products");
         setFormData((prev) => ({
           ...prev,
-          image: uploadedImageUrl, // Store the primary image URL
+          image: uploadedImageUrl,
         }));
       } catch (error) {
         console.error("Error uploading image:", error);
@@ -134,7 +96,6 @@ export function CreateProductForm() {
     }
   };
 
-  // Multiple image upload handler
   const handleMultipleImageUpload = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -153,15 +114,13 @@ export function CreateProductForm() {
           })
         );
 
-        // Filter out any null values (in case of upload failure)
         const validUploadedUrls = uploadedImageUrls.filter(
           (url) => url !== null
         ) as string[];
 
-        // Correctly add each image URL to the images array
         setFormData((prev) => ({
           ...prev,
-          images: [...prev.images, ...validUploadedUrls], // No need for a stringified array
+          images: [...prev.images, ...validUploadedUrls],
         }));
       } catch (error) {
         console.error("Error processing images:", error);

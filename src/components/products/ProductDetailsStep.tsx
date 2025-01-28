@@ -2,20 +2,9 @@
 import React from "react";
 import { Material, Condition, Color, Category } from "@/types/product";
 import { useTranslations } from "next-intl";
+import { formDataType } from "@/types/formData";
 interface GeneralStepProps {
-  formData: {
-    name: string;
-    price: string;
-    brand: string;
-    description: string;
-    category: string;
-    material: string;
-    color: string;
-    condition: string;
-    image: string | null;
-    productType: number | null;
-    size: string;
-  };
+  formData: formDataType;
   handleProductTypeChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleInputChange: (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -26,8 +15,8 @@ interface GeneralStepProps {
   materials: Material[];
   conditions: Condition[];
   colors: Color[];
-  isVintage: boolean; // Added this prop
-  setIsVintage: React.Dispatch<React.SetStateAction<boolean>>; // Added this prop
+  isVintage: boolean;
+  setIsVintage: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export function ProductDetailsStep({
@@ -40,7 +29,7 @@ export function ProductDetailsStep({
   categories,
   isVintage,
 
-  setIsVintage, // Destructured prop
+  setIsVintage,
 }: GeneralStepProps) {
   const locale = window.location.pathname.split("/")[1];
   const t = useTranslations("ProductDetailsStep");
@@ -98,7 +87,7 @@ export function ProductDetailsStep({
       {/* Condition */}
       <div>
         <label htmlFor="condition" className="block font-medium">
-        {t("condition")}
+          {t("condition")}
         </label>
         <select
           id="condition"
@@ -107,7 +96,7 @@ export function ProductDetailsStep({
           value={formData.condition}
           className="w-full p-3 rounded border"
         >
-          <option value="">      {t("selectcondition")}</option>
+          <option value=""> {t("selectcondition")}</option>
           {conditions.map((condition) => (
             <option
               key={condition.product_condition_id}
@@ -124,7 +113,7 @@ export function ProductDetailsStep({
       {/* Color */}
       <div>
         <label htmlFor="color" className="block font-medium">
-        {t("color")}
+          {t("color")}
         </label>
         <select
           id="color"
@@ -133,7 +122,7 @@ export function ProductDetailsStep({
           value={formData.color}
           className="w-full p-3 rounded border"
         >
-          <option value="">    {t("selectcolor")}</option>
+          <option value=""> {t("selectcolor")}</option>
           {colors.map((color) => (
             <option key={color.product_color_id} value={color.product_color_id}>
               {locale === "en" ? color.color_en : color.color_ka}
@@ -156,7 +145,7 @@ export function ProductDetailsStep({
           htmlFor="vintage"
           className="text-sm font-medium text-gray-700 dark:text-gray-300"
         >
-              {t("vintage")}
+          {t("vintage")}
         </label>
       </div>
       <div className="flex flex-col space-y-2">
@@ -164,13 +153,13 @@ export function ProductDetailsStep({
           htmlFor="size"
           className="text-sm font-medium text-gray-700 dark:text-gray-300"
         >
-              {t("size")}
+          {t("size")}
         </label>
         <input
           id="size"
           name="size"
           className="w-full p-3 rounded border"
-          placeholder=  {t("sizeplaceholder")}
+          placeholder={t("sizeplaceholder")}
           value={formData.size}
           onChange={handleInputChange}
           required
