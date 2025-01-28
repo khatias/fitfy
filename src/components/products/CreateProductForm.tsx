@@ -14,12 +14,14 @@ import { ProductDetailsStep } from "./ProductDetailsStep";
 import { ImagesStep } from "./ImagesStep";
 import { Category, Material, Condition, Color } from "@/types/product";
 import { formDataType } from "@/types/formData";
+import { SuccessProductCreation } from "../modals/SuccessProductCreation";
 export function CreateProductForm() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [materials, setMaterials] = useState<Material[]>([]);
   const [colors, setColors] = useState<Color[]>([]);
   const [conditions, setConditions] = useState<Condition[]>([]);
   const [isVintage, setIsVintage] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);  // State for showing modal
 
   const [formData, setFormData] = useState<formDataType>({
     name: "",
@@ -177,6 +179,7 @@ export function CreateProductForm() {
 
     if (response?.success) {
       console.log("Product created successfully");
+      setShowSuccessModal(true);
     } else {
       console.log("Error:", response?.message || "Unknown error");
     }
@@ -319,6 +322,10 @@ export function CreateProductForm() {
           </button>
         )}
       </div>
+      <SuccessProductCreation 
+        isOpen={showSuccessModal} 
+        onClose={() => setShowSuccessModal(false)}  // Close the modal
+      />
     </div>
   );
 }
