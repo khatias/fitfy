@@ -4,7 +4,13 @@
     "about": "Learn more about us"
   },
   "createProductForm": {
-    "title": "Sell an Item"
+    "title": "Sell an Item",
+    "general": "general info",
+    "details":"product details",
+    "images" :"images",
+    "next":"next",
+    "previous":"previous",
+    "submit": "submit"
   },
   "GeneralStep": {
     "question": "What type of product are you selling?",
@@ -40,6 +46,15 @@
   "FormErrors": {
     "required": "This field is required.",
     "priceError": "Price must be a positive number.",
-    "imageError": "Please upload an image."
+    "pricenotError":"Price is missing",
+    "imageError": "Please upload an image.",
+    "nameError": "Name is missing",
+    "brandError": "Brand is missing",
+    "descriptionError": "Description is missing",
+    "categoryError": "Category is missing",
+    "materialError": "Material is missing",
+    "conditionError": "Condition is missing",
+    "colorError": "Color is missing",
+    "sizeError": "Size is missing"
   }
 }

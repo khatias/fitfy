@@ -4,7 +4,13 @@
     "about": "გაიგეთ მეტი ჩვენ შესახებ"
   },
   "createProductForm":{
-    "title":"გაყიდე პროდუქტი"
+    "title":"გაყიდე პროდუქტი",
+    "general": "ზოგადი ინფორმაცია",
+    "details": "პროდუქტის დეტალები",
+    "images": "სურათები",
+    "next": "შემდეგი",
+    "previous": "წინა",
+    "submit": "დადასტურება"
   },
   "GeneralStep": {
     "question": "რა ტიპის პროდუქტი ყიდით?",
@@ -39,6 +45,15 @@
   "FormErrors":{
     "required": "ეს ველი სავალდებულოა.",
     "priceError": "ფასი უნდა იყოს დადებითი რიცხვი.",
-    "imageError": "გთხოვთ, ატვირთოთ სურათი."
+    "imageError": "გთხოვთ, ატვირთოთ სურათი.",
+    "pricenotError":"ფასი არ არსებობს",
+    "nameError": "სახელი არ არსებობს",
+    "brandError": "ბრენდი არ არსებობს",
+    "descriptionError": "აღწერა არ არსებობს",
+    "categoryError": "კატეგორია არ არსებობს",
+    "materialError": "მასალა არ არსებობს",
+    "conditionError": "პარამეტრი არ არსებობს",
+    "colorError": "ფერი არ არსებობს",
+    "sizeError": "ზომა არ არსებობს"
   }
 }

@@ -37,7 +37,10 @@ export function CreateProductForm() {
   });
 
   const [step, setStep] = useState(1);
+  const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
+
   const t = useTranslations("createProductForm");
+  const te = useTranslations("FormErrors");
   useEffect(() => {
     const getProductDetails = async () => {
       const fetchedCategories = await fetchCategories();
@@ -130,11 +133,21 @@ export function CreateProductForm() {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (!formData.image) {
-      console.log("Please upload an image");
-      return;
-    }
+    const errors: { [key: string]: string } = {};
 
+    // Validate required fields
+    if (!formData.name) errors.name = te("nameError");
+    if (!formData.price) errors.price = te("pricenotError");
+    if (!formData.brand) errors.brand = te("brandError");
+    if (!formData.description) errors.description = te("descriptionError");
+    if (!formData.category) errors.category = te("categoryError");
+    if (!formData.material) errors.material = te("materialError");
+    if (!formData.condition) errors.condition = te("conditionError");
+    if (!formData.color) errors.color = te("colorError");
+    if (!formData.size) errors.size = te("sizeError");
+    
+    setFormErrors(errors);
+    if (Object.keys(errors).length > 0) return;
     const formDataToSubmit = new FormData();
     formDataToSubmit.append("name", formData.name);
     formDataToSubmit.append("price", formData.price);
@@ -170,6 +183,14 @@ export function CreateProductForm() {
   return (
     <div className="w-full m-auto container max-w-5xl">
       <h2 className="text-2xl text-center font-bold mb-6">{t("title")}</h2>
+      {Object.values(formErrors).length > 0 && (
+        <div className="text-red-500 text-sm mb-4 flex items-center justify-center gap-2">
+          {Object.values(formErrors).map((error, index) => (
+            <p key={index}>{error}</p>
+          ))}
+        </div>
+      )}
+
       <div className="lg:flex  m-auto lg:justify-between max-w-5xl ">
         <div className="flex items-center justify-start gap-8 pb-8 lg:flex-col lg:items-start lg:min-w-60">
           <button
@@ -187,7 +208,7 @@ export function CreateProductForm() {
             >
               1
             </span>
-            <span className="hidden lg:block">General info</span>
+            <span className="hidden lg:block">{t("general")}</span>
           </button>
           <button
             onClick={() => setStep(2)}
@@ -204,7 +225,7 @@ export function CreateProductForm() {
             >
               2
             </span>
-            <span className="hidden lg:block">Product Details</span>
+            <span className="hidden lg:block">{t("details")}</span>
           </button>
           <button
             onClick={() => setStep(3)}
@@ -221,7 +242,7 @@ export function CreateProductForm() {
             >
               3
             </span>
-            <span className="hidden lg:block">Images</span>
+            <span className="hidden lg:block">{t("images")}</span>
           </button>
         </div>
 
@@ -266,7 +287,7 @@ export function CreateProductForm() {
                 onClick={handleSubmit}
                 className="px-16 py-3 bg-black text-white rounded-sm"
               >
-                Submit
+             {t("submit")}
               </button>
             </div>
           </div>
@@ -279,7 +300,7 @@ export function CreateProductForm() {
             disabled={step === 1}
             className="px-4 py-2 bg-black text-white rounded-sm"
           >
-            Previous
+          {t("previous")}
           </button>
         )}
 
@@ -289,7 +310,7 @@ export function CreateProductForm() {
             disabled={step === 3}
             className="px-4 py-2 bg-black text-white rounded-sm"
           >
-            Next
+          {t("next")}
           </button>
         )}
       </div>
