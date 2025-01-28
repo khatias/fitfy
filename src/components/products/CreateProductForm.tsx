@@ -10,6 +10,7 @@ import {
 } from "@/utils/fetchDatas/fetchProductData";
 import { GeneralStep } from "./GeneralStep";
 import { ProductDetailsStep } from "./ProductDetailsStep";
+import { ImagesStep } from "./ImagesStep";
 
 export function CreateProductForm() {
   interface Category {
@@ -46,7 +47,8 @@ export function CreateProductForm() {
     material: string;
     condition: string;
     color: string;
-    size:string; 
+    size: string;
+    images: string[]; // Fixed typing for images to an array of strings
   }>({
     name: "",
     price: "",
@@ -58,8 +60,10 @@ export function CreateProductForm() {
     productType: null,
     condition: "",
     color: "",
-    size:"",
+    size: "",
+    images: [], // Initialize images as an empty array
   });
+
   const [step, setStep] = useState(1);
 
   useEffect(() => {
@@ -105,6 +109,7 @@ export function CreateProductForm() {
     }));
   };
 
+  // Single image upload handler
   const handleUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
@@ -112,13 +117,49 @@ export function CreateProductForm() {
         const uploadedImageUrl = await uploadFile(file, "products");
         setFormData((prev) => ({
           ...prev,
-          image: uploadedImageUrl,
+          image: uploadedImageUrl, // Store the primary image URL
         }));
       } catch (error) {
         console.error("Error uploading image:", error);
       }
     }
   };
+
+  // Multiple image upload handler
+  const handleMultipleImageUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (e.target.files) {
+      const files = Array.from(e.target.files);
+      try {
+        const uploadedImageUrls = await Promise.all(
+          files.map(async (file) => {
+            try {
+              const uploadedImageUrl = await uploadFile(file, "products");
+              return uploadedImageUrl;
+            } catch (error) {
+              console.error("Error uploading image:", error);
+              return null;
+            }
+          })
+        );
+  
+        // Filter out any null values (in case of upload failure)
+        const validUploadedUrls = uploadedImageUrls.filter(
+          (url) => url !== null
+        ) as string[];
+  
+        // Correctly add each image URL to the images array
+        setFormData((prev) => ({
+          ...prev,
+          images: [...prev.images, ...validUploadedUrls], // No need for a stringified array
+        }));
+      } catch (error) {
+        console.error("Error processing images:", error);
+      }
+    }
+  };
+  
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -139,9 +180,18 @@ export function CreateProductForm() {
     formDataToSubmit.append("color", formData.color);
     formDataToSubmit.append("vintage", String(isVintage));
     formDataToSubmit.append("size", formData.size);
+ 
+
+
+
+
+   
     if (formData.image) {
       formDataToSubmit.append("primary_image", formData.image);
     }
+    formData.images.forEach((image, index) => {
+      formDataToSubmit.append(`image_${index + 1}`, image);
+    });
 
     const response = await createProduct(formDataToSubmit);
 
@@ -194,8 +244,8 @@ export function CreateProductForm() {
           handleProductTypeChange={handleProductTypeChange}
           handleInputChange={handleInputChange}
           handleUploadImage={handleUploadImage}
-          isVintage={isVintage} // Passed isVintage
-          setIsVintage={setIsVintage} // Passed setIsVintage
+          isVintage={isVintage}
+          setIsVintage={setIsVintage}
           categories={categories}
           materials={materials}
           conditions={conditions}
@@ -203,8 +253,16 @@ export function CreateProductForm() {
         />
       )}
 
-      {/* Additional Steps */}
-      {step === 3 && <div>Step 3</div>}
+      {/* Step 3: Images */}
+      {step === 3 && (
+        <ImagesStep
+          formData={formData}
+          handleUploadImage={handleUploadImage}
+          handleMultipleImageUpload={handleMultipleImageUpload}
+        />
+      )}
+
+      {/* Step 4: Confirmation */}
       {step === 4 && <div>Step 4</div>}
 
       {/* Submit Button */}

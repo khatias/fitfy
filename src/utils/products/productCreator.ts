@@ -20,6 +20,14 @@ export async function createProduct(formData: FormData) {
   const vintage = formData.get("vintage") as string;
   const size = formData.get("size") as string;
   const primary_image = formData.get("primary_image") as string;
+  const images = [];
+  for (const [key, value] of formData.entries()) {
+    if (key.startsWith("image_")) {
+      images.push(value); // this will give you the image files
+    }
+  }
+console.log(images)
+console.log(formData)
   try {
     const stripeProduct = await stripe.products.create({
       name,
@@ -51,6 +59,7 @@ export async function createProduct(formData: FormData) {
         vintage,
         size,
         primary_image,
+        images,
       })
       .single();
 
