@@ -3,8 +3,8 @@
     "title": "Welcome to Our Store!",
     "about": "Learn more about us"
   },
-  "createProductForm":{
-    "title":"Sell an Item"
+  "createProductForm": {
+    "title": "Sell an Item"
   },
   "GeneralStep": {
     "question": "What type of product are you selling?",
@@ -20,22 +20,26 @@
     "brandplacholder": "Enter the brand name",
     "descriptionplacholder": "Enter a brief description of the product"
   },
+
   "ProductDetailsStep": {
-  "category": "Category",
-  "selectcategory": "Select a category",
-  "material": "Material",
-  "selectmaterial": "Select material",
-  "condition": "Condition",
-  "selectcondition": "Select condition",
-  "color": "Color",
-  "selectcolor": "Select color",
-  "vintage": "Vintage",
-  "size": "Size",
-  "sizeplaceholder":"Enter product size"
-},
-"ImagesStep": {
-  "uploadImages": "Upload additional images"
-}
-
-
+    "category": "Category",
+    "selectcategory": "Select a category",
+    "material": "Material",
+    "selectmaterial": "Select material",
+    "condition": "Condition",
+    "selectcondition": "Select condition",
+    "color": "Color",
+    "selectcolor": "Select color",
+    "vintage": "Vintage",
+    "size": "Size",
+    "sizeplaceholder": "Enter product size"
+  },
+  "ImagesStep": {
+    "uploadImages": "Upload additional images"
+  },
+  "FormErrors": {
+    "required": "This field is required.",
+    "priceError": "Price must be a positive number.",
+    "imageError": "Please upload an image."
+  }
 }

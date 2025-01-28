@@ -1,10 +1,10 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useTranslations } from "next-intl";
 import { formDataType } from "@/types/formData";
+
 interface GeneralStepProps {
   formData: formDataType;
-
   handleProductTypeChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleInputChange: (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -19,6 +19,59 @@ export function GeneralStep({
   handleUploadImage,
 }: GeneralStepProps) {
   const t = useTranslations("GeneralStep");
+  const te = useTranslations("FormErrors");
+  const [errors, setErrors] = useState<{
+    [key: string]: string;
+  }>({});
+
+  const validateField = (
+    name: string,
+    value: string | number | File | null
+  ) => {
+    let error = "";
+    switch (name) {
+      case "name":
+        if (!value || value.toString().trim() === "") {
+          error = te("required");
+        }
+        break;
+      case "price":
+        if (value === "") {
+          error = te("required");
+        } else if (Number(value) <= 0) {
+          error = te("priceError");
+        } else {
+          error = "";
+        }
+        break;
+      case "brand":
+        if (!value || value.toString().trim() === "") {
+          error = te("required");
+        }
+        break;
+      case "description":
+        if (!value || value.toString().trim().length < 10) {
+          error = te("required");
+        }
+        break;
+      case "image":
+        if (!value) {
+          error = te("imageError");
+        }
+        break;
+      default:
+        break;
+    }
+    return error;
+  };
+
+  const handleBlur = (
+    e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    const error = validateField(name, value);
+    setErrors((prev) => ({ ...prev, [name]: error }));
+  };
 
   return (
     <div className="lg:w-[576px] lg:h-[490px] justify-between">
@@ -63,12 +116,17 @@ export function GeneralStep({
             type="text"
             id="name"
             name="name"
-            className="w-full p-3 rounded border"
+            className={`w-full p-3 rounded border ${
+              errors.name ? "border-red-500" : "border-gray-300"
+            }`}
             placeholder={t("nameplacholder")}
             value={formData.name}
             onChange={handleInputChange}
-            required
+            onBlur={handleBlur}
           />
+          {errors.name && (
+            <span className="text-red-500 text-sm">{errors.name}</span>
+          )}
         </div>
         <div className="flex flex-col space-y-2">
           <label
@@ -81,12 +139,17 @@ export function GeneralStep({
             type="number"
             id="price"
             name="price"
-            className="w-full p-3 rounded border"
+            className={`w-full p-3 rounded border ${
+              errors.price ? "border-red-500" : "border-gray-300"
+            }`}
             placeholder={t("priceplacholder")}
             value={formData.price}
             onChange={handleInputChange}
-            required
+            onBlur={handleBlur}
           />
+          {errors.price && (
+            <span className="text-red-500 text-sm">{errors.price}</span>
+          )}
         </div>
         <div className="flex flex-col space-y-2">
           <label
@@ -99,12 +162,17 @@ export function GeneralStep({
             type="text"
             id="brand"
             name="brand"
-            className="w-full p-3 rounded border"
+            className={`w-full p-3 rounded border ${
+              errors.brand ? "border-red-500" : "border-gray-300"
+            }`}
             placeholder={t("brandplacholder")}
             value={formData.brand}
             onChange={handleInputChange}
-            required
+            onBlur={handleBlur}
           />
+          {errors.brand && (
+            <span className="text-red-500 text-sm">{errors.brand}</span>
+          )}
         </div>
       </div>
 
@@ -120,10 +188,15 @@ export function GeneralStep({
             type="file"
             id="image"
             name="image"
-            className="w-full p-3 rounded border"
+            className={`w-full p-3 rounded border ${
+              errors.image ? "border-red-500" : "border-gray-300"
+            }`}
             onChange={handleUploadImage}
-            required
+            onBlur={handleBlur}
           />
+          {errors.image && (
+            <span className="text-red-500 text-sm">{errors.image}</span>
+          )}
         </div>
         <div className="flex flex-col space-y-2">
           <label
@@ -135,12 +208,17 @@ export function GeneralStep({
           <textarea
             id="description"
             name="description"
-            className="w-full p-3 rounded border"
+            className={`w-full p-3 rounded border ${
+              errors.description ? "border-red-500" : "border-gray-300"
+            }`}
             placeholder={t("descriptionplacholder")}
             value={formData.description}
             onChange={handleInputChange}
-            required
+            onBlur={handleBlur}
           ></textarea>
+          {errors.description && (
+            <span className="text-red-500 text-sm">{errors.description}</span>
+          )}
         </div>
       </div>
     </div>
