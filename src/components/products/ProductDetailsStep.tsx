@@ -1,9 +1,10 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Material, Condition, Color, Category } from "@/types/product";
 import { useTranslations } from "next-intl";
 import { formDataType } from "@/types/formData";
-interface GeneralStepProps {
+
+interface ProductDetailsStepProps {
   formData: formDataType;
   handleProductTypeChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleInputChange: (
@@ -28,13 +29,44 @@ export function ProductDetailsStep({
   colors,
   categories,
   isVintage,
-
   setIsVintage,
-}: GeneralStepProps) {
+}: ProductDetailsStepProps) {
   const locale = window.location.pathname.split("/")[1];
   const t = useTranslations("ProductDetailsStep");
+  const te = useTranslations("FormErrors");
+  
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  // Validation function, similar to how it's done in GeneralStep
+  const validateField = (name: string, value: string | number | null) => {
+    let error = "";
+
+    if (name === "category" && !value) {
+      error = te("required");
+    }
+    if (name === "material" && !value) {
+      error = te("required");
+    }
+    if (name === "condition" && !value) {
+      error = te("required");
+    }
+    if (name === "color" && !value) {
+      error = te("required");
+    }
+    if (name === "size" && !value) {
+      error = te("required");
+    }
+
+    setErrors((prev) => ({ ...prev, [name]: error }));
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    validateField(name, value);
+  };
+
   return (
-    <div className="space-y-6  lg:w-[576px] lg:h-[490px] justify-between">
+    <div className="space-y-6 lg:w-[576px] lg:h-[490px] justify-between">
       {/* Category */}
       <div>
         <label htmlFor="category" className="block font-medium">
@@ -45,6 +77,7 @@ export function ProductDetailsStep({
           name="category"
           value={formData.category}
           onChange={handleSelectChange}
+          onBlur={handleBlur}
           required
           className="w-full border rounded p-2"
         >
@@ -58,6 +91,7 @@ export function ProductDetailsStep({
             </option>
           ))}
         </select>
+        {errors.category && <span className="text-red-500">{errors.category}</span>}
       </div>
 
       {/* Material */}
@@ -69,10 +103,11 @@ export function ProductDetailsStep({
           id="material"
           name="material"
           onChange={handleSelectChange}
+          onBlur={handleBlur}
           value={formData.material}
           className="w-full p-3 rounded border"
         >
-          <option value=""> {t("selectmaterial")}</option>
+          <option value="">{t("selectmaterial")}</option>
           {materials.map((material: Material) => (
             <option
               key={material.product_material_id}
@@ -82,6 +117,7 @@ export function ProductDetailsStep({
             </option>
           ))}
         </select>
+        {errors.material && <span className="text-red-500">{errors.material}</span>}
       </div>
 
       {/* Condition */}
@@ -93,10 +129,11 @@ export function ProductDetailsStep({
           id="condition"
           name="condition"
           onChange={handleSelectChange}
+          onBlur={handleBlur}
           value={formData.condition}
           className="w-full p-3 rounded border"
         >
-          <option value=""> {t("selectcondition")}</option>
+          <option value="">{t("selectcondition")}</option>
           {conditions.map((condition) => (
             <option
               key={condition.product_condition_id}
@@ -108,6 +145,7 @@ export function ProductDetailsStep({
             </option>
           ))}
         </select>
+        {errors.condition && <span className="text-red-500">{errors.condition}</span>}
       </div>
 
       {/* Color */}
@@ -119,16 +157,18 @@ export function ProductDetailsStep({
           id="color"
           name="color"
           onChange={handleSelectChange}
+          onBlur={handleBlur}
           value={formData.color}
           className="w-full p-3 rounded border"
         >
-          <option value=""> {t("selectcolor")}</option>
+          <option value="">{t("selectcolor")}</option>
           {colors.map((color) => (
             <option key={color.product_color_id} value={color.product_color_id}>
               {locale === "en" ? color.color_en : color.color_ka}
             </option>
           ))}
         </select>
+        {errors.color && <span className="text-red-500">{errors.color}</span>}
       </div>
 
       {/* Vintage Checkbox */}
@@ -148,6 +188,8 @@ export function ProductDetailsStep({
           {t("vintage")}
         </label>
       </div>
+
+      {/* Size */}
       <div className="flex flex-col space-y-2">
         <label
           htmlFor="size"
@@ -162,8 +204,10 @@ export function ProductDetailsStep({
           placeholder={t("sizeplaceholder")}
           value={formData.size}
           onChange={handleInputChange}
+          onBlur={handleBlur}
           required
         />
+        {errors.size && <span className="text-red-500">{errors.size}</span>}
       </div>
     </div>
   );
