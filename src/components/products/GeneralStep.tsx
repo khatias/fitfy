@@ -1,6 +1,7 @@
-// GeneralStep.tsx
 "use client";
 import React from "react";
+import { useTranslations } from "next-intl";
+
 interface GeneralStepProps {
   formData: {
     name: string;
@@ -22,13 +23,13 @@ export function GeneralStep({
   formData,
   handleProductTypeChange,
   handleInputChange,
-
   handleUploadImage,
-
 }: GeneralStepProps) {
+  const t = useTranslations("GeneralStep");
+
   return (
     <div>
-      <p>What type of item are you selling?</p>
+      <p>{t("question")}</p>
       <div className="flex space-x-4">
         <div className="border py-3 px-4 flex items-center gap-2 mt-2">
           <input
@@ -40,7 +41,7 @@ export function GeneralStep({
             onChange={handleProductTypeChange}
           />
           <label htmlFor="men" className="mr-2">
-            Menswear
+            {t("menswear")}
           </label>
         </div>
         <div className="border py-3 px-4 flex items-center gap-2 mt-2">
@@ -53,7 +54,7 @@ export function GeneralStep({
             onChange={handleProductTypeChange}
           />
           <label htmlFor="women" className="mr-2">
-            Womenswear
+            {t("womenswear")}
           </label>
         </div>
       </div>
@@ -63,14 +64,14 @@ export function GeneralStep({
             htmlFor="name"
             className="text-sm font-medium text-gray-700 dark:text-gray-300"
           >
-            Name
+            {t("name")}
           </label>
           <input
             type="text"
             id="name"
             name="name"
             className="w-full p-3 rounded border"
-            placeholder="Enter the product name"
+            placeholder={t("nameplacholder")}
             value={formData.name}
             onChange={handleInputChange}
             required
@@ -81,14 +82,14 @@ export function GeneralStep({
             htmlFor="price"
             className="text-sm font-medium text-gray-700 dark:text-gray-300"
           >
-            Price
+            {t("price")}
           </label>
           <input
             type="number"
             id="price"
             name="price"
             className="w-full p-3 rounded border"
-            placeholder="Enter the price"
+            placeholder={t("priceplacholder")}
             value={formData.price}
             onChange={handleInputChange}
             required
@@ -99,14 +100,14 @@ export function GeneralStep({
             htmlFor="brand"
             className="text-sm font-medium text-gray-700 dark:text-gray-300"
           >
-            Brand
+            {t("brand")}
           </label>
           <input
             type="text"
             id="brand"
             name="brand"
             className="w-full p-3 rounded border"
-            placeholder="Enter the brand"
+            placeholder={t("brandplacholder")}
             value={formData.brand}
             onChange={handleInputChange}
             required
@@ -120,7 +121,7 @@ export function GeneralStep({
             htmlFor="image"
             className="text-sm font-medium text-gray-700 dark:text-gray-300"
           >
-            Image
+            {t("image")}
           </label>
           <input
             type="file"
@@ -136,13 +137,13 @@ export function GeneralStep({
             htmlFor="description"
             className="text-sm font-medium text-gray-700 dark:text-gray-300"
           >
-            Description
+            {t("description")}
           </label>
           <textarea
             id="description"
             name="description"
             className="w-full p-3 rounded border"
-            placeholder="Enter product description"
+            placeholder={t("descriptionplacholder")}
             value={formData.description}
             onChange={handleInputChange}
             required

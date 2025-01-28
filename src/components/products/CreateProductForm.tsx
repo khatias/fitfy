@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { uploadFile } from "@/utils/files/uploadFile";
 import { createProduct } from "@/utils/products/productCreator";
+import { useTranslations } from "next-intl";
 import {
   fetchCategories,
   fetchMaterials,
@@ -16,18 +17,27 @@ export function CreateProductForm() {
   interface Category {
     product_category_id: number;
     category_name: string;
+    category_en:string;
+    category_ka:string;
+
   }
   interface Material {
     product_material_id: number;
     material_name: string;
+   material_en:string;
+    material_ka:string;
   }
   interface Condition {
     product_condition_id: number;
     condition_name: string;
+    condition_en:string;
+    condition_ka:string;
   }
   interface Color {
     product_color_id: number;
     color_name: string;
+    color_en:string;
+    color_ka:string;
   }
 
   const [categories, setCategories] = useState<Category[]>([]);
@@ -65,7 +75,7 @@ export function CreateProductForm() {
   });
 
   const [step, setStep] = useState(1);
-
+  const t = useTranslations("createProductForm");
   useEffect(() => {
     const getProductDetails = async () => {
       const fetchedCategories = await fetchCategories();
@@ -143,12 +153,12 @@ export function CreateProductForm() {
             }
           })
         );
-  
+
         // Filter out any null values (in case of upload failure)
         const validUploadedUrls = uploadedImageUrls.filter(
           (url) => url !== null
         ) as string[];
-  
+
         // Correctly add each image URL to the images array
         setFormData((prev) => ({
           ...prev,
@@ -159,7 +169,6 @@ export function CreateProductForm() {
       }
     }
   };
-  
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -180,12 +189,7 @@ export function CreateProductForm() {
     formDataToSubmit.append("color", formData.color);
     formDataToSubmit.append("vintage", String(isVintage));
     formDataToSubmit.append("size", formData.size);
- 
 
-
-
-
-   
     if (formData.image) {
       formDataToSubmit.append("primary_image", formData.image);
     }
@@ -224,7 +228,7 @@ export function CreateProductForm() {
         </button>
       </div>
 
-      <h2 className="text-2xl text-center font-bold mb-6">Sell an item</h2>
+      <h2 className="text-2xl text-center font-bold mb-6">{t("title")}</h2>
 
       {/* Step 1: Item Type */}
       {step === 1 && (

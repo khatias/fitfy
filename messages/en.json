@@ -1,6 +1,41 @@
 {
-    "HomePage": {
-      "title": "Hello world!",
-      "about": "Go to the about page"
-    }
-  }
+  "HomePage": {
+    "title": "Welcome to Our Store!",
+    "about": "Learn more about us"
+  },
+  "createProductForm":{
+    "title":"Sell an Item"
+  },
+  "GeneralStep": {
+    "question": "What type of product are you selling?",
+    "name": "Product Name",
+    "price": "Product Price",
+    "brand": "Brand Name",
+    "image": "Product Image",
+    "description": "Product Description",
+    "menswear": "Men's Clothing",
+    "womenswear": "Women's Clothing",
+    "nameplacholder": "Enter the product name",
+    "priceplacholder": "Enter the price",
+    "brandplacholder": "Enter the brand name",
+    "descriptionplacholder": "Enter a brief description of the product"
+  },
+  "ProductDetailsStep": {
+  "category": "Category",
+  "selectcategory": "Select a category",
+  "material": "Material",
+  "selectmaterial": "Select material",
+  "condition": "Condition",
+  "selectcondition": "Select condition",
+  "color": "Color",
+  "selectcolor": "Select color",
+  "vintage": "Vintage",
+  "size": "Size",
+  "sizeplaceholder":"Enter product size"
+},
+"ImagesStep": {
+  "uploadImages": "Upload additional images"
+}
+
+
+}

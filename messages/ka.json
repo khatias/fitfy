@@ -1,6 +1,39 @@
 {
-    "HomePage": {
-      "title": "გამარჯობა!",
-      "about": "გადადი მთავარ გვედზე"
-    }
+  "HomePage": {
+    "title": "მოგესალმებით ჩვენს მაღაზიაში!",
+    "about": "გაიგეთ მეტი ჩვენ შესახებ"
+  },
+  "createProductForm":{
+    "title":"გაყიდე პროდუქტი"
+  },
+  "GeneralStep": {
+    "question": "რა ტიპის პროდუქტი ყიდით?",
+    "name": "პროდუქტის სახელი",
+    "price": "პროდუქტის ფასი",
+    "brand": "ბრენდის სახელი",
+    "image": "პროდუქტის სურათი",
+    "description": "პროდუქტის აღწერა",
+    "menswear": "მამაკაცის ტანსაცმელი",
+    "womenswear": "ქალის ტანსაცმელი",
+    "nameplacholder": "შეიყვანეთ პროდუქტის სახელი",
+    "priceplacholder": "შეიყვანეთ ფასი",
+    "brandplacholder": "შეიყვანეთ ბრენდის სახელი",
+    "descriptionplacholder": "შეიყვანეთ მოკლე აღწერა პროდუქტის შესახებ"
+  },
+  "ProductDetailsStep": {
+    "category": "კატეგორია",
+    "selectcategory": "აირჩიე კატეგორია",
+    "material": "ქსოვილი",
+    "selectmaterial": "აირჩიე ქსოვილი",
+    "condition": "მდგომარეობა",
+    "selectcondition": " აირჩიე მდგომარეობა",
+    "color": "ფერი",
+    "selectcolor": " აირჩიე ფერი",
+    "vintage": " ვინტაჟურია",
+    "size": "ზომა",
+  "sizeplaceholder":"შეიყვანეთ პროდუქტის ზომა"
+  },
+  "ImagesStep":{
+    "uploadImages": "ატვირთე დამატებითი ფოტოები"
   }
+}

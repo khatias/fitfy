@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-
+import { useTranslations } from "next-intl";
 interface ImagesStepProps {
   formData: {
     images: string[]; // Array to store image URLs
@@ -17,13 +17,14 @@ export function ImagesStep({
 
   handleMultipleImageUpload,
 }: ImagesStepProps) {
+    const t = useTranslations("ImagesStep");
   return (
     <div>
       <label
         htmlFor="image"
         className="block text-sm font-medium text-gray-700"
       >
-        Upload Images
+        {t("uploadImages")}
       </label>
       <div className="mt-2 grid grid-cols-2 gap-4">
         {Array(4)
