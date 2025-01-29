@@ -1,8 +1,9 @@
 // src/app/cart/page.tsx
 
 "use client";
-
+import { useState } from "react";
 import Image from "next/image";
+import { updateCartItemQuantity } from "@/utils/cart/updateCartItemQuantity";
 
 interface CartItemProps {
   item: {
@@ -15,12 +16,19 @@ interface CartItemProps {
 }
 
 export default function CartItem({ item }: CartItemProps) {
-  const { name, quantity, id, image, price } = item;
+  const { name, quantity: initialQuantity, id, image, price } = item;
   console.log(id);
+  const [quantity, setQuantity] = useState(initialQuantity);
+
+  const handleUpdateQuantity = async (newQuantity: number) => {
+    if (newQuantity < 1) return;
+    await updateCartItemQuantity(id, newQuantity);
+    setQuantity(newQuantity);
+  };
 
   return (
     <>
-      <div>{item.name}</div>
+      <div>{name}</div>
       <div className="flex items-center justify-between border p-4 rounded-md">
         <Image
           src={image || "/placeholder.png"}
@@ -36,13 +44,17 @@ export default function CartItem({ item }: CartItemProps) {
       </div>
       <div className="flex items-center gap-4">
         <button
+          onClick={() => handleUpdateQuantity(quantity - 1)} // Decrease quantity
           disabled={quantity <= 1}
           className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
         >
           -
         </button>
         <span>{quantity}</span>
-        <button className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">
+        <button
+          onClick={() => handleUpdateQuantity(quantity + 1)} // Increase quantity
+          className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
+        >
           +
         </button>
         <button className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600">
