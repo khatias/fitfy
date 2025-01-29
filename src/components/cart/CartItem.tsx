@@ -53,7 +53,7 @@ export default function CartItem({ item }: CartItemProps) {
             />
             <div>
               <h2 className="font-bold">{name}</h2>
-              <p className="text-sm text-gray-500">${price.toFixed(2)}</p>
+              <p className="text-sm text-gray-500">${price/100}</p>
             </div>
           </div>
           <div className="flex items-center gap-4 mt-2">
