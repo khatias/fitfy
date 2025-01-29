@@ -42,6 +42,7 @@ export default function CheckoutFormCart({
             id: product.id,
             price: product.stripe_price_id,
             quantity: product.quantity,
+            product_id:product.product_id
           }))
         )
       );

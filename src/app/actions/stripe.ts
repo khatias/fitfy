@@ -83,7 +83,8 @@ async function handleCartPurchase(
     const parsedLineItems = JSON.parse(lineItemsRaw as string) as {
       price: string;
       quantity: number;
-      id: number;
+      id: string; 
+      product_id:number;
     }[];
 
     lineItems = parsedLineItems.map((item) => ({
@@ -91,7 +92,7 @@ async function handleCartPurchase(
       quantity: item.quantity,
     }));
 
-    productIds = parsedLineItems.map((item) => item.id);
+    productIds = parsedLineItems.map((item) => item.product_id); 
   } catch {
     throw new Error("Invalid line items format. Must be a valid JSON string.");
   }
@@ -110,7 +111,7 @@ async function handleCartPurchase(
     success_url: successUrl,
     cancel_url: cancelUrl,
     ui_mode: uiMode,
-    metadata: { product_ids: productIds.join(",") },
+    metadata: { product_ids: productIds.join(",") }, 
   });
 
   return { client_secret: checkoutSession.client_secret, url: checkoutSession.url };
