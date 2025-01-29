@@ -70,6 +70,8 @@ export const addToCart = async (product: ProductType): Promise<string> => {
         stripe_product_id: product.stripe_product_id,
         stripe_price_id: product.stripe_price_id,
         image: product.primary_image,
+        price:product.price,
+        name_ka:product.name_ka
       });
 
       if (insertError) {
