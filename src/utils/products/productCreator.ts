@@ -42,6 +42,7 @@ console.log(formData)
       unit_amount: price,
       currency: "usd",
     });
+    console.log(stripePrice)
 
     const { data, error } = await supabase
       .from("products")
