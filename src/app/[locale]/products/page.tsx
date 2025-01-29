@@ -2,6 +2,7 @@ import React from "react";
 import { createClient } from "@/utils/supabase/server";
 import ProductCard from "@/components/products/ProductCard";
 import { ProductType } from "@/types/product";
+import { addToCart } from "@/utils/cart/AddToCart";
 
 export default async function Products() {
   const supabase = await createClient();
@@ -32,7 +33,7 @@ export default async function Products() {
     <div className="container mx-auto py-8 2xl:px-20 pt-10">
       <div className="products-container grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {data?.map((product: ProductType) => (
-          <ProductCard key={product.id} product={product} />
+          <ProductCard key={product.id} product={product}  addToCart={addToCart} />
         ))}
       </div>
     </div>

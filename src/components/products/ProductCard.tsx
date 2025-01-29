@@ -6,9 +6,10 @@ import { usePathname } from "next/navigation";
 
 interface ProductCardProps {
   product: ProductType;
+  addToCart: (product: ProductType) => Promise<string>;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product, addToCart  }) => {
   const pathname = usePathname();
   const currentLocale = pathname.split("/")[1];
 
@@ -20,7 +21,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       return false;
     }
   };
-  
+  const handleAddToCart = async () => {
+    const message = await addToCart(product);
+    console.log(message)
+  };
+
 
   return (
     <div className="border   p-4 flex flex-col max-w-xs bg-white">
@@ -57,7 +62,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <p className="mt-2 text-lg font-bold text-gray-800">₾{product.price}</p>
       </div>
       <div className="mt-4 w-full">
-        <button className="w-full bg-black text-white py-2 rounded-md hover:bg-slate-800 transition duration-200">
+      <button
+          onClick={handleAddToCart}
+          className="flex-1 py-2 bg-black text-white rounded-full border-2 border-transparent hover:bg-white hover:text-black hover:border-black dark:hover:bg-gray-600 dark:hover:text-white dark:hover:border-gray-600 transition duration-200"
+        >
           Add to Cart
         </button>
       </div>
