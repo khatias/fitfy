@@ -47,4 +47,5 @@ interface ProductType {
   product_color?: ProductColor | null;
   primary_image?: string 
   images?: string[];
+  brand?:string
 }

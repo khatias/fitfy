@@ -9,19 +9,17 @@ export default async function Products() {
   const { data, error } = await supabase.from("products").select(`
       *,
       product_category:product_category_id (
-        category_name
-      ),
+         category_ka, category_en, product_category_id
+        ),
         product_condition:product_condition_id (
-        condition_ka, condition_en
-      )
-        ,
+          condition_ka, condition_en, product_condition_id
+        ),
         product_material:product_material_id (
-       material_ka, material_en
-      )
-          ,
+          material_ka, material_en, product_material_id
+        ),
         product_color:product_color_id (
-       color_name
-      )
+          color_en, color_ka,  product_color_id
+        )
     `);
 
   if (error) {

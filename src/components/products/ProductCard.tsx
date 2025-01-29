@@ -20,6 +20,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       return false;
     }
   };
+  
 
   return (
     <div className="border   p-4 flex flex-col max-w-xs bg-white">
