@@ -54,3 +54,32 @@ export async function fetchColors() {
     return data; 
   }
 }
+
+export async function getCartData (){
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
+
+  if (userError || !user) {
+    return (userError)
+  }
+
+
+  const { data: cart, error: cartError } = await supabase
+    .from("cart")
+    .select(
+      "id, cart_item (id, quantity, product_id, name, image, price, stripe_price_id)"
+    )
+    .eq("user_id", user.id)
+    .single();
+
+  if (cartError || !cart) {
+    return (cartError);
+  }
+
+ return cart
+
+}
