@@ -5,7 +5,7 @@ import { getMyProduct } from "@/utils/fetchDatas/fetchProductData";
 import { ProductType } from "@/types/product";
 import Image from "next/image";
 import DeleteProduct from "@/components/buttons/DeleteProductButton";
-
+import { Link } from "@/i18n/routing";
 export default function MyProducts() {
   const [myProducts, setMyProducts] = useState<ProductType[]>([]);
 
@@ -57,6 +57,11 @@ export default function MyProducts() {
               </p>
 
               <DeleteProduct id={product.id} onDelete={handleProductDelete} />
+              <Link href={`/my-products/${product.id}`}>
+                <button className="py-2 px-4 bg-green-600 text-white rounded-md mt-2">
+                  Edit Product
+                </button>
+              </Link>
             </div>
           ))}
         </div>

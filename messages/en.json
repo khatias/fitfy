@@ -12,7 +12,7 @@
     "previous":"previous",
     "submit": "submit"
   },
-  "GeneralStep": {
+  "ProductForm": {
     "question": "What type of product are you selling?",
     "name": "Product Name",
     "price": "Product Price",
@@ -21,14 +21,10 @@
     "description": "Product Description",
     "menswear": "Men's Clothing",
     "womenswear": "Women's Clothing",
-    "nameplacholder": "Enter the product name",
+    "nameplaceholder": "Enter the product name",
     "priceplacholder": "Enter the price",
     "brandplacholder": "Enter the brand name",
-    "descriptionplacholder": "Enter a brief description of the product"
-
-  },
-
-  "ProductDetailsStep": {
+    "descriptionplacholder": "Enter a brief description of the product",
     "category": "Category",
     "selectcategory": "Select a category",
     "material": "Material",
@@ -39,9 +35,7 @@
     "selectcolor": "Select color",
     "vintage": "Vintage",
     "size": "Size",
-    "sizeplaceholder": "Enter product size"
-  },
-  "ImagesStep": {
+    "sizeplaceholder": "Enter product size",
     "uploadImages": "Upload additional images"
   },
   "FormErrors": {

@@ -1,6 +1,6 @@
 "use server";
 import { createClient } from "../supabase/server";
-
+import { ProductType } from "@/types/product";
 export async function fetchCategories() {
   const supabase = await createClient();
   const { data, error } = await supabase.from("product_category").select("*");
@@ -116,3 +116,73 @@ export async function getMyProduct() {
   }
   return product;
 }
+
+export const getMyProductById = async (id: number) => {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("products")
+    .select(
+      `
+      *,
+      product_category:product_category_id (
+       category_ka, category_en, product_category_id
+      ),
+      product_condition:product_condition_id (
+        condition_ka, condition_en, product_condition_id
+      ),
+      product_material:product_material_id (
+        material_ka, material_en, product_material_id
+      ),
+      product_color:product_color_id (
+        color_en, color_ka,  product_color_id
+      )
+    `
+    )
+    .eq("id", id)
+    .single();
+  if (error) {
+    console.error("Error fetching product:", error);
+    return null;
+  }
+  return data;
+};
+export const updateProduct = async (product: ProductType) => {
+  const supabase = await createClient();
+
+  // Logging for debugging
+  console.log('Updating product:', product);
+
+  const { error } = await supabase
+    .from("products")
+    .update({
+      name: product.name,
+      name_ka: product.name_ka,
+      price: product.price,
+      description_en: product.description_en,
+      description_ka: product.description_ka,
+      primary_image: product.primary_image,
+      product_gender_id: product.product_gender_id,
+      product_category_id: product.product_category_id, 
+      product_material_id: product.product_material_id, 
+      product_color_id: product.product_color_id, 
+      product_condition_id: product.product_condition_id, 
+    })
+    .eq("id", product.id);
+
+  if (error) {
+    console.error("Error updating product:", error);
+    return null;
+  }
+
+  // Re-fetch product after update to check if the category was updated
+  const updatedProduct = await getMyProductById(product.id);
+
+  if (updatedProduct) {
+    console.log('Updated product successfully:', updatedProduct);
+  } else {
+    console.log('Failed to fetch updated product');
+  }
+
+  return product;
+};
+
