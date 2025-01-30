@@ -60,7 +60,7 @@ export default async function Orders() {
                 </div>
               </div>
               <Link
-                href={`/order-details/${order.id}`}
+                href={`/orders/${order.id}`}
                 className="inline-block text-gray-600 dark:text-gray-400 mt-4 py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-300"
               >
                 <FaCheckCircle className="inline-block mr-2" size={16} />
