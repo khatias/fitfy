@@ -23,10 +23,9 @@ export async function fetchConditions() {
     return [];
   } else {
     console.log("Conditions:", data);
-    return data; 
+    return data;
   }
 }
-
 
 export async function fetchMaterials() {
   const supabase = await createClient();
@@ -37,10 +36,9 @@ export async function fetchMaterials() {
     return [];
   } else {
     console.log("Materials:", data);
-    return data; 
+    return data;
   }
 }
-
 
 export async function fetchColors() {
   const supabase = await createClient();
@@ -51,11 +49,11 @@ export async function fetchColors() {
     return [];
   } else {
     console.log("colors:", data);
-    return data; 
+    return data;
   }
 }
 
-export async function getCartData (){
+export async function getCartData() {
   const supabase = await createClient();
 
   const {
@@ -64,9 +62,8 @@ export async function getCartData (){
   } = await supabase.auth.getUser();
 
   if (userError || !user) {
-    return (userError)
+    return userError;
   }
-
 
   const { data: cart, error: cartError } = await supabase
     .from("cart")
@@ -77,9 +74,45 @@ export async function getCartData (){
     .single();
 
   if (cartError || !cart) {
-    return (cartError);
+    return cartError;
   }
+  return cart;
+}
 
- return cart
+export async function getMyProduct() {
+  const supabase = await createClient();
 
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
+
+  if (userError || !user) {
+    return userError;
+  }
+  const { data: product, error } = await supabase
+    .from("products")
+    .select(
+      `
+      *,
+      product_category:product_category_id (
+       category_ka, category_en, product_category_id
+      ),
+      product_condition:product_condition_id (
+        condition_ka, condition_en, product_condition_id
+      ),
+      product_material:product_material_id (
+        material_ka, material_en, product_material_id
+      ),
+      product_color:product_color_id (
+        color_en, color_ka,  product_color_id
+      )
+    `
+    )
+    .eq("user_id", user.id);
+
+  if (error) {
+    return error;
+  }
+  return product;
 }
