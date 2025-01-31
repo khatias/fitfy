@@ -1,18 +1,39 @@
-import React from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 import { PlusIcon } from "@heroicons/react/20/solid";
 import { Link } from "@/i18n/routing";
+import { useLocale } from "next-intl";
+
 function HeaderTopMobile() {
+  const [session, setSession] = useState<boolean | null>(null);
+  const locale = useLocale();
+
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      try {
+        const response = await fetch(`/${locale}/api/status`);
+        const data = await response.json();
+        setSession(data.authenticated);
+      } catch (error) {
+        console.error("Error checking auth status:", error);
+        setSession(false);
+      }
+    };
+
+    checkAuthStatus();
+  }, [locale]);
+
   return (
     <div className="flex w-full justify-between px-6">
       <div className="flex">
-     
         <Link href="/">logo</Link>
       </div>
 
-      <div className="buttons flex  justify-center items-center gap-1">
+      <div className="buttons flex justify-center items-center gap-1">
         <Link className="p-1" href="/create-product">
-          <PlusIcon className="h-7 " />
+          <PlusIcon className="h-7" />
         </Link>
+
         <Link href="/cart" className="p-1">
           <svg
             aria-hidden="true"
@@ -30,44 +51,51 @@ function HeaderTopMobile() {
             ></path>
           </svg>
         </Link>
-        {/* <button className="p-1">
-          <svg
-            aria-hidden="true"
-            focusable="false"
-            viewBox="0 0 24 24"
-            role="img"
-            width="24px"
-            height="24px"
-            fill="none"
-          >
-            <path
-              stroke="currentColor"
-              strokeWidth="1.5"
-              d="M13.962 16.296a6.716 6.716 0 01-3.462.954 6.728 6.728 0 01-4.773-1.977A6.728 6.728 0 013.75 10.5c0-1.864.755-3.551 1.977-4.773A6.728 6.728 0 0110.5 3.75c1.864 0 3.551.755 4.773 1.977A6.728 6.728 0 0117.25 10.5a6.726 6.726 0 01-.921 3.407c-.517.882-.434 1.988.289 2.711l3.853 3.853"
-            ></path>
-          </svg>
-        </button> */}
+
+        {session === null ? (
+          <div className="flex justify-center items-center">
+            <div className="w-5 h-5 border-2 border-gray-300 border-t-red-500 rounded-full animate-spin"></div>
+          </div>
+        ) : session ? (
+          <Link href="/profile" className="p-1">
+            <svg
+              aria-hidden="true"
+              focusable="false"
+              viewBox="0 0 24 24"
+              role="img"
+              width="24px"
+              height="24px"
+              fill="none"
+            >
+              <path
+                stroke="currentColor"
+                strokeWidth="1.5"
+                d="M3.75 21v-3a3.75 3.75 0 013.75-3.75h9A3.75 3.75 0 0120.25 18v3M12 3.75a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5z"
+              ></path>
+            </svg>
+          </Link>
+        ) : (
+          <Link href="/login" className="p-1">
+            <svg
+              aria-hidden="true"
+              focusable="false"
+              viewBox="0 0 24 24"
+              role="img"
+              width="24px"
+              height="24px"
+              fill="none"
+            >
+              <path
+                stroke="currentColor"
+                strokeWidth="1.5"
+                d="M3.75 21v-3a3.75 3.75 0 013.75-3.75h9A3.75 3.75 0 0120.25 18v3M12 3.75a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5z"
+              ></path>
+            </svg>
+          </Link>
+        )}
 
         <button className="p-1">
           <svg
-            aria-hidden="true"
-            focusable="false"
-            viewBox="0 0 24 24"
-            role="img"
-            width="24px"
-            height="24px"
-            fill="none"
-          >
-            <path
-              stroke="currentColor"
-              strokeWidth="1.5"
-              d="M3.75 21v-3a3.75 3.75 0 013.75-3.75h9A3.75 3.75 0 0120.25 18v3M12 3.75a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5z"
-            ></path>
-          </svg>
-        </button>
-        <button className="p-1">
-          <svg
-            className=""
             aria-hidden="true"
             focusable="false"
             viewBox="0 0 24 24"
