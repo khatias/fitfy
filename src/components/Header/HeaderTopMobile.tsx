@@ -5,7 +5,7 @@ function HeaderTopMobile() {
   return (
     <div className="flex w-full justify-between px-6">
       <div className="flex">
-        {" "}
+     
         <Link href="/">logo</Link>
       </div>
 
