@@ -38,6 +38,7 @@ interface ProductType {
   material_ka: string;
   vintage?: boolean;
   product_category_id?: number;
+  product_gender_id?: number;
   product_category?: ProductCategory | null;
   product_condition_id?: number;
   product_condition?: ProductCondition | null;
@@ -46,6 +47,8 @@ interface ProductType {
   product_color_id?: number;
   product_color?: ProductColor | null;
   primary_image?: string 
+  description_ka?:string
+  description_en?:string
   images?: string[];
   brand?:string
 }

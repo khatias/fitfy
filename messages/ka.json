@@ -12,7 +12,7 @@
     "previous": "წინა",
     "submit": "დადასტურება"
   },
-  "GeneralStep": {
+  "ProductForm": {
     "question": "რა ტიპის პროდუქტი ყიდით?",
     "name": "პროდუქტის სახელი",
     "price": "პროდუქტის ფასი",
@@ -21,12 +21,10 @@
     "description": "პროდუქტის აღწერა",
     "menswear": "მამაკაცის ტანსაცმელი",
     "womenswear": "ქალის ტანსაცმელი",
-    "nameplacholder": "შეიყვანეთ პროდუქტის სახელი",
+    "nameplaceholder": "შეიყვანეთ პროდუქტის სახელი",
     "priceplacholder": "შეიყვანეთ ფასი",
     "brandplacholder": "შეიყვანეთ ბრენდის სახელი",
-    "descriptionplacholder": "შეიყვანეთ მოკლე აღწერა პროდუქტის შესახებ"
-  },
-  "ProductDetailsStep": {
+    "descriptionplacholder": "შეიყვანეთ მოკლე აღწერა პროდუქტის შესახებ",
     "category": "კატეგორია",
     "selectcategory": "აირჩიე კატეგორია",
     "material": "ქსოვილი",
@@ -37,9 +35,7 @@
     "selectcolor": " აირჩიე ფერი",
     "vintage": " ვინტაჟურია",
     "size": "ზომა",
-  "sizeplaceholder":"შეიყვანეთ პროდუქტის ზომა"
-  },
-  "ImagesStep":{
+  "sizeplaceholder":"შეიყვანეთ პროდუქტის ზომა",
     "uploadImages": "ატვირთე დამატებითი ფოტოები"
   },
   "FormErrors":{
