@@ -163,9 +163,9 @@ export const updateProduct = async (product: ProductType) => {
       primary_image: product.primary_image,
       product_gender_id: product.product_gender_id,
       product_category_id: product.product_category_id, 
-      product_material_id: product.product_material_id, 
-      product_color_id: product.product_color_id, 
-      product_condition_id: product.product_condition_id, 
+      // product_material_id: product.product_material_id, 
+      // product_color_id: product.product_color_id, 
+      // product_condition_id: product.product_condition_id, 
     })
     .eq("id", product.id);
 
