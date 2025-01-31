@@ -31,7 +31,7 @@ function HeaderTopMobile() {
   }, [locale]);
 
   return (
-    <div className="flex w-full justify-between px-6 lg:m-auto max-w-[1440px] lg:py-2 border-b-[1px]">
+    <div className="flex w-full justify-between px-6 lg:m-auto max-w-[1440px] py-2 border-b-[1px]">
       <div className="flex">{/* <Link href="/">logo</Link> */}</div>
       <div className="h-8">
         <svg
