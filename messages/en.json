@@ -3,6 +3,20 @@
     "title": "Welcome to Our Store!",
     "about": "Learn more about us"
   },
+  "Header": {
+    "headerBanner": "First order? Get 10% off your purchase with us!",
+    "products": "products",
+    "aboutUs": "about us",
+    "contact": "contact",
+    "privacyPolicy": "privacy policy",
+     "blog": "blog",
+     "sellProduct": "Sell you product",
+     "myProducts": "my products",
+     "logOut": "log out",
+     "home": "home",
+     "categories": "categories",
+     "profile" :"profile"
+  },
   "createProductForm": {
     "title": "Sell an Item",
     "general": "general info",

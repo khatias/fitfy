@@ -3,8 +3,22 @@
     "title": "მოგესალმებით ჩვენს მაღაზიაში!",
     "about": "გაიგეთ მეტი ჩვენ შესახებ"
   },
-  "createProductForm":{
-    "title":"გაყიდე პროდუქტი",
+  "Header": {
+    "headerBanner": "პირველი შეკვეთაა? ისარგებლეთ 10%-იანი ფასდაკლებით!",
+    "products": "პროდუქტები",
+    "aboutUs": "ჩვენს შესახებ",
+    "contact": "კონტაქტი",
+    "privacyPolicy": "კონფედენციალურიბის პოლიტიკა",
+    "blog": "ბლოგი",
+    "sellProduct": "გაყიდე პროდუქტი",
+    "myProducts": "ჩემი პროდუქტები",
+    "logOut": "გასვლა",
+    "home": "მთავარი",
+    "categories": "კატეგორიები",
+    "profile":"პროფილი"
+  },
+  "createProductForm": {
+    "title": "გაყიდე პროდუქტი",
     "general": "ზოგადი ინფორმაცია",
     "details": "პროდუქტის დეტალები",
     "images": "სურათები",
@@ -35,14 +49,14 @@
     "selectcolor": " აირჩიე ფერი",
     "vintage": " ვინტაჟურია",
     "size": "ზომა",
-  "sizeplaceholder":"შეიყვანეთ პროდუქტის ზომა",
+    "sizeplaceholder": "შეიყვანეთ პროდუქტის ზომა",
     "uploadImages": "ატვირთე დამატებითი ფოტოები"
   },
-  "FormErrors":{
+  "FormErrors": {
     "required": "ეს ველი სავალდებულოა.",
     "priceError": "ფასი უნდა იყოს დადებითი რიცხვი.",
     "imageError": "გთხოვთ, ატვირთოთ სურათი.",
-    "pricenotError":"ფასი არ არსებობს",
+    "pricenotError": "ფასი არ არსებობს",
     "nameError": "სახელი არ არსებობს",
     "brandError": "ბრენდი არ არსებობს",
     "descriptionError": "აღწერა არ არსებობს",
