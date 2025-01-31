@@ -9,7 +9,13 @@
     "aboutUs": "ჩვენს შესახებ",
     "contact": "კონტაქტი",
     "privacyPolicy": "კონფედენციალურიბის პოლიტიკა",
-      "blog": "ბლოგი"
+      "blog": "ბლოგი",
+      "sellProduct": "გაყიდე პროდუქტი",
+      "myProducts": "ჩემი პროდუქტები",
+          "logOut": "გასვლა",
+          "home": "მთავარი",
+           "categories": "კატეგორიები"
+      
   },
   "createProductForm":{
     "title":"გაყიდე პროდუქტი",

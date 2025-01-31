@@ -5,6 +5,7 @@ import { Link } from "@/i18n/routing";
 import { useLocale } from "next-intl";
 import SideNavigation from "./SideNavigation";
 
+
 function HeaderTopMobile() {
   const [session, setSession] = useState<boolean | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -178,7 +179,7 @@ function HeaderTopMobile() {
           </svg>
         </button>
       </div>
-      <SideNavigation isOpen={isDrawerOpen} onClose={handleDrawerToggle} />
+      <SideNavigation isOpen={isDrawerOpen} onClose={handleDrawerToggle} session={session} />
     </div>
   );
 }

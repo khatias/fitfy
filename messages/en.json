@@ -9,7 +9,12 @@
     "aboutUs": "about us",
     "contact": "contact",
     "privacyPolicy": "privacy policy",
-     "blog": "blog"
+     "blog": "blog",
+     "sellProduct": "Sell you product",
+     "myProducts": "my products",
+     "logOut": "log out",
+     "home": "home",
+     "categories": "categories"
   },
   "createProductForm": {
     "title": "Sell an Item",
