@@ -14,7 +14,8 @@
      "myProducts": "my products",
      "logOut": "log out",
      "home": "home",
-     "categories": "categories"
+     "categories": "categories",
+     "profile" :"profile"
   },
   "createProductForm": {
     "title": "Sell an Item",

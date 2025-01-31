@@ -4,12 +4,21 @@ import { PlusIcon } from "@heroicons/react/20/solid";
 import { Link } from "@/i18n/routing";
 import { useLocale } from "next-intl";
 import SideNavigation from "./SideNavigation";
-
+import { useTranslations } from "next-intl";
+import { handleLogout } from "@/utils/auth/handleLogout";
+import { useProfile } from "@/utils/profile/getProfileCient";
 
 function HeaderTopMobile() {
   const [session, setSession] = useState<boolean | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+  const t = useTranslations("Header");
   const locale = useLocale();
+  const profile = useProfile();
+
+  const toggleProfileDropdown = () => {
+    setIsProfileDropdownOpen((prev) => !prev);
+  };
 
   const handleDrawerToggle = useCallback(() => {
     setIsDrawerOpen((prev) => !prev);
@@ -32,8 +41,7 @@ function HeaderTopMobile() {
 
   return (
     <div className="flex w-full justify-between px-6 lg:m-auto max-w-[1440px] py-2 border-b-[1px]">
-      <div className="flex">{/* <Link href="/">logo</Link> */}</div>
-      <div className="h-8">
+      {/* <div className="flex h-7">
         <svg
           className="pal-c-Icon pal-c-Icon--size-custom"
           aria-hidden="true"
@@ -95,7 +103,8 @@ function HeaderTopMobile() {
             d="M7.309,1.698c0.062,0,0.115,0.05,0.115,0.116c0,0.066-0.053,0.117-0.115,0.117 c-0.063,0-0.118-0.05-0.118-0.117C7.19,1.748,7.245,1.698,7.309,1.698z M7.309,1.913c0.053,0,0.095-0.043,0.095-0.1 c0-0.056-0.042-0.099-0.095-0.099c-0.056,0-0.096,0.043-0.096,0.099C7.213,1.87,7.253,1.913,7.309,1.913z M7.263,1.746h0.052 c0.032,0,0.048,0.013,0.048,0.039c0,0.024-0.016,0.035-0.036,0.037l0.039,0.06H7.343L7.307,1.823H7.283v0.059H7.263V1.746z M7.283,1.806h0.022c0.019,0,0.036-0.001,0.036-0.021c0-0.019-0.017-0.021-0.031-0.021H7.283V1.806z"
           ></path>
         </svg>
-      </div>
+      </div> */}
+      <div className="h-8"></div>
       <div className="buttons flex justify-center items-center gap-1">
         <Link className="p-1" href="/create-product">
           <PlusIcon className="h-7" />
@@ -124,41 +133,92 @@ function HeaderTopMobile() {
             <div className="w-5 h-5 border-2 border-gray-300 border-t-red-500 rounded-full animate-spin"></div>
           </div>
         ) : session ? (
-          <Link href="/profile" className="p-1">
-            <svg
-              aria-hidden="true"
-              focusable="false"
-              viewBox="0 0 24 24"
-              role="img"
-              width="24px"
-              height="24px"
-              fill="none"
+          <div className="relative">
+            <button
+              onClick={toggleProfileDropdown}
+              className="flex items-center justify-between w-full py-3 px-4 rounded-lg hover:bg-gray-100  dark:hover:bg-gray-800 transition duration-300 "
             >
-              <path
-                stroke="currentColor"
-                strokeWidth="1.5"
-                d="M3.75 21v-3a3.75 3.75 0 013.75-3.75h9A3.75 3.75 0 0120.25 18v3M12 3.75a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5z"
-              ></path>
-            </svg>
-          </Link>
+              <div className="flex items-center space-x-3">
+                <div className="flex flex-col items-start">
+                  <svg
+                    aria-hidden="true"
+                    focusable="false"
+                    viewBox="0 0 24 24"
+                    role="img"
+                    width="24px"
+                    height="24px"
+                    fill="none"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      d="M3.75 21v-3a3.75 3.75 0 013.75-3.75h9A3.75 3.75 0 0120.25 18v3M12 3.75a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5z"
+                    ></path>
+                  </svg>
+                </div>
+              </div>
+            </button>
+            {isProfileDropdownOpen && (
+              <div className="absolute right-0 mt-2 w-60 rounded-lg shadow-lg overflow-hidden bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700 ">
+                {profile?.firstName && ( // Conditionally render the name if it exists
+                  <div className="block px-4 py-3 text-customRed transition duration-200 font-medium text-xl border-b border-gray-200 dark:border-b-gray-700 ">
+                    {" "}
+                    {/* Slightly smaller name */}
+                    {profile.firstName}{" "}
+                    {/* No need for extra span if no icon */}
+                  </div>
+                )}
+                <Link
+                  href="/profile"
+                  className="block py-2 px-4 hover:bg-gray-50 transition duration-200 text-gray-800 font-medium dark:text-gray-300 dark:hover:bg-gray-700"
+                >
+                  <span className="inline-block mr-2">
+                    {/* Optional icon */}
+                  </span>
+                  {t("profile")}
+                </Link>
+                <Link
+                  href="/my-products"
+                  className="block py-2 px-4 hover:bg-gray-50 transition duration-200 text-gray-800 font-medium dark:text-gray-300 dark:hover:bg-gray-700"
+                >
+                  <span className="inline-block mr-2">
+                    {/* Optional icon */}
+                  </span>
+                  {t("myProducts")}
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="block py-2 px-4 hover:bg-gray-50 transition duration-200 text-gray-800 font-medium w-full text-left dark:text-gray-300 dark:hover:bg-gray-700"
+                >
+                  <span className="inline-block mr-2">
+                    {/* Optional icon */}
+                  </span>
+                  {t("logOut")}
+                </button>
+              </div>
+            )}
+          </div>
         ) : (
-          <Link href="/login" className="p-1">
-            <svg
-              aria-hidden="true"
-              focusable="false"
-              viewBox="0 0 24 24"
-              role="img"
-              width="24px"
-              height="24px"
-              fill="none"
+          <div className="absolute right-0 mt-2 w-48bg-black shadow-lg rounded-lg border border-gray-200 z-10">
+            <Link
+              href="/profile"
+              className="block py-2 px-4 hover:bg-gray-100 text-gray-800 font-medium transition duration-200"
             >
-              <path
-                stroke="currentColor"
-                strokeWidth="1.5"
-                d="M3.75 21v-3a3.75 3.75 0 013.75-3.75h9A3.75 3.75 0 0120.25 18v3M12 3.75a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5z"
-              ></path>
-            </svg>
-          </Link>
+              {t("profile")}
+            </Link>
+            <Link
+              href="/my-products"
+              className="block py-2 px-4  hover:bg-gray-100 text-gray-800 font-medium transition duration-200"
+            >
+              {t("myProducts")}
+            </Link>
+            <button
+              onClick={handleLogout}
+              className="block py-2 px-4 hover:bg-gray-100 text-gray-800 font-medium transition duration-200 w-full text-left"
+            >
+              {t("logOut")}
+            </button>
+          </div>
         )}
 
         <button onClick={handleDrawerToggle} className="p-1 lg:hidden">
@@ -179,7 +239,12 @@ function HeaderTopMobile() {
           </svg>
         </button>
       </div>
-      <SideNavigation isOpen={isDrawerOpen} onClose={handleDrawerToggle} session={session} />
+
+      <SideNavigation
+        isOpen={isDrawerOpen}
+        onClose={handleDrawerToggle}
+        session={session}
+      />
     </div>
   );
 }
