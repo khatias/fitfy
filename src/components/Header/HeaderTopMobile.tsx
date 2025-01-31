@@ -1,12 +1,18 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { PlusIcon } from "@heroicons/react/20/solid";
 import { Link } from "@/i18n/routing";
 import { useLocale } from "next-intl";
+import SideNavigation from "./SideNavigation";
 
 function HeaderTopMobile() {
   const [session, setSession] = useState<boolean | null>(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const locale = useLocale();
+
+  const handleDrawerToggle = useCallback(() => {
+    setIsDrawerOpen((prev) => !prev);
+  }, []);
 
   useEffect(() => {
     const checkAuthStatus = async () => {
@@ -94,7 +100,7 @@ function HeaderTopMobile() {
           </Link>
         )}
 
-        <button className="p-1">
+        <button onClick={handleDrawerToggle} className="p-1">
           <svg
             aria-hidden="true"
             focusable="false"
@@ -112,6 +118,7 @@ function HeaderTopMobile() {
           </svg>
         </button>
       </div>
+      <SideNavigation isOpen={isDrawerOpen} onClose={handleDrawerToggle} />
     </div>
   );
 }
