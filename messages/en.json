@@ -3,6 +3,9 @@
     "title": "Welcome to Our Store!",
     "about": "Learn more about us"
   },
+  "Header": {
+    "headerBanner": "First order? Get 10% off your purchase with us!"
+  },
   "createProductForm": {
     "title": "Sell an Item",
     "general": "general info",

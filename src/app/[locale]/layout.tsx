@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { Montserrat, Noto_Sans_Georgian } from "next/font/google";
 import { ThemeProvider } from "next-themes";
+import Header from "@/components/Header/Header";
+import Banner from "@/components/Header/Banner";
 import "../globals.css";
 
 interface LocaleLayoutProps {
@@ -39,6 +41,8 @@ export default async function LocaleLayout({
       >
         <NextIntlClientProvider messages={messages}>
           <ThemeProvider defaultTheme="system" enableSystem attribute="class">
+            <Banner/>
+            <Header/>
             {children}
           </ThemeProvider>
         </NextIntlClientProvider>
