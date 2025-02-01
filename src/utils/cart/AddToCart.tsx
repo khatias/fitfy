@@ -1,11 +1,11 @@
-import { createClient } from "../supabase/server";
+import { supabase } from "@/utils/supabase/supabaseClient";
 import { ProductType } from "@/types/product";
 
 export const addToCart = async (product: ProductType): Promise<string> => {
-  "use server";
+  // "use server";
 
   try {
-    const supabase = await createClient();
+    // const supabase = await createClient();
     const {
       data: { user },
       error: userError,

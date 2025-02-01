@@ -3,13 +3,14 @@ import React from "react";
 import Image from "next/image";
 import { ProductType } from "@/types/product";
 import { usePathname } from "next/navigation";
+import { addToCart } from "@/utils/cart/AddToCart";
 
 interface ProductCardProps {
   product: ProductType;
-  addToCart: (product: ProductType) => Promise<string>;
+
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, addToCart  }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const pathname = usePathname();
   const currentLocale = pathname.split("/")[1];
 
