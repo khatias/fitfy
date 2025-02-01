@@ -50,7 +50,7 @@ export default async function ProductDetailPage({
   }
 
   return (
-    <div className="p-4">
+    <div className="">
       <ProductDetails product={product as ProductType} />
     </div>
   );

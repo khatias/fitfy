@@ -51,10 +51,10 @@
     "size": "Size",
     "sizeplaceholder": "Enter product size",
     "uploadImages": "Upload additional images",
-    "sort": "სორტირება",
+    "sort": "sort",
     "lowtohigh": "low to high",
     "hightolow": "high to low",
-    "search:": "შეარცჰ როდუცტ"
+    "search": "search your product"
   },
   "FormErrors": {
     "required": "This field is required.",
