@@ -15,7 +15,7 @@
     "logOut": "გასვლა",
     "home": "მთავარი",
     "categories": "კატეგორიები",
-    "profile":"პროფილი"
+    "profile": "პროფილი"
   },
   "createProductForm": {
     "title": "გაყიდე პროდუქტი",
@@ -50,7 +50,11 @@
     "vintage": " ვინტაჟურია",
     "size": "ზომა",
     "sizeplaceholder": "შეიყვანეთ პროდუქტის ზომა",
-    "uploadImages": "ატვირთე დამატებითი ფოტოები"
+    "uploadImages": "ატვირთე დამატებითი ფოტოები",
+    "sort": "სორტირება",
+    "lowtohigh": "ფასი ზრდადობით",
+    "hightolow": "ფასი კლებადობით",
+    "search": "მოძებნე პროდუქტი"
   },
   "FormErrors": {
     "required": "ეს ველი სავალდებულოა.",
@@ -65,5 +69,8 @@
     "conditionError": "პარამეტრი არ არსებობს",
     "colorError": "ფერი არ არსებობს",
     "sizeError": "ზომა არ არსებობს"
+  },
+  "Products": {
+    "addtocart": "დაამატე კალათში"
   }
 }
