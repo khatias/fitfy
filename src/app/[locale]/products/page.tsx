@@ -6,14 +6,13 @@ import FilterComponent from "@/components/filter/FilterComponent";
 import useFetchProductsData from "@/hooks/useFetchProductsData";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+
 export default function Products() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  // Declare visibility state at the top
   const [isFilterVisible, setIsFilterVisible] = useState(false);
 
-  // Initialize filters from URL query parameters
   const [filter, setFilter] = useState(searchParams.get("filter") || "");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
@@ -30,7 +29,6 @@ export default function Products() {
     sortByPrice
   );
 
-  // Sync URL parameters with React state on initial render
   useEffect(() => {
     const categoriesFromUrl = searchParams.getAll("categories");
     const colorsFromUrl = searchParams.getAll("colors");
@@ -113,61 +111,50 @@ export default function Products() {
   }
 
   return (
-    <div className="container mx-auto py-8 2xl:px-20 pt-10">
-      <div>
-        <div>
-          <div className="relative">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
-              <MagnifyingGlassIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+    <div className="bg-gray-100 dark:bg-black">
+      <div className="lg:grid grid-cols-[1fr_4fr] max-w-[1440px] m-auto lg:pt-10 gap-8 ">
+        <div className="py-8 pt-10 lg:pt-0">
+          <div>
+            <div className="relative mb-4">
+              <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+                <MagnifyingGlassIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+              </div>
+              <input
+                type="text"
+                placeholder="Search products..."
+                value={filter}
+                onChange={handleFilterChange}
+                className="bg-customGray h-12 dark:bg-gray-800 transition-all duration-300 ease-in-out border border-gray-300 focus:ring-1 pl-12 pr-4 w-full text-sm dark:text-white placeholder-gray-500 dark:border-gray-700 dark:placeholder-gray-400"
+              />
             </div>
-            <input
-              type="text"
-              placeholder="Search products..."
-              value={filter}
-              onChange={handleFilterChange}
-              className="bg-customGray h-12 dark:bg-gray-800  transition-all duration-300 ease-in-out border border-gray-300 focus:ring-1 pl-12 pr-4 w-full text-sm dark:text-white placeholder-gray-500 dark:border-gray-700 dark:placeholder-gray-400"
-            />
           </div>
-        </div>
-      </div>
-      <div className="sortandfilterbox grid grid-cols-2">
-        <div>
-          <select
-            onChange={handleSortChange}
-            value={sortByPrice}
-            className="border rounded p-2 w-full h-14 uppercase font-medium text-center  -tracking-tighter dark:border-gray-700"
-          >
-            <option disabled value="">
-              Sort
-            </option>
-            <option value="lowToHigh"> Low to High</option>
-            <option value="highToLow"> High to Low</option>
-          </select>
-        </div>
-        <div>
-          <button
-            className="border w-full h-14 font-medium uppercase -tracking-tighter dark:border-gray-700"
-            onClick={toggleFilterVisibility}
-          >
-            Filter
-          </button>
-        </div>
-      </div>
 
-      {isFilterVisible && (
-        <div className="fixed top-0 left-0 right-0 bottom-0 bg-black/50 z-50 flex items-center justify-center">
-          <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md overflow-y-auto h-[90vh]">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-semibold text-gray-900">Filters</h2>
-              <button
-                onClick={toggleFilterVisibility}
-                className="text-gray-500 hover:text-gray-700"
+          <div className="sortandfilterbox grid grid-cols-2 lg:grid-cols-1 lg:mb-8">
+            <div>
+              <select
+                onChange={handleSortChange}
+                value={sortByPrice}
+                className="border rounded p-2 w-full h-14 uppercase font-medium text-center -tracking-tighter dark:border-gray-700 lg:text-left"
               >
-                <XMarkIcon className="h-6 w-6" />
+                <option disabled value="">
+                  Sort
+                </option>
+                <option value="lowToHigh">Low to High</option>
+                <option value="highToLow">High to Low</option>
+              </select>
+            </div>
+            <div>
+              <button
+                className="border w-full h-14 font-medium uppercase -tracking-tighter bg-white dark:border-gray-700 lg:hidden"
+                onClick={toggleFilterVisibility}
+              >
+                Filter
               </button>
             </div>
+          </div>
+
+          <div className="lg:block hidden">
             <div className="space-y-4">
-              {" "}
               <FilterComponent
                 label="Categories"
                 options={categories.map((category) => ({
@@ -208,28 +195,99 @@ export default function Products() {
                 )}
               />
             </div>
-            <div className="mt-6 flex justify-end ">
-              <button
-                className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 mr-2"
-                onClick={handleClearFilters}
-              >
-                Clearl
-              </button>
-              <button
-                className="px-6 py-2 bg-customRed text-white rounded-md hover:bg-blue-700"
-                onClick={toggleFilterVisibility}
-              >
-                Apply Filters
-              </button>
+          </div>
+
+          {/* Modal filter for small screens */}
+          {isFilterVisible && (
+            <div className="fixed top-0 left-0 right-0 bottom-0 bg-black/50 z-50 flex items-center justify-center">
+              <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md overflow-y-auto h-[90vh]">
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-2xl font-semibold text-gray-900">
+                    Filters
+                  </h2>
+                  <button
+                    onClick={toggleFilterVisibility}
+                    className="text-gray-500 hover:text-gray-700"
+                  >
+                    <XMarkIcon className="h-6 w-6" />
+                  </button>
+                </div>
+                <div className="space-y-4">
+                  <FilterComponent
+                    label="Categories"
+                    options={categories.map((category) => ({
+                      id: category.product_category_id,
+                      name: category.category_en || category.category_ka,
+                    }))}
+                    type="category"
+                    selectedValues={selectedCategories}
+                    onSelectionChange={handleSelectionChange(
+                      "categories",
+                      setSelectedCategories
+                    )}
+                  />
+                  <FilterComponent
+                    label="Colors"
+                    options={colors.map((color) => ({
+                      id: color.product_color_id,
+                      name: color.color_en || color.color_ka,
+                    }))}
+                    type="color"
+                    selectedValues={selectedColors}
+                    onSelectionChange={handleSelectionChange(
+                      "colors",
+                      setSelectedColors
+                    )}
+                  />
+                  <FilterComponent
+                    label="Materials"
+                    options={materials.map((material) => ({
+                      id: material.product_material_id,
+                      name: material.material_en || material.material_ka,
+                    }))}
+                    type="material"
+                    selectedValues={selectedMaterials}
+                    onSelectionChange={handleSelectionChange(
+                      "materials",
+                      setSelectedMaterials
+                    )}
+                  />
+                </div>
+                <div className="mt-6 flex justify-end">
+                  <button
+                    className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 mr-2"
+                    onClick={handleClearFilters}
+                  >
+                    Clear
+                  </button>
+                  <button
+                    className="px-6 py-2 bg-customRed text-white rounded-md hover:bg-blue-700"
+                    onClick={toggleFilterVisibility}
+                  >
+                    Apply Filters
+                  </button>
+                </div>
+              </div>
             </div>
+          )}
+          <button
+            onClick={handleClearFilters}
+            className="relative  py-3 mt-6 overflow-hidden font-medium text-gray-900 bg-transparent rounded-sm group hover:bg-white transition duration-300 ease-in-out hover:px-4"
+          >
+            <span className="absolute inset-0 w-0 h-0 transition-all duration-500 ease-out bg-white rounded-lg group-hover:w-full group-hover:h-full"></span>
+            <span className="relative text-gray-900 group-hover:text-black">
+              Clear Filter
+            </span>
+          </button>
+        </div>
+
+        <div className="lg:flex flex-col flex-1 lg:h-screen">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-2 px-6 lg:px-0">
+            {products.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
           </div>
         </div>
-      )}
-
-      <div className="p-4 products-container grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 bg-[#f5f6f8] dark:bg-black pt-10">
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
       </div>
     </div>
   );
