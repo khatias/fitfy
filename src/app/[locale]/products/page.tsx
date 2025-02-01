@@ -1,18 +1,22 @@
 "use client";
-import { useState } from "react";
-import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
 import ProductCard from "@/components/products/ProductCard";
 import FilterComponent from "@/components/filter/FilterComponent";
 import useFetchProductsData from "@/hooks/useFetchProductsData";
 
 export default function Products() {
-  const [filter, setFilter] = useState("");
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  // Initialize filters from URL query parameters
+  const [filter, setFilter] = useState(searchParams.get("filter") || "");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
   const [selectedMaterials, setSelectedMaterials] = useState<string[]>([]);
-  const [sortByPrice, setSortByPrice] = useState<string>("");
-
-  const pathname = usePathname();
+  const [sortByPrice, setSortByPrice] = useState(
+    searchParams.get("sortByPrice") || ""
+  );
 
   const { products, categories, colors, materials } = useFetchProductsData(
     filter,
@@ -22,17 +26,49 @@ export default function Products() {
     sortByPrice
   );
 
-  const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newFilter = event.target.value;
-    setFilter(newFilter);
+  // Sync URL parameters with React state on initial render
+  useEffect(() => {
+    // Parse categories, colors, materials from query params
+    const categoriesFromUrl = searchParams.getAll("categories");
+    const colorsFromUrl = searchParams.getAll("colors");
+    const materialsFromUrl = searchParams.getAll("materials");
+
+    // Update states with values from URL
+    setSelectedCategories(categoriesFromUrl || []);
+    setSelectedColors(colorsFromUrl || []);
+    setSelectedMaterials(materialsFromUrl || []);
+  }, [searchParams]); // Re-run whenever searchParams changes
+
+  // Update URL parameters and state when filters are changed
+  const updateURL = (key: string, value: string, add = true) => {
     const newParams = new URLSearchParams(window.location.search);
-    newParams.set("filter", newFilter);
+
+    if (key === "categories" || key === "colors" || key === "materials") {
+      if (add) {
+        newParams.append(key, value);
+      } else {
+        // Remove the value if unchecked
+        const values = newParams.getAll(key).filter((v) => v !== value);
+        newParams.delete(key);
+        values.forEach((v) => newParams.append(key, v));
+      }
+    } else {
+      newParams.set(key, value);
+    }
+
     window.history.replaceState(
       null,
       "",
       `${pathname}?${newParams.toString()}`
     );
   };
+
+  const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newFilter = event.target.value;
+    setFilter(newFilter);
+    updateURL("filter", newFilter);
+  };
+
   const handleSelectionChange = (
     type: string,
     setter: React.Dispatch<React.SetStateAction<string[]>>
@@ -42,56 +78,35 @@ export default function Products() {
       setter((prev) =>
         checked ? [...prev, value] : prev.filter((item) => item !== value)
       );
-
-      const newParams = new URLSearchParams(window.location.search);
-
-      if (type === "category") {
-        if (checked) {
-          newParams.append("categories", value);
-        } else {
-          newParams.delete("categories", value);
-        }
-      }
-
-      if (type === "color") {
-        if (checked) {
-          newParams.append("colors", value);
-        } else {
-          newParams.delete("colors", value);
-        }
-      }
-
-      if (type === "material") {
-        if (checked) {
-          newParams.append("materials", value);
-        } else {
-          newParams.delete("materials", value);
-        }
-      }
-
-      window.history.replaceState(
-        null,
-        "",
-        `${window.location.pathname}?${newParams.toString()}`
-      );
+      updateURL(type, value, checked);
     };
   };
-  // Handle sorting
+
   const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newSort = event.target.value;
     setSortByPrice(newSort);
-    const newParams = new URLSearchParams(window.location.search);
-    newParams.set("sortByPrice", newSort);
+    updateURL("sortByPrice", newSort);
+  };
+
+  if (!products || !categories || !colors || !materials) {
+    return <div>Loading...</div>;
+  }
+  const handleClearFilters = () => {
+    // Reset all filters to their default values
+    setFilter("");
+    setSelectedCategories([]);
+    setSelectedColors([]);
+    setSelectedMaterials([]);
+    setSortByPrice("");
+
+    // Remove all query parameters from the URL
+    const newParams = new URLSearchParams();
     window.history.replaceState(
       null,
       "",
       `${pathname}?${newParams.toString()}`
     );
   };
-
-  if (!products || !categories || !colors || !materials) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div className="container mx-auto py-8 2xl:px-20 pt-10">
@@ -126,8 +141,9 @@ export default function Products() {
         type="category"
         selectedValues={selectedCategories}
         onSelectionChange={(event) =>
-          handleSelectionChange("category", setSelectedCategories)(event)
+          handleSelectionChange("categories", setSelectedCategories)(event)
         }
+        // Ensure the checkbox is checked if selectedCategories contains the option
       />
 
       {/* Color filter */}
@@ -140,7 +156,7 @@ export default function Products() {
         type="color"
         selectedValues={selectedColors}
         onSelectionChange={(event) =>
-          handleSelectionChange("color", setSelectedColors)(event)
+          handleSelectionChange("colors", setSelectedColors)(event)
         }
       />
 
@@ -154,11 +170,16 @@ export default function Products() {
         type="material"
         selectedValues={selectedMaterials}
         onSelectionChange={(event) =>
-          handleSelectionChange("material", setSelectedMaterials)(event)
+          handleSelectionChange("materials", setSelectedMaterials)(event)
         }
       />
+      <button
+        onClick={handleClearFilters}
+        className="bg-red-500 text-white py-2 px-4 rounded mt-4"
+      >
+        Clear All Filters
+      </button>
 
-      {/* Product list */}
       <div className="products-container grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {products.map((product) => (
           <ProductCard key={product.id} product={product} />
