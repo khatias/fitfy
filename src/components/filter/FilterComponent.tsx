@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa"; // Importing icons for arrows
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 interface FilterComponentProps {
   label: string;
@@ -44,7 +44,7 @@ const FilterComponent: React.FC<FilterComponentProps> = ({
       ref={dropdownRef}
     >
       <label
-        className="text-lg font-medium text-gray-900 dark:text-gray-200 mb-3 cursor-pointer flex justify-between items-center uppercase -tracking-tighter"
+        className="text-[16px] pl-2 font-medium text-gray-900 dark:text-gray-200 mb-3 cursor-pointer flex justify-between items-center uppercase -tracking-tighter"
         onClick={toggleDropdown}
       >
         {label}
@@ -66,7 +66,7 @@ const FilterComponent: React.FC<FilterComponentProps> = ({
           isOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="space-y-2 mt-2">
+        <div className="space-y-2 mt-1">
           {options.map((option) => (
             <div key={option.id} className="flex items-center">
               <input

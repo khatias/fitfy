@@ -9,21 +9,21 @@
     "aboutUs": "about us",
     "contact": "contact",
     "privacyPolicy": "privacy policy",
-     "blog": "blog",
-     "sellProduct": "Sell you product",
-     "myProducts": "my products",
-     "logOut": "log out",
-     "home": "home",
-     "categories": "categories",
-     "profile" :"profile"
+    "blog": "blog",
+    "sellProduct": "Sell you product",
+    "myProducts": "my products",
+    "logOut": "log out",
+    "home": "home",
+    "categories": "categories",
+    "profile": "profile"
   },
   "createProductForm": {
     "title": "Sell an Item",
     "general": "general info",
-    "details":"product details",
-    "images" :"images",
-    "next":"next",
-    "previous":"previous",
+    "details": "product details",
+    "images": "images",
+    "next": "next",
+    "previous": "previous",
     "submit": "submit"
   },
   "ProductForm": {
@@ -50,12 +50,16 @@
     "vintage": "Vintage",
     "size": "Size",
     "sizeplaceholder": "Enter product size",
-    "uploadImages": "Upload additional images"
+    "uploadImages": "Upload additional images",
+    "sort": "სორტირება",
+    "lowtohigh": "low to high",
+    "hightolow": "high to low",
+    "search:": "შეარცჰ როდუცტ"
   },
   "FormErrors": {
     "required": "This field is required.",
     "priceError": "Price must be a positive number.",
-    "pricenotError":"Price is missing",
+    "pricenotError": "Price is missing",
     "imageError": "Please upload an image.",
     "nameError": "Name is missing",
     "brandError": "Brand is missing",
@@ -65,5 +69,8 @@
     "conditionError": "Condition is missing",
     "colorError": "Color is missing",
     "sizeError": "Size is missing"
+  },
+  "Products": {
+    "addtocart": "Add to Cart"
   }
 }

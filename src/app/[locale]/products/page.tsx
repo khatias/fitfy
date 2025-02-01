@@ -6,11 +6,11 @@ import FilterComponent from "@/components/filter/FilterComponent";
 import useFetchProductsData from "@/hooks/useFetchProductsData";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
-
+import { useTranslations } from "next-intl";
 export default function Products() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-
+  const t = useTranslations("ProductForm");
   const [isFilterVisible, setIsFilterVisible] = useState(false);
 
   const [filter, setFilter] = useState(searchParams.get("filter") || "");
@@ -20,7 +20,7 @@ export default function Products() {
   const [sortByPrice, setSortByPrice] = useState(
     searchParams.get("sortByPrice") || ""
   );
-
+  const currentLocale = pathname.split("/")[1];
   const { products, categories, colors, materials } = useFetchProductsData(
     filter,
     selectedCategories,
@@ -60,7 +60,9 @@ export default function Products() {
       `${pathname}?${newParams.toString()}`
     );
   };
-
+  const getLocalizedText = (enText: string, kaText: string = "") => {
+    return currentLocale === "en" ? enText : kaText;
+  };
   const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newFilter = event.target.value;
     setFilter(newFilter);
@@ -111,8 +113,8 @@ export default function Products() {
   }
 
   return (
-    <div className="bg-gray-100 dark:bg-black">
-      <div className="lg:grid grid-cols-[1fr_4fr] max-w-[1440px] m-auto lg:pt-10 gap-8 ">
+    <div className="bg-gray-100 dark:bg-black pb-20">
+      <div className="lg:grid grid-cols-[1fr_4fr] max-w-[1300px] m-auto lg:pt-10 gap-8 ">
         <div className="py-8 pt-10 lg:pt-0">
           <div>
             <div className="relative mb-4">
@@ -121,7 +123,7 @@ export default function Products() {
               </div>
               <input
                 type="text"
-                placeholder="Search products..."
+                placeholder={t("search")}
                 value={filter}
                 onChange={handleFilterChange}
                 className="bg-customGray h-12 dark:bg-gray-800 transition-all duration-300 ease-in-out border border-gray-300 focus:ring-1 pl-12 pr-4 w-full text-sm dark:text-white placeholder-gray-500 dark:border-gray-700 dark:placeholder-gray-400"
@@ -134,13 +136,13 @@ export default function Products() {
               <select
                 onChange={handleSortChange}
                 value={sortByPrice}
-                className="border rounded p-2 w-full h-14 uppercase font-medium text-center -tracking-tighter dark:border-gray-700 lg:text-left"
+                className="border rounded p-2 w-full h-14 uppercase text-[16px] font-medium text-center -tracking-tighter dark:border-gray-700 lg:text-left"
               >
                 <option disabled value="">
-                  Sort
+                  {t("sort")}
                 </option>
-                <option value="lowToHigh">Low to High</option>
-                <option value="highToLow">High to Low</option>
+                <option value="lowToHigh">{t("lowtohigh")}</option>
+                <option value="highToLow">{t("hightolow")}</option>
               </select>
             </div>
             <div>
@@ -156,10 +158,13 @@ export default function Products() {
           <div className="lg:block hidden">
             <div className="space-y-4">
               <FilterComponent
-                label="Categories"
+                label={t("category")}
                 options={categories.map((category) => ({
                   id: category.product_category_id,
-                  name: category.category_en || category.category_ka,
+                  name: getLocalizedText(
+                    category.category_en || "",
+                    category.category_ka || ""
+                  ),
                 }))}
                 type="category"
                 selectedValues={selectedCategories}
@@ -168,11 +173,15 @@ export default function Products() {
                   setSelectedCategories
                 )}
               />
+
               <FilterComponent
-                label="Colors"
+                label={t("color")}
                 options={colors.map((color) => ({
                   id: color.product_color_id,
-                  name: color.color_en || color.color_ka,
+                  name: getLocalizedText(
+                    color.color_en || "",
+                    color.color_ka || ""
+                  ),
                 }))}
                 type="color"
                 selectedValues={selectedColors}
@@ -182,10 +191,13 @@ export default function Products() {
                 )}
               />
               <FilterComponent
-                label="Materials"
+                label={t("material")}
                 options={materials.map((material) => ({
                   id: material.product_material_id,
-                  name: material.material_en || material.material_ka,
+                  name: getLocalizedText(
+                    material.material_en || "",
+                    material.material_ka || ""
+                  ),
                 }))}
                 type="material"
                 selectedValues={selectedMaterials}
@@ -199,7 +211,7 @@ export default function Products() {
 
           {/* Modal filter for small screens */}
           {isFilterVisible && (
-            <div className="fixed top-0 left-0 right-0 bottom-0 bg-black/50 z-50 flex items-center justify-center">
+            <div className="fixed top-0 left-0 right-0 bottom-0 bg-black/50 z-50 flex items-center justify-center ">
               <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md overflow-y-auto h-[90vh]">
                 <div className="flex justify-between items-center mb-6">
                   <h2 className="text-2xl font-semibold text-gray-900">
@@ -281,7 +293,7 @@ export default function Products() {
           </button>
         </div>
 
-        <div className="lg:flex flex-col flex-1 lg:h-screen">
+        <div className="lg:flex flex-col flex-1 ">
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-2 px-6 lg:px-0">
             {products.map((product) => (
               <ProductCard key={product.id} product={product} />
