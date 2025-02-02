@@ -11,7 +11,7 @@ import logo from "../../assets/logo.png";
 import Image from "next/image";
 
 function HeaderTopMobile() {
-  const [session, setSession] = useState<boolean | null>(null); // Initial session state set to null
+  const [session, setSession] = useState<boolean | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const t = useTranslations("Header");
@@ -33,7 +33,7 @@ function HeaderTopMobile() {
       profileDropdownRef.current &&
       !profileDropdownRef.current.contains(e.target as Node)
     ) {
-      setIsProfileDropdownOpen(false); // Close dropdown if clicked outside
+      setIsProfileDropdownOpen(false);
     }
   };
 
@@ -42,36 +42,34 @@ function HeaderTopMobile() {
       try {
         const response = await fetch(`/${locale}/api/status`);
         const data = await response.json();
-        setSession(data.authenticated); // Update session state based on the API response
+        setSession(data.authenticated);
       } catch (error) {
         console.error("Error checking auth status:", error);
-        setSession(false); // In case of an error, set session to false
+        setSession(false);
       }
     };
 
     checkAuthStatus();
 
-    // Adding event listener to close dropdown on click outside
     document.addEventListener("mousedown", closeDropdownIfClickedOutside);
 
-    // Cleanup the event listener on component unmount
     return () => {
       document.removeEventListener("mousedown", closeDropdownIfClickedOutside);
     };
   }, [locale]);
 
   const handleLogoutAndCloseDropdown = () => {
-    setIsProfileDropdownOpen(false); // Close the dropdown first
-    handleLogout(); // Perform logout action
-    setSession(false); // Explicitly set session to false after logout
+    setIsProfileDropdownOpen(false);
+    handleLogout();
+    setSession(false);
   };
 
   const closeDropdownAndNavigate = () => {
-    setIsProfileDropdownOpen(false); // Close the dropdown
+    setIsProfileDropdownOpen(false);
   };
 
   return (
-    <div className="flex w-full justify-between items-center px-6 lg:pr-0 py-2 max-h-[60px] max-w-[1300px] m-auto border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+    <div className="flex w-full justify-between items-center px-6 pr-0 py-2 max-h-[60px] max-w-[1300px] m-auto border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
       <div className="w-auto h-full">
         <Link href="/">
           <Image
