@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { PlusIcon } from "@heroicons/react/20/solid";
 import { Link } from "@/i18n/routing";
 import { useLocale } from "next-intl";
@@ -7,6 +7,8 @@ import SideNavigation from "./SideNavigation";
 import { useTranslations } from "next-intl";
 import { handleLogout } from "@/utils/auth/handleLogout";
 import { useProfile } from "@/utils/profile/getProfileCient";
+import logo from "../../assets/logo.png";
+import Image from "next/image";
 
 function HeaderTopMobile() {
   const [session, setSession] = useState<boolean | null>(null);
@@ -16,6 +18,8 @@ function HeaderTopMobile() {
   const locale = useLocale();
   const profile = useProfile();
 
+  const profileDropdownRef = useRef<HTMLDivElement | null>(null);
+
   const toggleProfileDropdown = () => {
     setIsProfileDropdownOpen((prev) => !prev);
   };
@@ -23,6 +27,15 @@ function HeaderTopMobile() {
   const handleDrawerToggle = useCallback(() => {
     setIsDrawerOpen((prev) => !prev);
   }, []);
+
+  const closeDropdownIfClickedOutside = (e: MouseEvent) => {
+    if (
+      profileDropdownRef.current &&
+      !profileDropdownRef.current.contains(e.target as Node)
+    ) {
+      setIsProfileDropdownOpen(false);
+    }
+  };
 
   useEffect(() => {
     const checkAuthStatus = async () => {
@@ -37,80 +50,78 @@ function HeaderTopMobile() {
     };
 
     checkAuthStatus();
+
+    document.addEventListener("mousedown", closeDropdownIfClickedOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", closeDropdownIfClickedOutside);
+    };
   }, [locale]);
 
+  const handleLogoutAndCloseDropdown = () => {
+    setIsProfileDropdownOpen(false);
+    handleLogout();
+    setSession(false);
+  };
+
+  const closeDropdownAndNavigate = () => {
+    setIsProfileDropdownOpen(false);
+  };
+
   return (
-    <div className="flex w-full justify-between px-6 lg:m-auto max-w-[1440px] py-2 border-b-[1px]">
-      {/* <div className="flex h-7">
-        <svg
-          className="pal-c-Icon pal-c-Icon--size-custom"
-          aria-hidden="true"
-          focusable="false"
-          role="img"
-          height="100%"
-          width="100%"
-          aria-labelledby="title-ultasitelogo"
-          viewBox="0.099 1.687 7.749 3.133"
-          xmlns="http://www.w3.org/2000/svg"
+    <div className="flex w-full justify-between items-center px-6 pr-0 py-2 max-h-[60px] max-w-[1300px] m-auto border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+      <div className="w-auto h-full">
+        <Link href="/">
+          <Image
+            src={logo.src}
+            alt="Product Logo"
+            width={150}
+            height={50}
+            quality={100}
+            priority
+            className="object-contain max-h-full"
+          />
+        </Link>
+      </div>
+      <ul className="hidden lg:flex lg:space-x-20">
+        <li>
+          <Link
+            href="/products"
+            className="font-medium hover:text-gray-600 dark:hover:text-white transition duration-300"
+          >
+            {t("products")}
+          </Link>
+        </li>
+        <li>
+          <Link
+            href="/contact"
+            className="font-medium hover:text-gray-600 dark:hover:text-white transition duration-300"
+          >
+            {t("contact")}
+          </Link>
+        </li>
+        <li>
+          <Link
+            href="/aboutus"
+            className="font-medium hover:text-gray-600 dark:hover:text-white transition duration-300"
+          >
+            {t("aboutUs")}
+          </Link>
+        </li>
+      </ul>
+
+      <div className="flex items-center gap-3 pr-3">
+        <Link
+          href="/create-product"
+          className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-200"
         >
-          <title id="title-ultasitelogo">Go to Ulta Beauty homepage</title>
-          <path
-            fill="#F37830"
-            d="M3.174,3.956c0-0.064-0.002-0.108-0.005-0.158c0.014,0,0.126,0,0.161,0c0.074,0,0.124,0.026,0.124,0.089 c0,0.062-0.062,0.089-0.1,0.094v0.001c0.037,0.001,0.11,0.026,0.11,0.096c0,0.082-0.07,0.114-0.143,0.114 c-0.033,0-0.139-0.001-0.153,0c0.003-0.051,0.005-0.094,0.005-0.158V3.956z M3.297,3.83c-0.018,0-0.021,0-0.03,0.002 c-0.001,0.028-0.003,0.06-0.003,0.08c0,0.021,0.001,0.039,0.001,0.058h0.028c0.035,0,0.07-0.024,0.07-0.072 C3.363,3.86,3.346,3.83,3.297,3.83z M3.292,4.002c-0.011,0-0.019,0-0.026,0c0,0.016-0.001,0.032-0.001,0.056 c0,0.035,0.001,0.08,0.001,0.1c0.011,0,0.021,0.001,0.034,0.001c0.036,0,0.067-0.027,0.067-0.078 C3.368,4.029,3.341,4.002,3.292,4.002z"
-          ></path>
-          <path
-            fill="#F37830"
-            d="M4.073,3.956c0-0.064-0.001-0.108-0.005-0.158c0.037,0,0.222,0.001,0.238,0 c-0.001,0.007-0.001,0.041,0,0.05C4.26,3.844,4.182,3.844,4.164,3.844c-0.003,0.042,0,0.08,0,0.121 c0.054-0.001,0.094-0.002,0.14-0.004c-0.002,0.013-0.002,0.037,0,0.049c-0.046-0.003-0.093-0.005-0.14-0.005 c0,0.024,0,0.049,0,0.073s0,0.044,0.001,0.066c0.046,0,0.094,0.003,0.141-0.003c-0.001,0.009-0.001,0.044,0,0.051 c-0.022,0-0.224-0.001-0.238,0c0.004-0.051,0.005-0.094,0.005-0.158V3.956z"
-          ></path>
-          <path
-            fill="#F37830"
-            d="M5.255,4.192c-0.021-0.001-0.09-0.001-0.106,0C5.135,4.154,5.121,4.114,5.105,4.076 c-0.026-0.001-0.121-0.001-0.142,0c-0.018,0.038-0.03,0.078-0.043,0.117c-0.009-0.001-0.047-0.001-0.059,0 c0.029-0.063,0.121-0.268,0.175-0.397c0.008,0,0.038,0,0.047,0C5.136,3.925,5.208,4.1,5.255,4.192z M5.092,4.042 C5.073,3.995,5.057,3.95,5.037,3.905c-0.021,0.045-0.04,0.09-0.059,0.137H5.092z"
-          ></path>
-          <path
-            fill="#F37830"
-            d="M5.741,4.05c0-0.062,0.002-0.093,0.002-0.134c0-0.061-0.002-0.099-0.003-0.118 C5.757,3.799,5.774,3.8,5.791,3.8c0.016,0,0.034-0.001,0.05-0.002c-0.008,0.074-0.009,0.134-0.009,0.2 c0,0.14,0.044,0.163,0.123,0.163c0.098,0,0.105-0.099,0.105-0.206c0-0.052-0.002-0.104-0.005-0.157 C6.066,3.799,6.077,3.8,6.087,3.8c0.011,0,0.021-0.001,0.03-0.002C6.113,3.831,6.11,3.913,6.11,4.013 C6.11,4.145,6.048,4.2,5.929,4.2C5.824,4.2,5.741,4.157,5.741,4.05z"
-          ></path>
-          <path
-            fill="#F37830"
-            d="M6.756,3.891c0-0.021,0.001-0.04-0.001-0.048c-0.023,0-0.075,0-0.112,0.004c0.002-0.008,0.002-0.041,0-0.05 c0.055,0.001,0.263,0.001,0.315,0c-0.002,0.009-0.002,0.042,0,0.05C6.925,3.844,6.871,3.844,6.847,3.844c0,0.008,0,0.026,0,0.047 v0.143c0,0.064,0.002,0.107,0.005,0.158c-0.014-0.001-0.087-0.001-0.101,0c0.004-0.051,0.005-0.094,0.005-0.158V3.891z"
-          ></path>
-          <path
-            fill="#F37830"
-            d="M7.696,3.969c0.033-0.043,0.066-0.115,0.093-0.171c0.01,0,0.048,0,0.059,0 C7.82,3.841,7.757,3.95,7.719,4.022c0,0.018-0.001,0.032-0.001,0.051c0,0.038,0.001,0.077,0.006,0.12 c-0.017-0.001-0.087-0.001-0.104,0c0.003-0.036,0.008-0.075,0.008-0.11c0-0.018,0-0.036-0.001-0.053 C7.583,3.953,7.513,3.83,7.494,3.798c0.019,0,0.092,0,0.109,0C7.632,3.854,7.679,3.943,7.696,3.969L7.696,3.969z"
-          ></path>
-          <path
-            fill="#F37830"
-            d="M1.621,1.915C1.612,2.129,1.612,2.4,1.612,2.643c0,0.45,0.006,0.551,0.09,0.662 c0.084,0.11,0.242,0.172,0.445,0.172c0.236,0,0.422-0.118,0.487-0.291c0.023-0.062,0.038-0.149,0.038-0.381 c0-0.368-0.003-0.737-0.026-1.104c0.041,0.006,0.224,0.006,0.268,0L2.904,1.835C2.89,2.078,2.881,2.66,2.875,2.945 C2.869,3.279,2.771,3.431,2.578,3.55C2.441,3.635,2.247,3.671,2.089,3.671c-0.349,0-0.768-0.107-0.832-0.545 C1.25,3.086,1.25,3.002,1.25,2.977V2.208c0-0.144-0.006-0.364-0.014-0.508c0.067,0.009,0.334,0.009,0.393,0L1.621,1.915z"
-          ></path>
-          <path
-            fill="#F37830"
-            d="M3.35,2.476c0-0.124,0-0.151-0.008-0.402C3.338,2.015,3.333,1.761,3.329,1.708 c0.074,0.014,0.333,0.011,0.405,0C3.714,2.133,3.705,2.487,3.705,2.92c0,0.197,0.006,0.38,0.009,0.534h0.053 c0.084,0,0.504,0,0.675-0.025c-0.01,0.031-0.011,0.171,0,0.208C4.293,3.632,4.043,3.621,3.886,3.621 c-0.187,0-0.344,0.005-0.557,0.017c0-0.044,0.021-0.697,0.021-0.768V2.476z"
-          ></path>
-          <path
-            fill="#F37830"
-            d="M5.255,3.252c0,0.214,0.011,0.306,0.021,0.385c-0.085-0.008-0.306-0.011-0.411,0 c0.013-0.213,0.028-0.43,0.028-0.644L4.891,2.208c0-0.104-0.003-0.202-0.007-0.312H4.739c-0.026,0-0.305,0.006-0.455,0.019 C4.293,1.883,4.3,1.725,4.291,1.691c0.23,0.014,0.547,0.014,0.772,0.014c0.241,0,0.501-0.005,0.779-0.019 C5.833,1.735,5.83,1.871,5.84,1.916C5.668,1.899,5.461,1.896,5.26,1.896C5.258,1.998,5.255,2.104,5.255,2.211V3.252z"
-          ></path>
-          <path
-            fill="#F37830"
-            d="M6.973,3.329L6.851,3.031c-0.125-0.005-0.604-0.005-0.719,0C6.038,3.247,5.946,3.479,5.899,3.639 c-0.038-0.005-0.229-0.005-0.271,0l0.337-0.723C6.259,2.283,6.428,1.918,6.496,1.7h0.189c0.14,0.372,0.312,0.765,0.418,1.001 c0.11,0.244,0.302,0.666,0.432,0.938c-0.043-0.002-0.388-0.002-0.44,0L6.973,3.329z M6.493,2.168L6.198,2.857 c0.103,0.003,0.2,0.008,0.301,0.008c0.058,0,0.146,0,0.268-0.008L6.493,2.168z"
-          ></path>
-          <path
-            fill="#F37830"
-            d="M0.818,1.787c-0.454,0.308-0.72,0.694-0.72,1.167c0,1.073,1.295,1.865,3.143,1.865 c0.827,0,1.519-0.214,2.031-0.478l-0.032,0C4.623,4.528,3.997,4.604,3.354,4.604c-1.857,0-3.135-0.872-3.137-1.677 C0.217,2.481,0.424,2.096,0.818,1.814V1.787z"
-          ></path>
-          <path
-            fill="#F37830"
-            d="M7.309,1.698c0.062,0,0.115,0.05,0.115,0.116c0,0.066-0.053,0.117-0.115,0.117 c-0.063,0-0.118-0.05-0.118-0.117C7.19,1.748,7.245,1.698,7.309,1.698z M7.309,1.913c0.053,0,0.095-0.043,0.095-0.1 c0-0.056-0.042-0.099-0.095-0.099c-0.056,0-0.096,0.043-0.096,0.099C7.213,1.87,7.253,1.913,7.309,1.913z M7.263,1.746h0.052 c0.032,0,0.048,0.013,0.048,0.039c0,0.024-0.016,0.035-0.036,0.037l0.039,0.06H7.343L7.307,1.823H7.283v0.059H7.263V1.746z M7.283,1.806h0.022c0.019,0,0.036-0.001,0.036-0.021c0-0.019-0.017-0.021-0.031-0.021H7.283V1.806z"
-          ></path>
-        </svg>
-      </div> */}
-      <div className="h-8"></div>
-      <div className="buttons flex justify-center items-center gap-1">
-        <Link className="p-1" href="/create-product">
-          <PlusIcon className="h-7" />
+          <PlusIcon className="hidden md:block h-6 text-gray-800 dark:text-gray-300" />
         </Link>
 
-        <Link href="/cart" className="p-1">
+        <Link
+          href="/cart"
+          className="hidden lg:block p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-200"
+        >
           <svg
             aria-hidden="true"
             focusable="false"
@@ -129,99 +140,95 @@ function HeaderTopMobile() {
         </Link>
 
         {session === null ? (
-          <div className="flex justify-center items-center">
-            <div className="w-5 h-5 border-2 border-gray-300 border-t-red-500 rounded-full animate-spin"></div>
+          <div className="flex items-center justify-center">
+            <div className="w-5 h-5 border-2 border-gray-300 border-t-customRed rounded-full animate-spin"></div>
           </div>
         ) : session ? (
           <div className="relative">
             <button
               onClick={toggleProfileDropdown}
-              className="flex items-center justify-between w-full py-3 px-4 rounded-lg hover:bg-gray-100  dark:hover:bg-gray-800 transition duration-300 "
+              className="hidden lg:flex items-center justify-between w-full py-2 px-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-200"
             >
-              <div className="flex items-center space-x-3">
-                <div className="flex flex-col items-start">
-                  <svg
-                    aria-hidden="true"
-                    focusable="false"
-                    viewBox="0 0 24 24"
-                    role="img"
-                    width="24px"
-                    height="24px"
-                    fill="none"
-                  >
-                    <path
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      d="M3.75 21v-3a3.75 3.75 0 013.75-3.75h9A3.75 3.75 0 0120.25 18v3M12 3.75a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5z"
-                    ></path>
-                  </svg>
-                </div>
+              <div className="flex items-center space-x-2">
+                <svg
+                  aria-hidden="true"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                  role="img"
+                  width="24px"
+                  height="24px"
+                  fill="none"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    d="M3.75 21v-3a3.75 3.75 0 013.75-3.75h9A3.75 3.75 0 0120.25 18v3M12 3.75a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5z"
+                  ></path>
+                </svg>
               </div>
             </button>
             {isProfileDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-60 rounded-lg shadow-lg overflow-hidden bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700 ">
-                {profile?.firstName && ( // Conditionally render the name if it exists
-                  <div className="block px-4 py-3 text-customRed transition duration-200 font-medium text-xl border-b border-gray-200 dark:border-b-gray-700 ">
-                    {" "}
-                    {/* Slightly smaller name */}
-                    {profile.firstName}{" "}
-                    {/* No need for extra span if no icon */}
+              <div
+                ref={profileDropdownRef}
+                className="hidden lg:block absolute right-0 mt-2 w-60 rounded-lg shadow-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700"
+              >
+                {profile?.firstName && (
+                  <div className="px-4 py-3 text-customRed font-medium text-xl border-b border-gray-200 dark:border-b-gray-700">
+                    {profile.firstName}
                   </div>
                 )}
                 <Link
                   href="/profile"
-                  className="block py-2 px-4 hover:bg-gray-50 transition duration-200 text-gray-800 font-medium dark:text-gray-300 dark:hover:bg-gray-700"
+                  className="block py-2 px-4 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-300 transition duration-200"
+                  onClick={() => closeDropdownAndNavigate()}
                 >
-                  <span className="inline-block mr-2">
-                    {/* Optional icon */}
-                  </span>
                   {t("profile")}
                 </Link>
                 <Link
                   href="/my-products"
-                  className="block py-2 px-4 hover:bg-gray-50 transition duration-200 text-gray-800 font-medium dark:text-gray-300 dark:hover:bg-gray-700"
+                  className="block py-2 px-4 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-300 transition duration-200"
+                  onClick={() => closeDropdownAndNavigate()}
                 >
-                  <span className="inline-block mr-2">
-                    {/* Optional icon */}
-                  </span>
                   {t("myProducts")}
                 </Link>
                 <button
-                  onClick={handleLogout}
-                  className="block py-2 px-4 hover:bg-gray-50 transition duration-200 text-gray-800 font-medium w-full text-left dark:text-gray-300 dark:hover:bg-gray-700"
+                  onClick={handleLogoutAndCloseDropdown}
+                  className="block py-2 px-4 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-300 transition duration-200 w-full text-left"
                 >
-                  <span className="inline-block mr-2">
-                    {/* Optional icon */}
-                  </span>
                   {t("logOut")}
                 </button>
               </div>
             )}
           </div>
         ) : (
-          <div className="absolute right-0 mt-2 w-48bg-black shadow-lg rounded-lg border border-gray-200 z-10">
-            <Link
-              href="/profile"
-              className="block py-2 px-4 hover:bg-gray-100 text-gray-800 font-medium transition duration-200"
-            >
-              {t("profile")}
-            </Link>
-            <Link
-              href="/my-products"
-              className="block py-2 px-4  hover:bg-gray-100 text-gray-800 font-medium transition duration-200"
-            >
-              {t("myProducts")}
-            </Link>
-            <button
-              onClick={handleLogout}
-              className="block py-2 px-4 hover:bg-gray-100 text-gray-800 font-medium transition duration-200 w-full text-left"
-            >
-              {t("logOut")}
-            </button>
-          </div>
+          <Link
+            href="/login"
+            className="hidden lg:flex items-center justify-between w-full py-2 px-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-200"
+          >
+            <div className="flex items-center space-x-2">
+              <svg
+                aria-hidden="true"
+                focusable="false"
+                viewBox="0 0 24 24"
+                role="img"
+                width="24px"
+                height="24px"
+                fill="none"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  d="M3.75 21v-3a3.75 3.75 0 013.75-3.75h9A3.75 3.75 0 0120.25 18v3M12 3.75a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5z"
+                ></path>
+              </svg>
+            </div>
+          </Link>
         )}
 
-        <button onClick={handleDrawerToggle} className="p-1 lg:hidden">
+        <button
+          onClick={handleDrawerToggle}
+          className="p-2 lg:hidden rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-200"
+        >
           <svg
             aria-hidden="true"
             focusable="false"
