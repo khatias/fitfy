@@ -9,12 +9,14 @@ import { handleGithubLogin } from "@/utils/auth/handleGithubLogin";
 import { sendResetPassword } from "@/utils/auth/sendResetPassword";
 import ResetPasswordModal from "@/components/modals/RessetPasswordModal";
 import { handleGoogleLogin } from "@/utils/auth/handleGoogleLogin";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 
 const LoginPage = () => {
+  const t = useTranslations("Auth");
   const [isResetView, setIsResetView] = useState(false);
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState(""); // Added password state
+  const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
@@ -33,42 +35,38 @@ const LoginPage = () => {
       <div className="bg-white dark:bg-gray-800 p-8 rounded-lg w-full max-w-md shadow-sm dark:shadow-lg">
         <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
           <div>
-          <h2 className="text-xl font-extrabold text-gray-800 dark:text-white text-center pb-2 leading-tight">
-  {isResetView 
-    ? "Reset Your Password and Get Back on Track!" 
-    : "Welcome Back to Fitify! Let's Continue Your Journey!"}
-</h2>
+            <h2 className="text-xl font-extrabold text-gray-800 dark:text-white text-center pb-2 leading-tight">
+              {isResetView ? t("ressetPasswordTItile") : t("loginTitle")}
+            </h2>
 
             <p className="text-gray-500 dark:text-gray-300 text-center text-sm">
-              {isResetView
-                ? "Enter your email to reset your password."
-                : "Sign in to continue."}
+            {isResetView ? t("forgotPasswordText") : t("continue")}
             </p>
           </div>
           <Input
-            label="Email"
+            label={t("email")}
             type="email"
-            placeholder="Enter your email"
+            placeholder={t("emailplaceholder")}
             name="email"
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-           
           />
           {!isResetView && (
             <>
               <Input
-                label="Password"
+                label={t("password")}
                 type="password"
-                placeholder="Enter your password"
+                placeholder={t("passwordplaceholder")}
                 name="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-           
               />
               {errorMessage && (
-                <div className="text-center text-red-500 mt-2">{errorMessage}</div>
+                <div className="text-center text-red-500 mt-2">
+                  {errorMessage}
+                </div>
               )}
               <div className="flex justify-between items-center">
                 <button
@@ -76,16 +74,16 @@ const LoginPage = () => {
                   onClick={() => setIsResetView(true)}
                   className="text-sm text-gray-600 hover:underline dark:text-gray-300"
                 >
-                  Forgot Password?
+                  {t("forgorPassword")}
                 </button>
                 <Link
                   href="/signup"
                   className="text-sm text-gray-600 hover:underline dark:text-gray-300"
                 >
-                  Sign Up
+                  {t("signUp")}
                 </Link>
               </div>
-              <SubmitButton text="Log In" />
+              <SubmitButton text={t("login")} />
               <div className="mt-4 flex flex-col space-y-2">
                 <button
                   type="button"
