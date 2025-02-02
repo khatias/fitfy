@@ -6,9 +6,11 @@ export async function createBlog(formData: FormData) {
 
   const title_en = formData.get("title_en") as string;
   const title_ka = formData.get("title_ka") as string;
-
+  const status = formData.get("status") as string;
   const content_ka = formData.get("content_ka") as string;
   const content_en = formData.get("content_en") as string;
+  const description_ka = formData.get("description_ka") as string;
+  const description_en = formData.get("description_en") as string;
   const featured_image = formData.get("featured_image") as string;
   const userResponse = await supabase.auth.getUser();
   const user_id = userResponse.data?.user?.id;
@@ -21,8 +23,11 @@ export async function createBlog(formData: FormData) {
         title_ka,
         content_en,
         content_ka,
+        description_en,
+        description_ka,
         featured_image,
         user_id,
+        status
       })
       .single();
 
