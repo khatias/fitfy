@@ -12,35 +12,21 @@ const Input: React.FC<InputProps> = ({
   required,
   icon: Icon,
   error,
+  id,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  const togglePasswordVisibility = () => {
-    setIsPasswordVisible(!isPasswordVisible);
-  };
+  const togglePasswordVisibility = () => setIsPasswordVisible((prev) => !prev);
 
-  const getInputType = () => {
-    return type === "password"
-      ? isPasswordVisible
-        ? "text"
-        : "password"
-      : type;
-  };
-
-  const handleFocus = () => {
-    setIsFocused(true);
-  };
-
-  const handleBlur = () => {
-    setIsFocused(false);
-  };
+  const getInputType = () =>
+    type === "password" ? (isPasswordVisible ? "text" : "password") : type;
 
   return (
     <div className="w-full relative">
       {label && (
         <label
-          htmlFor={name}
+          htmlFor={id || name}
           className={`block text-sm font-medium transition-all duration-300 ${
             isFocused ? "text-indigo-500" : "text-gray-500 dark:text-gray-400"
           }`}
@@ -50,34 +36,36 @@ const Input: React.FC<InputProps> = ({
       )}
       <div className="relative mt-2">
         <input
-          id={name}
+          id={id || name} // Ensure unique ID
           type={getInputType()}
           placeholder={placeholder}
           value={value}
           onChange={onChange}
           name={name}
           required={required}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          className={`w-full p-4 pl-12 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-0 transition-all duration-300 ${
-            isFocused ? "shadow-inner" : ""
-          } ${error ? "border-red-500" : ""}`} // Neumorphic and error styling
-          aria-invalid={error ? "true" : "false"}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          aria-invalid={!!error}
           aria-describedby={error ? `${name}-error` : undefined}
+          className={`w-full p-4 pl-12 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border transition-all duration-300
+            border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-0 
+            ${isFocused ? "shadow-inner" : ""}
+            ${error ? "border-red-500" : ""}
+          `}
         />
 
+        {/* Icon (if exists) */}
         {Icon && (
-          <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+          <div className="absolute inset-y-0 left-3 flex items-center pointer-events-auto">
             <Icon
               className={`w-5 h-5 transition-all duration-300 ${
-                isFocused
-                  ? "text-indigo-500"
-                  : "text-gray-500 dark:text-gray-400"
+                isFocused ? "text-indigo-500" : "text-gray-500 dark:text-gray-400"
               }`}
             />
           </div>
         )}
 
+        {/* Password Toggle */}
         {type === "password" && (
           <button
             type="button"
@@ -92,11 +80,9 @@ const Input: React.FC<InputProps> = ({
           </button>
         )}
 
+        {/* Error Message */}
         {error && (
-          <p
-            id={`${name}-error`}
-            className="mt-1 text-sm text-red-500 dark:text-red-400"
-          >
+          <p id={`${name}-error`} className="mt-1 text-sm text-red-500 dark:text-red-400">
             {error}
           </p>
         )}

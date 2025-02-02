@@ -1,20 +1,12 @@
 "use client";
 import React, { useState } from "react";
-import Image from "next/image";
 import { uploadFile } from "@/utils/files/uploadFile";
 import { createBlog } from "@/utils/blogs/blogCreator";
+import Input from "../inputs/Input";
+import Image from "next/image";
 
 export function CreateBlogForm() {
-  const [formData, setFormData] = useState<{
-    title_en: string;
-    title_ka: string;
-    content_en: string;
-    content_ka: string;
-    description_en: string;
-    description_ka: string;
-    status: string;
-    featured_image: File | string | null;
-  }>({
+  const [formData, setFormData] = useState({
     title_en: "",
     title_ka: "",
     content_en: "",
@@ -22,36 +14,30 @@ export function CreateBlogForm() {
     description_en: "",
     description_ka: "",
     status: "Draft",
-    featured_image: null,
+    featured_image: null as File | string | null,
   });
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [showGeorgian, setShowGeorgian] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
 
-    // Clear the error for the updated field
     setErrors((prevErrors) => {
       const newErrors = { ...prevErrors };
       if (newErrors[name]) {
-        delete newErrors[name]; // Remove the error for the specific field
+        delete newErrors[name];
       }
       return newErrors;
     });
   };
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,10 +45,7 @@ export function CreateBlogForm() {
       const file = e.target.files[0];
       try {
         const uploadedImageUrl = await uploadFile(file, "blogs");
-        setFormData((prev) => ({
-          ...prev,
-          featured_image: uploadedImageUrl,
-        }));
+        setFormData((prev) => ({ ...prev, featured_image: uploadedImageUrl }));
       } catch (error) {
         console.error("Error uploading image:", error);
       }
@@ -71,29 +54,20 @@ export function CreateBlogForm() {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
     const validationErrors: { [key: string]: string } = {};
 
-    if (!formData.title_en) {
-      validationErrors.title_en = "Title is required in English.";
-    }
-
-    if (!formData.title_ka) {
-      validationErrors.title_ka = "Title is required in Georgian.";
-    }
-
-    if (!formData.content_en) {
-      validationErrors.content_en = "Content is required in English.";
-    }
-    if (!formData.content_ka) {
-      validationErrors.content_ka = "Content is required in Georgian.";
-    }
-    if (!formData.description_en) {
-      validationErrors.description_en = "Content is required in English.";
-    }
-    if (!formData.description_ka) {
-      validationErrors.description_ka = "Content is required in Georgian.";
-    }
+    [
+      "title_en",
+      "title_ka",
+      "content_en",
+      "content_ka",
+      "description_en",
+      "description_ka",
+    ].forEach((field) => {
+      if (!formData[field as keyof typeof formData]) {
+        validationErrors[field] = `${field.replace("_", " ")} is required.`;
+      }
+    });
 
     if (!formData.featured_image) {
       validationErrors.featured_image = "Image is required.";
@@ -105,159 +79,131 @@ export function CreateBlogForm() {
     }
 
     setErrors({});
-
     const formDataToSubmit = new FormData();
-    formDataToSubmit.append("title_en", formData.title_en);
-    formDataToSubmit.append("title_ka", formData.title_ka);
-    formDataToSubmit.append("content_en", formData.content_en);
-    formDataToSubmit.append("content_ka", formData.content_ka);
-    formDataToSubmit.append("description_en", formData.description_en);
-    formDataToSubmit.append("description_ka", formData.description_ka);
-
-    formDataToSubmit.append("status", formData.status);
-
-    if (formData.featured_image) {
-      formDataToSubmit.append("featured_image", formData.featured_image);
-    }
+    Object.entries(formData).forEach(([key, value]) => {
+      if (value !== null) formDataToSubmit.append(key, value as string | Blob);
+    });
 
     try {
       const response = await createBlog(formDataToSubmit);
       if (response?.success) {
-        console.log("Blog created successfully");
+        setSuccessMessage("Blog created successfully!");
+        setTimeout(() => {
+          setSuccessMessage(""); 
+        }, 5000);
       } else {
-        console.log("Error:", response?.message || "Unknown error");
+        console.error("Error:", response?.message || "Unknown error");
       }
     } catch (error) {
       console.error("Error submitting form:", error);
     }
   };
 
-  const handleToggle = () => {
-    setShowGeorgian(!showGeorgian);
-  };
-
   return (
-    <div className="min-h-screen bg-gradient-to-r from-indigo-50 to-blue-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-8 space-y-6">
-        <h2 className="text-3xl font-bold text-gray-800 text-center mb-4">
-          Create New Post
+    <div className="flex justify-center items-center fixed inset-0 z-50 bg-black bg-opacity-50 overflow-y-auto">
+      <div className="bg-white dark:bg-gray-800 p-8 rounded-lg w-full max-w-3xl shadow-xl max-h-[90vh] overflow-y-auto">
+        <h2 className="text-3xl font-bold text-gray-800 dark:text-white text-center pb-6">
+          Create Your Article
         </h2>
 
-        <button
-          type="button"
-          onClick={handleToggle}
-          className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 rounded-lg transition duration-300 text-lg"
-        >
-          {showGeorgian ? "Switch to English" : "Switch to Georgian"}
-        </button>
-
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label
-              htmlFor={showGeorgian ? "title_ka" : "title_en"}
-              className="block text-sm font-medium text-gray-700"
-            >
-              Title
-            </label>
-            <input
-              type="text"
-              id={showGeorgian ? "title_ka" : "title_en"}
-              name={showGeorgian ? "title_ka" : "title_en"}
-              value={showGeorgian ? formData.title_ka : formData.title_en}
-              onChange={handleInputChange}
-              className="mt-1 w-full border border-gray-300 rounded-md shadow-sm py-3 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm"
+        <div className="flex justify-end mb-4">
+          <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">
+            {showGeorgian ? "KA" : "EN"}
+          </label>
+          <button
+            type="button"
+            onClick={() => setShowGeorgian(!showGeorgian)}
+            className={`w-14 h-7 rounded-full relative transition duration-300 ${
+              showGeorgian ? "bg-red-500" : "bg-gray-300"
+            }`}
+          >
+            <div
+              className={`absolute w-5 h-5 rounded-full bg-white shadow-sm left-1 top-1 transition duration-300 ${
+                showGeorgian ? "translate-x-7" : ""
+              }`}
             />
-            {errors[showGeorgian ? "title_ka" : "title_en"] && (
-              <span className="text-red-500 text-sm">
-                {errors[showGeorgian ? "title_ka" : "title_en"]}
-              </span>
-            )}
-            {/* Display error for the other language */}
-            {!showGeorgian && errors.title_ka && (
-              <span className="text-red-500 text-sm">{errors.title_ka}</span>
-            )}
-            {showGeorgian && errors.title_en && (
-              <span className="text-red-500 text-sm">{errors.title_en}</span>
-            )}
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-6 overflow-y-auto max-h-[60vh] scroll-auto pr-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
+            <div>
+              <Input
+                label={showGeorgian ? "სათაური" : "Title"}
+                type="text"
+                name={showGeorgian ? "title_ka" : "title_en"}
+                value={showGeorgian ? formData.title_ka : formData.title_en}
+                onChange={handleInputChange}
+                error={errors[showGeorgian ? "title_ka" : "title_en"]}
+              />
+            </div>
+            <div className="mt-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                Status
+              </label>
+              <select
+                name="status"
+                value={formData.status}
+                onChange={handleSelectChange}
+                className="w-full p-4 border rounded-lg shadow-sm bg-gray-100 dark:bg-gray-700  text-gray-700 dark:text-gray-300 focus:ring-indigo-500 dark:border-gray-600"
+              >
+                <option value="Draft">Draft</option>
+                <option value="Published">Published</option>
+              </select>
+            </div>
           </div>
 
           <div>
-            <label
-              htmlFor={showGeorgian ? "content_ka" : "content_en"}
-              className="block text-sm font-medium text-gray-700"
-            >
-              content
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              {showGeorgian ? "კონტენტი" : "Content"}
             </label>
             <textarea
-              id={showGeorgian ? "content_ka" : "content_en"}
               name={showGeorgian ? "content_ka" : "content_en"}
               value={showGeorgian ? formData.content_ka : formData.content_en}
               onChange={handleInputChange}
-              className="mt-1 w-full border border-gray-300 rounded-md shadow-sm py-3 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm"
+              rows={6}
+              className="w-full p-4 border rounded-lg  shadow-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 focus:ring-indigo-500 dark:border-gray-600"
             />
             {errors[showGeorgian ? "content_ka" : "content_en"] && (
               <span className="text-red-500 text-sm">
                 {errors[showGeorgian ? "content_ka" : "content_en"]}
               </span>
             )}
-            {/* Display error for the other language */}
-            {!showGeorgian && errors.content_ka && (
-              <span className="text-red-500 text-sm">{errors.title_ka}</span>
-            )}
-            {showGeorgian && errors.title_en && (
-              <span className="text-red-500 text-sm">{errors.contetn_en}</span>
-            )}
           </div>
 
           <div>
-            <label
-              htmlFor={showGeorgian ? "description_ka" : "description_en"}
-              className="block text-sm font-medium text-gray-700"
-            >
-              description
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              {showGeorgian ? "აღწერა" : "Description"}
             </label>
             <textarea
-              id={showGeorgian ? "description_ka" : "description_en"}
               name={showGeorgian ? "description_ka" : "description_en"}
-              value={
-                showGeorgian ? formData.description_ka : formData.description_en
-              }
+              value={showGeorgian ? formData.description_ka : formData.description_en}
               onChange={handleInputChange}
-              className="mt-1 w-full border border-gray-300 rounded-md shadow-sm py-3 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm"
+              className="w-full p-4 border rounded-lg shadow-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 focus:ring-indigo-500 dark:border-gray-600"
             />
             {errors[showGeorgian ? "description_ka" : "description_en"] && (
               <span className="text-red-500 text-sm">
-                {errors[showGeorgian ? "description_ka" : "descrition_en"]}
-              </span>
-            )}
-            {/* Display error for the other language */}
-            {!showGeorgian && errors.description_ka && (
-              <span className="text-red-500 text-sm">
-                {errors.description_ka}
-              </span>
-            )}
-            {showGeorgian && errors.title_en && (
-              <span className="text-red-500 text-sm">
-                {errors.description_en}
+                {errors[showGeorgian ? "description_ka" : "description_en"]}
               </span>
             )}
           </div>
 
+          {/* Image Upload */}
           <div>
             <label
               htmlFor="image"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
             >
               Image
             </label>
-            <div className="mt-1 flex items-center">
+            <div className="mt-2 flex items-center">
               <label
                 htmlFor="image"
-                className="relative cursor-pointer bg-white border border-gray-300 rounded-md shadow-sm py-2 px-3 hover:bg-gray-50 transition duration-300 flex items-center"
+                className="relative cursor-pointer bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-500 rounded-md shadow-sm py-2 px-4 hover:bg-gray-50 dark:hover:bg-gray-600 transition duration-300 flex items-center"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 mr-3 text-gray-500 transition duration-300"
+                  className="h-6 w-6 mr-3 text-gray-500 dark:text-gray-400 transition duration-300"
                   viewBox="0 0 20 20"
                   fill="currentColor"
                 >
@@ -267,61 +213,47 @@ export function CreateBlogForm() {
                     clipRule="evenodd"
                   />
                 </svg>
-                <span className="text-sm font-medium text-gray-700 transition duration-300">
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Choose a file
                 </span>
                 <input
                   type="file"
                   id="image"
-                  name="featured_image"
+                  name="image"
+                  accept="image/*"
                   onChange={handleUploadImage}
-                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                  className="hidden"
                 />
               </label>
-              {formData.featured_image &&
-                typeof formData.featured_image === "string" && (
-                  <div className="ml-4 flex-shrink-0">
-                    <Image
-                      src={formData.featured_image}
-                      alt="Image preview"
-                      width={40}
-                      height={40}
-                      className="rounded-md object-cover"
-                    />
-                  </div>
-                )}
             </div>
-            {errors.featured_image && (
-              <p className="mt-1 text-red-500 text-sm">
-                {errors.featured_image}
-              </p>
-            )}
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Status
-            </label>
-            <select
-              name="status"
-              value={formData.status}
-              onChange={handleSelectChange}
-              className="mt-1 w-full border border-gray-300 rounded-md shadow-sm py-3 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm"
+          {formData.featured_image && (
+            <div className="mt-4">
+              <Image
+                src={typeof formData.featured_image === "string" ? formData.featured_image : ""}
+                alt="Featured Image"
+                width={500}
+                height={300}
+                className="object-cover"
+              />
+            </div>
+          )}
+
+          {successMessage && (
+            <div className="mt-4 text-black text-center font-semibold">
+              {successMessage}
+            </div>
+          )}
+
+          <div className="flex justify-end mt-6">
+            <button
+              type="submit"
+              className="w-full sm:w-auto py-3 px-6 bg-customRed text-white font-medium rounded-lg shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-300 transition duration-300"
             >
-              <option value="Draft">Draft</option>
-              <option value="Published">Published</option>
-            </select>
-            {errors.status && (
-              <p className="mt-1 text-red-500 text-sm">{errors.status}</p>
-            )}
+              Save Blog
+            </button>
           </div>
-
-          <button
-            type="submit"
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 rounded-lg transition duration-300 text-lg"
-          >
-            Submit
-          </button>
         </form>
       </div>
     </div>
