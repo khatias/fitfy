@@ -1,16 +1,22 @@
 "use client";
 
 import React, { useState } from "react";
+import { FaGithub, FaGoogle } from "react-icons/fa";
 import Input from "@/components/inputs/Input";
 import SubmitButton from "@/components/buttons/SubmitButton";
 import { handleAuthSubmit } from "@/utils/auth/handleAuthSubmit";
 import { handleGithubLogin } from "@/utils/auth/handleGithubLogin";
 import { sendResetPassword } from "@/utils/auth/sendResetPassword";
-import RessetPasswordModal from "@/components/modals/RessetPasswordModal";
+import ResetPasswordModal from "@/components/modals/RessetPasswordModal";
 import { handleGoogleLogin } from "@/utils/auth/handleGoogleLogin";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/routing";
+
 const LoginPage = () => {
+  const t = useTranslations("Auth");
   const [isResetView, setIsResetView] = useState(false);
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
@@ -25,85 +31,100 @@ const LoginPage = () => {
   };
 
   return (
-    <>
-      <form onSubmit={handleSubmit} className="max-w-96 flex flex-col">
-        <div>
-          <h2 className="text-2xl mb-4 font-semibold text-center">
-            {isResetView ? "Reset your Password" : "Log In"}
-          </h2>
-          <p className="text-gray-400 text-center text-md pb-4 px-8">
-            {isResetView
-              ? "We will send you an email to reset your password."
-              : "Welcome back! Please enter your credentials to continue."}
-          </p>
-        </div>
-        <Input
-          label="Email"
-          type="email"
-          placeholder="Enter your email"
-          name="email"
-          required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        {!isResetView && (
-          <>
-            <Input
-              label="Password"
-              type="password"
-              placeholder="Enter your password"
-              name="password"
-              required
-            />
-            {errorMessage && (
-              <div className="text-center text-red-500 mt-4">
-                <strong>{errorMessage}</strong>
-              </div>
-            )}
-            <SubmitButton text="Log In" />
-            <button
-              type="button"
-              onClick={handleGithubLogin}
-              className="mt-4 text-blue-500 hover:underline"
-            >
-              Sign in with GitHub
-            </button>
-            <button
-              type="button"
-              onClick={handleGoogleLogin}
-              className="mt-4 text-blue-500 hover:underline"
-            >
-              Sign in with google
-            </button>
-            <button
-              type="button"
-              onClick={() => setIsResetView(true)}
-              className="mt-4 text-gray-500 hover:underline"
-            >
-              Forgot Password?
-            </button>
-          </>
-        )}
-        {isResetView && (
-          <>
-            <SubmitButton text="Send Email" />
-            <button
-              type="button"
-              onClick={() => setIsResetView(false)}
-              className="mt-4 text-gray-500 hover:underline"
-            >
-              Back to Login
-            </button>
-          </>
-        )}
-      </form>
+    <div className="min-h-screen flex justify-center items-center bg-gray-100 dark:bg-gray-900">
+      <div className="bg-white dark:bg-gray-800 p-8 rounded-lg w-full max-w-md shadow-sm dark:shadow-lg">
+        <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+          <div>
+            <h2 className="text-xl font-extrabold text-gray-800 dark:text-white text-center pb-2 leading-tight">
+              {isResetView ? t("ressetPasswordTItile") : t("loginTitle")}
+            </h2>
 
-      <RessetPasswordModal
+            <p className="text-gray-500 dark:text-gray-300 text-center text-sm">
+            {isResetView ? t("forgotPasswordText") : t("continue")}
+            </p>
+          </div>
+          <Input
+            label={t("email")}
+            type="email"
+            placeholder={t("emailplaceholder")}
+            name="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          {!isResetView && (
+            <>
+              <Input
+                label={t("password")}
+                type="password"
+                placeholder={t("passwordplaceholder")}
+                name="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              {errorMessage && (
+                <div className="text-center text-red-500 mt-2">
+                  {errorMessage}
+                </div>
+              )}
+              <div className="flex justify-between items-center">
+                <button
+                  type="button"
+                  onClick={() => setIsResetView(true)}
+                  className="text-sm text-gray-600 hover:underline dark:text-gray-300"
+                >
+                  {t("forgorPassword")}
+                </button>
+                <Link
+                  href="/signup"
+                  className="text-sm text-gray-600 hover:underline dark:text-gray-300"
+                >
+                  {t("signUp")}
+                </Link>
+              </div>
+              <SubmitButton text={t("login")} />
+              <div className="mt-4 flex flex-col space-y-2">
+                <button
+                  type="button"
+                  onClick={handleGithubLogin}
+                  className="w-full px-4 py-2 text-center text-gray-800 bg-white border border-gray-300 rounded hover:bg-gray-100 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:bg-gray-600 flex items-center justify-center gap-2"
+                >
+                  <FaGithub />
+                  GitHub
+                </button>
+                <button
+                  type="button"
+                  onClick={handleGoogleLogin}
+                  className="w-full px-4 py-2 text-center text-gray-800 bg-white border border-gray-300 rounded hover:bg-gray-100 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:bg-gray-600 flex items-center justify-center gap-2"
+                >
+                  <FaGoogle className="text-red-500" />
+                  Google
+                </button>
+              </div>
+            </>
+          )}
+          {isResetView && (
+            <>
+              <SubmitButton text="Send Email" />
+              <button
+                type="button"
+                onClick={() => setIsResetView(false)}
+                className="mt-4 text-gray-600 hover:underline dark:text-gray-300 text-center"
+              >
+                Back to Login
+              </button>
+            </>
+          )}
+        </form>
+      </div>
+
+      <ResetPasswordModal
         email={email}
         isOpen={isSuccessModalOpen}
         onClose={() => setIsSuccessModalOpen(false)}
       />
-    </>
+    </div>
   );
 };
 

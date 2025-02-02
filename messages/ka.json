@@ -72,5 +72,19 @@
   },
   "Products": {
     "addtocart": "დაამატე კალათში"
+  },
+  "Auth": {
+    "email": "იმეილი",
+    "password": "პაროლი",
+    "signUp": "რეგისტრაცია",
+    "emailplaceholder": "შეიყვანე შენი მეილი",
+    "passwordplaceholder": "შეიყვანე შენი პაროლი",
+    "signuptitle": "შექმენი შენი ექაუნთი",
+    "login": "შესვლა",
+    "loginTitle": "კეთილი იყოს შენი დაბრუნება!",
+    "continue": "გაიარე ავტოიზაცია",
+    "forgorPassword": "დაგავიწყდა პაროლი?",
+    "ressetPasswordTItile": "შეცვალე პაროლი!",
+    "forgotPasswordText": "შეიყვანე შენი მეილი რომ შეცვალო პაროლი"
   }
 }

@@ -72,5 +72,19 @@
   },
   "Products": {
     "addtocart": "Add to Cart"
+  },
+  "Auth": {
+    "email": "Email Adress",
+    "password": "password",
+    "signUp": "sign up",
+    "emailplaceholder": "Enter Your Email",
+    "passwordplaceholder": "Enter Your Password",
+    "signuptitle": "Create Your Account",
+    "login":"log In",
+    "loginTitle":"Welcome Back to Fitify! Let's Continue Your Journey!",
+    "continue":"Sign in to Continue",
+    "forgorPassword": "Forgot Password?",
+    "ressetPasswordTItile": "Reset Your Password and Get Back on Track!",
+    "forgotPasswordText":"Enter your email to reset your password."
   }
 }
