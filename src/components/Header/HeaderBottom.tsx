@@ -29,7 +29,8 @@ function HeaderBottom() {
           {categories.map((category) => (
             <li className="py-3 group relative" key={category.product_category_id}> 
               <Link
-                href={`/${category.product_category_id}`}
+           href={`/category/${category.product_category_id}`}
+
                 className="text-base font-medium text-gray-800 dark:text-gray-200 pb-3 hover:text-customRed transition-all duration-300 ease-in-out relative"
               >
                 {getLocalizedText(
