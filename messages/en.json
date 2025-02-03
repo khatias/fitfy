@@ -3,6 +3,11 @@
     "title": "Welcome to Our Store!",
     "about": "Learn more about us"
   },
+ "General": {
+    "success": "Blog Updated successfully",
+    "close": "close",
+    "title": "title"
+  },
   "Header": {
     "headerBanner": "First order? Get 10% off your purchase with us!",
     "products": "products",
@@ -80,11 +85,20 @@
     "emailplaceholder": "Enter Your Email",
     "passwordplaceholder": "Enter Your Password",
     "signuptitle": "Create Your Account",
-    "login":"log In",
-    "loginTitle":"Welcome Back to Fitify! Let's Continue Your Journey!",
-    "continue":"Sign in to Continue",
+    "login": "log In",
+    "loginTitle": "Welcome Back to Fitify! Let's Continue Your Journey!",
+    "continue": "Sign in to Continue",
     "forgorPassword": "Forgot Password?",
     "ressetPasswordTItile": "Reset Your Password and Get Back on Track!",
-    "forgotPasswordText":"Enter your email to reset your password."
+    "forgotPasswordText": "Enter your email to reset your password."
+  },
+  "Blog": {
+    "title": "The Future of Fashion: What's In and What's Out",
+    "myblogstitle": "Welcome to Your Blog Space",
+    "editTblogTitle": "edit Your Blog",
+    "description": "description",
+    "save_changes": "save changes",
+    "upload_image":" upload photo",
+     "content": "content"
   }
 }

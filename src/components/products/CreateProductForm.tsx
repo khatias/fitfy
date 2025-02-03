@@ -21,7 +21,7 @@ export function CreateProductForm() {
   const [colors, setColors] = useState<Color[]>([]);
   const [conditions, setConditions] = useState<Condition[]>([]);
   const [isVintage, setIsVintage] = useState(false);
-  const [showSuccessModal, setShowSuccessModal] = useState(false);  // State for showing modal
+  const [showSuccessModal, setShowSuccessModal] = useState(false); 
 
   const [formData, setFormData] = useState<formDataType>({
     name: "",
