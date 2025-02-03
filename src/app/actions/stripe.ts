@@ -7,10 +7,13 @@ import { stripe } from "@/lib/stripe/stripe";
 export async function createCheckoutSession(
   data: FormData
 ): Promise<{ client_secret: string | null; url: string | null }> {
-  const uiMode = data.get("uiMode") as Stripe.Checkout.SessionCreateParams.UiMode;
+  const uiMode = data.get(
+    "uiMode"
+  ) as Stripe.Checkout.SessionCreateParams.UiMode;
   const locale = (data.get("locale") || "en") as string;
   const purchaseType = data.get("purchaseType") as "subscription" | "cart";
-  const origin: string = (await headers()).get("origin") || process.env.NEXT_PUBLIC_SITE_URL!;
+  const origin: string =
+    (await headers()).get("origin") || process.env.NEXT_PUBLIC_SITE_URL!;
 
   // Validate purchase type
   if (!["subscription", "cart"].includes(purchaseType)) {
@@ -41,10 +44,12 @@ async function handleSubscriptionPurchase(
   const priceId = data.get("priceId") as string;
 
   if (!priceId) {
-    throw new Error("Price ID is required for subscriptions but was not provided.");
+    throw new Error(
+      "Price ID is required for subscriptions but was not provided."
+    );
   }
 
-  const successUrl = `${origin}/${locale}/pricing/result?session_id={CHECKOUT_SESSION_ID}`;
+  const successUrl = `${origin}/${locale}/subscription/result?session_id={CHECKOUT_SESSION_ID}`;
   const cancelUrl = `${origin}/${locale}/subscribe/cancel`;
 
   const checkoutSession = await stripe.checkout.sessions.create({
@@ -61,7 +66,10 @@ async function handleSubscriptionPurchase(
     ui_mode: uiMode,
   });
 
-  return { client_secret: checkoutSession.client_secret, url: checkoutSession.url };
+  return {
+    client_secret: checkoutSession.client_secret,
+    url: checkoutSession.url,
+  };
 }
 
 // Handle cart purchase type
@@ -73,7 +81,9 @@ async function handleCartPurchase(
 ): Promise<{ client_secret: string | null; url: string | null }> {
   const lineItemsRaw = data.get("lineItems");
   if (!lineItemsRaw) {
-    throw new Error("Line items are required for cart purchases but were not provided.");
+    throw new Error(
+      "Line items are required for cart purchases but were not provided."
+    );
   }
 
   let lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
@@ -83,8 +93,8 @@ async function handleCartPurchase(
     const parsedLineItems = JSON.parse(lineItemsRaw as string) as {
       price: string;
       quantity: number;
-      id: string; 
-      product_id:number;
+      id: string;
+      product_id: number;
     }[];
 
     lineItems = parsedLineItems.map((item) => ({
@@ -92,7 +102,7 @@ async function handleCartPurchase(
       quantity: item.quantity,
     }));
 
-    productIds = parsedLineItems.map((item) => item.product_id); 
+    productIds = parsedLineItems.map((item) => item.product_id);
   } catch {
     throw new Error("Invalid line items format. Must be a valid JSON string.");
   }
@@ -111,8 +121,11 @@ async function handleCartPurchase(
     success_url: successUrl,
     cancel_url: cancelUrl,
     ui_mode: uiMode,
-    metadata: { product_ids: productIds.join(",") }, 
+    metadata: { product_ids: productIds.join(",") },
   });
 
-  return { client_secret: checkoutSession.client_secret, url: checkoutSession.url };
+  return {
+    client_secret: checkoutSession.client_secret,
+    url: checkoutSession.url,
+  };
 }
