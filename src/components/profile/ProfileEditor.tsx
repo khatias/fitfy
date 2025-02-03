@@ -18,6 +18,21 @@ export default function ProfileEditor({ profile }: { profile: Profile }) {
   const [activeSection, setActiveSection] = useState("accountInfo");
   const [avatarPreview, setAvatarPreview] = useState(profile.avatar_url || "");
 
+  const handleManageSubscription = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("api/create-portal-session", {
+        method: "POST",
+      });
+      const { url } = await response.json();
+      window.location.href = url;
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     handleProfileFieldChange(e, setFormData);
   };
@@ -110,6 +125,9 @@ export default function ProfileEditor({ profile }: { profile: Profile }) {
             <p className="text-sm text-gray-600 dark:text-gray-400">
               {formData.email || "No email provided"}
             </p>
+            <button onClick={handleManageSubscription} disabled={loading}>
+              {loading ? "Loading..." : "Manage Subscription"}
+            </button>
           </div>
         </div>
         <input

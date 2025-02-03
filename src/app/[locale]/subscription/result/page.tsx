@@ -3,12 +3,15 @@ import type { Stripe } from "stripe";
 import { stripe } from "@/lib/stripe/stripe";
 import { Link } from "@/i18n/routing";
 
-export default async function ProductResultPage({
-  searchParams,
-}: {
-  searchParams: Record<string, string>;
+export default async function ProductResultPage(
+props: {
+  searchParams: Promise<{ session_id: string }>;
 }): Promise<JSX.Element> {
-  if (!searchParams.session_id) {
+ 
+
+  const searchParams = await props.searchParams;
+  if (!searchParams.session_id)
+    {
     return (
       <div className="flex items-center justify-center h-screen bg-red-100">
         <p className="text-xl text-red-500">
@@ -53,7 +56,7 @@ export default async function ProductResultPage({
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
-      <div className="p-12 rounded-3xl shadowsm bg-white  w-full text-center">
+      <div className="p-12 rounded-3xl shadowsm bg-white max-w- w-full text-center">
         <div className="flex items-center justify-center mb-6">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -82,7 +85,10 @@ export default async function ProductResultPage({
         </p>
         <p className="text-gray-600 mb-8 text-sm">
           For any questions, please contact our{" "}
-          <Link href="/contact" className="text-red-500 hover:underline">
+          <Link
+            href="/contact"
+            className="text-red-500 hover:underline"
+          >
             support team
           </Link>
           .
