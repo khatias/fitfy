@@ -90,7 +90,7 @@ const MyBlogs: React.FC = () => {
   return (
     <div className="max-w-[1300px] mx-auto p-6 font-sans min-h-screen">
       <h1 className="text-3xl font-semibold text-center text-gray-800 dark:text-gray-300 mt-10 mb-10">
-        {t("myblogstitle")}
+        {t("editTblogTitle")}
       </h1>
 
       {blogPosts.length === 0 ? (
