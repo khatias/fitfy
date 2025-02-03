@@ -4,6 +4,7 @@ import { supabase } from "@/utils/supabase/supabaseClient";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
+import { usePathname, useSearchParams } from "next/navigation";
 
 interface BlogPost {
   id: number;
@@ -17,8 +18,11 @@ interface BlogPost {
 }
 
 const Page: React.FC = () => {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const t = useTranslations("Blog");
 
   useEffect(() => {
@@ -66,6 +70,26 @@ const Page: React.FC = () => {
     fetchBlogPosts();
   }, []);
 
+  useEffect(() => {
+    const query = searchParams.get("search") || "";
+    setSearchQuery(query);
+  }, [searchParams]);
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+
+    const newUrl = new URL(pathname, window.location.origin);
+    newUrl.searchParams.set("search", query);
+    window.history.pushState({}, "", newUrl.toString());
+  };
+
+  const filteredBlogPosts = blogPosts.filter(
+    (post) =>
+      post.title_en.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.description_en.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   if (loading) {
     return <div className="text-center text-gray-600 py-6">Loading...</div>;
   }
@@ -76,13 +100,39 @@ const Page: React.FC = () => {
         {t("title")}
       </h1>
 
-      {blogPosts.length === 0 ? (
+      <div className="flex justify-center mb-6">
+        <div className="relative w-full sm:w-96">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={handleSearch}
+            placeholder="Search blog posts..."
+            className="border border-gray-300 dark:border-gray-700 rounded-xl p-3 pl-10 w-full bg-[#f2f3f4] dark:bg-gray-800 text-[#ababab] dark:text-[#e4e4e4] focus:outline-none focus:ring-1 focus:ring-red-500 transition duration-300 shadow-sm"
+          />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6 absolute left-3 top-1/2 transform -translate-y-1/2 text-[#ababab] dark:text-[#e4e4e4] pointer-events-none"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
+        </div>
+      </div>
+
+      {filteredBlogPosts.length === 0 ? (
         <p className="text-center text-gray-500 dark:text-gray-400">
           No blog posts available.
         </p>
       ) : (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {blogPosts.map((post) => (
+          {filteredBlogPosts.map((post) => (
             <Link key={post.id} href={`/blog/${post.id}`}>
               <div className="bg-white dark:bg-gray-800 rounded-lg flex flex-col justify-between overflow-hidden transition-transform duration-300 hover:scale-105 shadow-md dark:shadow-none">
                 {post.featured_image && (
@@ -98,7 +148,7 @@ const Page: React.FC = () => {
                   </div>
                 )}
                 <div className="p-6">
-                  <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2 line-clamp-2 hover:text-blue-600 transition duration-300">
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2 line-clamp-2 hover:text-customAmber transition duration-300">
                     {post.title_en}
                   </h2>
                   <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-3 mb-3">
