@@ -1,13 +1,16 @@
 import React, { JSX } from "react";
 import type { Metadata } from "next";
-
+import SubsCheckoutForm from "@/components/subscription/stripe/SubsCheckoutForm";
 export const metadata: Metadata = {
   title: "subscription",
 };
 
-export default async function IndexPage({}: {
+export default async function IndexPage({
+    params,
+}: {
   params: { locale?: string };
 }): Promise<JSX.Element> {
+  const locale = (await params?.locale) || "en";
   return (
     <div>
       <div>
@@ -24,6 +27,10 @@ export default async function IndexPage({}: {
           <ul>
             <li>List 15 products per month</li>
             <li>Standard listing visibility</li>
+            <SubsCheckoutForm uiMode="hosted"
+  locale={locale}
+  priceId="price_1QoUX7GEhEAIciCgj1XPqOuH"
+  planName="Basic Seller"/>
           </ul>
         </div>
 
