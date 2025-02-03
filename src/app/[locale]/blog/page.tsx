@@ -5,25 +5,20 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { usePathname, useSearchParams } from "next/navigation";
-
-interface BlogPost {
-  id: number;
-  title_en: string;
-  description_en: string;
-  featured_image?: string;
-  user_id: string;
-  first_name?: string;
-  last_name?: string;
-  avatar_url?: string;
-}
+import { BlogPostType } from "@/types/blog";
 
 const Page: React.FC = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [blogPosts, setBlogPosts] = useState<BlogPostType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const t = useTranslations("Blog");
+  const currentLocale = pathname.split("/")[1];
+  
+  const getLocalizedText = (enText: string, kaText: string = "") => {
+    return currentLocale === "en" ? enText : kaText;
+  };
 
   useEffect(() => {
     const fetchBlogPosts = async () => {
@@ -42,11 +37,11 @@ const Page: React.FC = () => {
           return;
         }
 
-        const blogPostsWithProfiles: BlogPost[] = await Promise.all(
+        const blogPostsWithProfiles: BlogPostType[] = await Promise.all(
           blogData.map(async (post) => {
             const { data: profileData } = await supabase
               .from("profiles")
-              .select("first_name, last_name, avatar_url")
+              .select("first_name, last_name, avatar_url, username")
               .eq("user_id", post.user_id)
               .single();
 
@@ -55,6 +50,7 @@ const Page: React.FC = () => {
               first_name: profileData?.first_name,
               last_name: profileData?.last_name,
               avatar_url: profileData?.avatar_url,
+              username: profileData?.username,
             };
           })
         );
@@ -86,8 +82,15 @@ const Page: React.FC = () => {
 
   const filteredBlogPosts = blogPosts.filter(
     (post) =>
-      post.title_en.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.description_en.toLowerCase().includes(searchQuery.toLowerCase())
+      // Searching in the title and description based on the current locale
+      (currentLocale === "en" &&
+        post.title_en.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (currentLocale === "en" &&
+        post.description_en.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (currentLocale === "ka" &&
+        post.title_ka.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (currentLocale === "ka" &&
+        post.description_ka.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   if (loading) {
@@ -149,10 +152,13 @@ const Page: React.FC = () => {
                 )}
                 <div className="p-6">
                   <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2 line-clamp-2 hover:text-customAmber transition duration-300">
-                    {post.title_en}
+                    {getLocalizedText(post.title_en || "", post.title_ka || "")}
                   </h2>
                   <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-3 mb-3">
-                    {post.description_en}
+                    {getLocalizedText(
+                      post.description_en || "",
+                      post.description_ka || ""
+                    )}
                   </p>
                   <div className="flex items-center gap-3 border-t pt-3 mt-4 border-gray-200 dark:border-gray-700">
                     {post.avatar_url && (
@@ -166,7 +172,7 @@ const Page: React.FC = () => {
                     )}
                     <div>
                       <p className="text-gray-700 dark:text-gray-200 font-medium">
-                        {post.first_name || "Unknown"} {post.last_name || ""}
+                        {post.username || "Unknown"} {post.last_name || ""}
                       </p>
                       <p className="text-gray-400 dark:text-gray-500 text-xs">
                         Author
