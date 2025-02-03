@@ -30,15 +30,35 @@ export async function POST(req: NextRequest) {
     }
 
     if (action === "signup") {
-      const { error: signUpError } = await supabase.auth.signUp({
-        email,
-        password,
-      });
+      const {
+        data: { user },
+        error: signUpError,
+      } = await supabase.auth.signUp({ email, password });
 
       if (signUpError) {
         return NextResponse.json(
           { error: signUpError.message },
           { status: 400 }
+        );
+      }
+
+      const newProfile = {
+        user_id: user?.id,
+        email: user?.email,
+        first_name: "",
+        last_name: "",
+
+        avatar_url: null,
+      };
+
+      const { error: insertProfileError } = await supabase
+        .from("profiles")
+        .insert([newProfile]);
+
+      if (insertProfileError) {
+        return NextResponse.json(
+          { error: `Profile creation failed: ${insertProfileError.message}` },
+          { status: 500 }
         );
       }
 
