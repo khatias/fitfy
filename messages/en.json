@@ -8,6 +8,22 @@
     "close": "close",
     "title": "title"
   },
+  
+    "Contact": {
+      "fullname": "Full Name",
+      "email": "Email Address",
+      "message": "Message",
+      "messageplaceholder": "Type your message",
+      "submit": "Submit",
+      "required": {
+        "name": "Full name is required",
+        "email": "Email address is required",
+        "message": "Message is required"
+      },
+      "invalidEmail": "Invalid email address"
+    },
+  
+  
   "Header": {
     "headerBanner": "First order? Get 10% off your purchase with us!",
     "products": "products",

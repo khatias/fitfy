@@ -1,8 +1,10 @@
-"use client";
+'use client';
 
-import { FC } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { sendEmail } from "@/utils/contact/send-email";
+import { FC } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { sendEmail } from '@/utils/contact/send-email';
+import { useTranslations } from 'next-intl';
+
 export type FormData = {
   name: string;
   email: string;
@@ -20,6 +22,8 @@ const ContactForm: FC = () => {
     sendEmail(data);
   };
 
+  const t = useTranslations("Contact");
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -30,18 +34,18 @@ const ContactForm: FC = () => {
           htmlFor="name"
           className="block text-base font-medium text-gray-900 dark:text-gray-200"
         >
-          Full Name
+          {t("fullname")}
         </label>
         <input
           type="text"
-          placeholder="Full Name"
+          placeholder={t("fullname")}
           className={`mt-1 w-full rounded-md border py-3 px-4 text-base font-medium text-gray-700 dark:text-gray-300 outline-none focus:ring-1 focus:ring-red-500 ${
             errors.name
               ? "border-red-500"
               : "border-gray-300 dark:border-gray-600"
           }`}
           {...register("name", {
-            required: "Full name is required",
+            required: t("required.name"),
           })}
         />
         {errors.name && (
@@ -54,7 +58,7 @@ const ContactForm: FC = () => {
           htmlFor="email"
           className="block text-base font-medium text-gray-900 dark:text-gray-200"
         >
-          Email Address
+          {t("email")}
         </label>
         <input
           type="email"
@@ -65,10 +69,10 @@ const ContactForm: FC = () => {
               : "border-gray-300 dark:border-gray-600"
           }`}
           {...register("email", {
-            required: "Email address is required",
+            required: t("required.email"),
             pattern: {
               value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/i,
-              message: "Invalid email address",
+              message: t("invalidEmail"),
             },
           })}
         />
@@ -82,18 +86,18 @@ const ContactForm: FC = () => {
           htmlFor="message"
           className="block text-base font-medium text-gray-900 dark:text-gray-200"
         >
-          Message
+          {t("message")}
         </label>
         <textarea
           rows={4}
-          placeholder="Type your message"
+          placeholder={t("messageplaceholder")}
           className={`mt-1 w-full resize-none rounded-md border py-3 px-4 text-base font-medium text-gray-700 dark:text-gray-300 outline-none focus:ring-1 focus:ring-red-500 ${
             errors.message
               ? "border-red-500"
               : "border-gray-300 dark:border-gray-600"
           }`}
           {...register("message", {
-            required: "Message is required",
+            required: t("required.message"),
           })}
         ></textarea>
         {errors.message && (
@@ -103,7 +107,7 @@ const ContactForm: FC = () => {
 
       <div>
         <button className="w-full hover:bg-red-600 dark:hover:bg-red-700 rounded-md bg-red-500 py-3 px-6 text-base font-semibold text-white outline-none transition duration-300 ease-in-out">
-          Submit
+          {t("submit")}
         </button>
       </div>
     </form>
