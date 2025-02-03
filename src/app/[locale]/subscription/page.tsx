@@ -6,7 +6,7 @@ export const metadata: Metadata = {
 };
 
 export default async function IndexPage({
-    params,
+  params,
 }: {
   params: { locale?: string };
 }): Promise<JSX.Element> {
@@ -23,36 +23,51 @@ export default async function IndexPage({
       <div className="grid lg:grid-cols-3 gap-6">
         <div className="border p-4 rounded-lg ">
           <h2 className="text-xl font-bold">Basic Seller</h2>
-          <p className="text-lg font-semibold">$9.99/month</p>
+          <p className="text-lg font-semibold">₾30/month</p>
           <ul>
             <li>List 15 products per month</li>
             <li>Standard listing visibility</li>
-            <SubsCheckoutForm uiMode="hosted"
-  locale={locale}
-  priceId="price_1QoUX7GEhEAIciCgj1XPqOuH"
-  planName="Basic Seller"/>
+            <SubsCheckoutForm
+              uiMode="hosted"
+              locale={locale}
+              priceId="price_1QoUX7GEhEAIciCgj1XPqOuH"
+              planName="Basic Seller"
+            />
           </ul>
         </div>
-
+ 
         <div className="border p-4 rounded-lg ">
           <h2 className="text-xl font-bold">Premium Seller</h2>
-          <p className="text-lg font-semibold">$29.99/month</p>
+          <p className="text-lg font-semibold">₾60/month</p>
           <ul>
             <li>List up to 50 products per month</li>
             <li>Priority product placement in products</li>
             <li>Featured in category pages</li>
           </ul>
+   
+          <SubsCheckoutForm
+              uiMode="hosted"
+              locale={locale}
+              priceId="price_1QoVTSGEhEAIciCgPNcA3xjM"
+              planName="Basic Seller"
+            />
         </div>
 
         <div className="border p-4 rounded-lg ">
           <h2 className="text-xl font-bold">Brand Partner</h2>
-          <p className="text-lg font-semibold">$79.99/month</p>
+          <p className="text-lg font-semibold">₾100/month</p>
           <ul>
             <li>Unlimited product listings</li>
             <li>Homepage feature placement</li>
             <li>Featured in category pages</li>
             <li>Priority product placement in products</li>
           </ul>
+          <SubsCheckoutForm
+              uiMode="hosted"
+              locale={locale}
+              priceId="price_1QoVaJGEhEAIciCgLrs1B3ie"
+              planName="Basic Seller"
+            />
         </div>
       </div>
     </div>
