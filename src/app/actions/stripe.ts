@@ -7,13 +7,13 @@ import { stripe } from "@/lib/stripe/stripe";
 export async function createCheckoutSession(
   data: FormData
 ): Promise<{ client_secret: string | null; url: string | null }> {
-  const uiMode = data.get(
-    "uiMode"
-  ) as Stripe.Checkout.SessionCreateParams.UiMode;
+  const uiMode = data.get("uiMode") as Stripe.Checkout.SessionCreateParams.UiMode;
   const locale = (data.get("locale") || "en") as string;
   const purchaseType = data.get("purchaseType") as "subscription" | "cart";
   const origin: string =
     (await headers()).get("origin") || process.env.NEXT_PUBLIC_SITE_URL!;
+
+  const stripeCustomerId = data.get("stripeCustomerId") as string | null;
 
   // Validate purchase type
   if (!["subscription", "cart"].includes(purchaseType)) {
@@ -22,12 +22,12 @@ export async function createCheckoutSession(
 
   // Handle subscription purchase type
   if (purchaseType === "subscription") {
-    return handleSubscriptionPurchase(data, uiMode, locale, origin);
+    return handleSubscriptionPurchase(data, uiMode, locale, origin, stripeCustomerId);
   }
 
   // Handle cart purchase type
   if (purchaseType === "cart") {
-    return handleCartPurchase(data, uiMode, locale, origin);
+    return handleCartPurchase(data, uiMode, locale, origin, stripeCustomerId);
   }
 
   // Fallback
@@ -39,7 +39,8 @@ async function handleSubscriptionPurchase(
   data: FormData,
   uiMode: Stripe.Checkout.SessionCreateParams.UiMode,
   locale: string,
-  origin: string
+  origin: string,
+  stripeCustomerId: string | null
 ): Promise<{ client_secret: string | null; url: string | null }> {
   const priceId = data.get("priceId") as string;
 
@@ -52,7 +53,7 @@ async function handleSubscriptionPurchase(
   const successUrl = `${origin}/${locale}/subscription/result?session_id={CHECKOUT_SESSION_ID}`;
   const cancelUrl = `${origin}/${locale}/subscribe/cancel`;
 
-  const checkoutSession = await stripe.checkout.sessions.create({
+  const checkoutSessionParams: Stripe.Checkout.SessionCreateParams = {
     mode: "subscription",
     payment_method_types: ["card"],
     line_items: [
@@ -64,7 +65,13 @@ async function handleSubscriptionPurchase(
     success_url: successUrl,
     cancel_url: cancelUrl,
     ui_mode: uiMode,
-  });
+  };
+
+  if (stripeCustomerId) {
+    checkoutSessionParams.customer = stripeCustomerId; // Link to existing Stripe customer
+  }
+
+  const checkoutSession = await stripe.checkout.sessions.create(checkoutSessionParams);
 
   return {
     client_secret: checkoutSession.client_secret,
@@ -77,7 +84,8 @@ async function handleCartPurchase(
   data: FormData,
   uiMode: Stripe.Checkout.SessionCreateParams.UiMode,
   locale: string,
-  origin: string
+  origin: string,
+  stripeCustomerId: string | null
 ): Promise<{ client_secret: string | null; url: string | null }> {
   const lineItemsRaw = data.get("lineItems");
   if (!lineItemsRaw) {
@@ -114,7 +122,7 @@ async function handleCartPurchase(
   const successUrl = `${origin}/${locale}/cart/result?session_id={CHECKOUT_SESSION_ID}`;
   const cancelUrl = `${origin}/${locale}/cart`;
 
-  const checkoutSession = await stripe.checkout.sessions.create({
+  const checkoutSessionParams: Stripe.Checkout.SessionCreateParams = {
     mode: "payment",
     payment_method_types: ["card"],
     line_items: lineItems,
@@ -122,7 +130,13 @@ async function handleCartPurchase(
     cancel_url: cancelUrl,
     ui_mode: uiMode,
     metadata: { product_ids: productIds.join(",") },
-  });
+  };
+
+  if (stripeCustomerId) {
+    checkoutSessionParams.customer = stripeCustomerId; // Link to existing Stripe customer
+  }
+
+  const checkoutSession = await stripe.checkout.sessions.create(checkoutSessionParams);
 
   return {
     client_secret: checkoutSession.client_secret,
