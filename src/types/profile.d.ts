@@ -13,6 +13,6 @@ export interface Profile {
   address_state:string;
   address_postal_code:string;
   address_country:string
-  product_count:number;
-  subscription_name:string;
+  product_count?:number;
+  subscription_name?:string;
 }
