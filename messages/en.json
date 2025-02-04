@@ -75,7 +75,8 @@
     "sort": "sort",
     "lowtohigh": "low to high",
     "hightolow": "high to low",
-    "search": "search your product"
+    "search": "search your product",
+    "chooseImage":"choose image"
   },
   "FormErrors": {
     "required": "This field is required.",

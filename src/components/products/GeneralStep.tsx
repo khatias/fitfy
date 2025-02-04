@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useTranslations } from "next-intl";
 import { formDataType } from "@/types/formData";
 import FormLanguageToggle from "../toggle/FormLanguageToggle";
+import ImageUpload from "../inputs/ImageUploadInput";
 interface GeneralStepProps {
   formData: formDataType;
   handleProductTypeChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -72,15 +73,16 @@ export function GeneralStep({
   };
 
   return (
-    <div className="lg:w-[576px] lg:h-[490px] justify-between">
-      <FormLanguageToggle
-        showGeorgian={showGeorgian}
-        setShowGeorgian={setShowGeorgian}
-      />
+    <div className="w-full  justify-between">
+ 
 
-      <p>{t("question")}</p>
-      <div className="flex space-x-4">
-        <div className="border py-3 px-4 flex items-center gap-2 mt-2">
+      <p className="mb-4 text-xl font-medium text-gray-900 dark:text-gray-100">
+        {t("question")}
+      </p>
+
+      <div className="mt-4 flex space-x-8 pb-6">
+        
+        <label className="inline-flex items-center relative cursor-pointer">
           <input
             type="radio"
             id="men"
@@ -88,12 +90,28 @@ export function GeneralStep({
             value="2"
             checked={formData.productType === 2}
             onChange={handleProductTypeChange}
+            className="peer sr-only"
           />
-          <label htmlFor="men" className="mr-2">
+          <div className="w-5 h-5  bg-gray-200 dark:bg-gray-700 rounded-full border border-gray-300 dark:border-gray-500 flex items-center justify-center transition duration-300 peer-checked:bg-customRed peer-checked:border-customRed">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-4 h-4 text-white hidden peer-checked:block"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414l3.293 3.293 7.707-7.707a1 1 0 011.414 0z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </div>
+          <span className="ml-2 text-gray-700 dark:text-gray-300 transition duration-300 hover:text-customRed dark:hover:bg-pink-200">
             {t("menswear")}
-          </label>
-        </div>
-        <div className="border py-3 px-4 flex items-center gap-2 mt-2">
+          </span>
+        </label>
+
+        <label className="inline-flex items-center relative cursor-pointer">
           <input
             type="radio"
             id="women"
@@ -101,16 +119,33 @@ export function GeneralStep({
             value="1"
             checked={formData.productType === 1}
             onChange={handleProductTypeChange}
+            className="peer sr-only"
           />
-          <label htmlFor="women" className="mr-2">
+          <div className="w-5 h-5 bg-gray-200 dark:bg-gray-700 rounded-full border border-gray-300 dark:border-gray-500 flex items-center justify-center transition duration-300 peer-checked:bg-customRed peer-checked:border-customRed">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-4 h-4 text-white hidden peer-checked:block"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414l3.293 3.293 7.707-7.707a1 1 0 011.414 0z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </div>
+          <span className="ml-2 text-gray-700 dark:text-gray-300 transition duration-300 hover:text-customRed dark:hover:text-pink-200">
             {t("womenswear")}
-          </label>
-        </div>
+          </span>
+        </label>
       </div>
-
       <div className="space-y-4">
-        {/* Name Input */}
-        <div className="flex flex-col space-y-2">
+      <FormLanguageToggle
+        showGeorgian={showGeorgian}
+        setShowGeorgian={setShowGeorgian}
+      />
+        <div className="flex flex-col space-y-1">
           <label
             htmlFor={showGeorgian ? "name_ka" : "name"}
             className="text-sm font-medium text-gray-700 dark:text-gray-300"
@@ -121,11 +156,11 @@ export function GeneralStep({
             type="text"
             id={showGeorgian ? "name_ka" : "name"}
             name={showGeorgian ? "name_ka" : "name"}
-            className={`w-full p-3 rounded border ${
+            className={`w-full p-3 rounded-md border ${
               errors[showGeorgian ? "name_ka" : "name"]
-                ? "border-red-500"
-                : "border-gray-300"
-            }`}
+                ? "border-red-500 animate-shake focus:ring-red-500"
+                : "border-gray-300 dark:border-gray-700 focus:ring-blue-500 dark:focus:ring-blue-500"
+            } transition-all duration-300 focus:outline-none appearance-none`}
             placeholder={
               showGeorgian ? "შეიყვანე პროდუქტის სახელი" : "Enter Product Name"
             }
@@ -139,9 +174,8 @@ export function GeneralStep({
             </span>
           )}
         </div>
-
-        {/* Price Input */}
-        <div className="flex flex-col space-y-2">
+        <div className="flex w-full justify-between gap-x-3">
+        <div className="flex flex-col space-y-1 w-full ">
           <label
             htmlFor="price"
             className="block text-sm font-medium transition-all duration-300"
@@ -152,10 +186,12 @@ export function GeneralStep({
             type="number"
             id="price"
             name="price"
-            className={`w-full p-4 pl-8 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border 
-            border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-0  ${
-              errors.price ? "border-red-500" : "border-gray-300"
-            }`}
+            className={`w-full p-3 rounded-md border
+        ${
+          errors.price
+            ? "border-red-500 animate-shake focus:ring-red-500"
+            : "border-gray-300 dark:border-gray-700 focus:ring-blue-500 dark:focus:ring-blue-500"
+        }`}
             placeholder={t("priceplacholder")}
             value={formData.price}
             onChange={handleInputChange}
@@ -165,12 +201,10 @@ export function GeneralStep({
             <span className="text-red-500 text-sm">{errors.price}</span>
           )}
         </div>
-
-        {/* Brand Input */}
-        <div className="flex flex-col space-y-2">
+        <div className="flex flex-col space-y-1 w-full">
           <label
             htmlFor="brand"
-            className="text-sm font-medium text-gray-700 dark:text-gray-300"
+            className="block text-sm font-medium transition-all duration-300"
           >
             {t("brand")}
           </label>
@@ -178,8 +212,10 @@ export function GeneralStep({
             type="text"
             id="brand"
             name="brand"
-            className={`w-full p-3 rounded border ${
-              errors.brand ? "border-red-500" : "border-gray-300"
+            className={`w-full p-3 rounded-md border ${
+              errors.brand
+                ? "border-red-500 animate-shake focus:ring-red-500"
+                : "border-gray-300 dark:border-gray-700 focus:ring-blue-500 dark:focus:ring-blue-500"
             }`}
             placeholder={t("brandplacholder")}
             value={formData.brand}
@@ -190,46 +226,29 @@ export function GeneralStep({
             <span className="text-red-500 text-sm">{errors.brand}</span>
           )}
         </div>
-
-        {/* Image Input */}
-        <div className="flex flex-col space-y-2">
-          <label
-            htmlFor="image"
-            className="text-sm font-medium text-gray-700 dark:text-gray-300"
-          >
-            {t("image")}
-          </label>
-          <input
-            type="file"
-            id="image"
-            name="image"
-            className={`w-full p-3 rounded border ${
-              errors.image ? "border-red-500" : "border-gray-300"
-            }`}
-            onChange={handleUploadImage}
-            onBlur={handleBlur}
-          />
-          {errors.image && (
-            <span className="text-red-500 text-sm">{errors.image}</span>
-          )}
         </div>
+        <ImageUpload
+          labelText={t("chooseImage")}
+          onChange={handleUploadImage}
+          onBlur={handleBlur}
+          error={errors.image}
+        />
 
-        {/* Description Input */}
-        <div className="flex flex-col space-y-2">
+        <div className="flex flex-col space-y-1">
           <label
             htmlFor={showGeorgian ? "description_ka" : "description_en"}
-            className="text-sm font-medium text-gray-700 dark:text-gray-300"
+            className="block text-sm font-medium transition-all duration-300"
           >
             {t("description")}
           </label>
           <textarea
             id={showGeorgian ? "description_ka" : "description_en"}
             name={showGeorgian ? "description_ka" : "description_en"}
-            className={`w-full p-4 rounded-lg border ${
+            className={`w-full p-3 rounded-md border ${
               errors[showGeorgian ? "description_ka" : "description_en"]
                 ? "border-red-500"
                 : "border-gray-300"
-            } focus:outline-none focus:ring-2 focus:ring-blue-500`}
+            }                 : "border-gray-300 dark:border-gray-700 focus:ring-blue-500 dark:focus:ring-blue-500`}
             placeholder={
               showGeorgian
                 ? "შეიყვანეთ მოკლე აღწერა პროდუქტის შესახებ"
