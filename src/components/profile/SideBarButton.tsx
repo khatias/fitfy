@@ -19,7 +19,7 @@ const SidebarButton: React.FC<SidebarButtonProps> = ({
     className={`group relative w-full flex items-center px-4 py-2.5 rounded-md transition-colors duration-300 ease-in-out
       ${
         isActive
-          ? "bg-red-300 dark:bg-[#e43d12] text-gray-800 font-medium shadow-sm hover:bg-red-400 dark:hover:bg-[#e43c14] focus:outline-none  focus:ring-rose-200 dark:focus:ring-rose-800"
+          ? "bg-red-100 dark:bg-[#e43d12] text-gray-800 font-medium shadow-sm hover:bg-red-400 dark:hover:bg-[#e43c14] focus:outline-none  focus:ring-rose-200 dark:focus:ring-rose-800"
           : "text-gray-500 dark:text-gray-400 hover:bg-rose-50 dark:hover:bg-gray-700 hover:text-customRed dark:hover:text-gray-200 focus:outline-none  focus:ring-rose-100 dark:focus:ring-gray-600"
       }`}
   >
