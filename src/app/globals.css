@@ -2,6 +2,12 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+@layer base {
+  img {
+      width: auto;
+      height: auto;
+  }
+}
 :root {
   --background: #ffffff;
   --foreground: #171717;

@@ -81,11 +81,12 @@ export default async function ProductResultPage(props: {
           </div>
         );
       }
-
+      console.log(productName);
       const userId = user.user.id;
-
-      console.log("Subscribed Product ID:", productId);
-      console.log("Subscription Status:", subscriptionStatus);
+      let product_count = 0;
+      if (productName === "Fitify Basic Seller") product_count = 15;
+      else if (productName === "Fittify  Premium Seller") product_count = 50;
+      else if (productName === "Brand Partner") product_count = 1000;
 
       const { error } = await supabase
         .from("profiles")
@@ -93,6 +94,7 @@ export default async function ProductResultPage(props: {
           subscription_plan: productId,
           subscription_name: productName,
           subscription_status: subscriptionStatus,
+          product_count: product_count,
         })
         .eq("user_id", userId);
 
@@ -124,11 +126,14 @@ export default async function ProductResultPage(props: {
             Subscription Successful!
           </h1>
           <p className="text-2xl text-gray-700 mb-6 leading-relaxed">
-            Thank you for subscribing. You&apos;re all set to enjoy the benefits!
+            Thank you for subscribing. You&apos;re all set to enjoy the
+            benefits!
           </p>
           <p className="text-xl text-gray-700 mb-6">
             You will be charged{" "}
-            <span className="font-semibold text-red-600">{formattedAmount}</span>
+            <span className="font-semibold text-red-600">
+              {formattedAmount}
+            </span>
           </p>
           <p className="text-gray-600 mb-8 text-sm">
             For any questions, please contact our{" "}

@@ -54,7 +54,7 @@ export default async function IndexPage(props: {
           <h2 className="text-xl font-bold">Brand Partner</h2>
           <p className="text-lg font-semibold">₾100/month</p>
           <ul>
-            <li>Unlimited product listings</li>
+            <li>List up to 1000 products per month</li>
             <li>Homepage feature placement</li>
             <li>Featured in category pages</li>
             <li>Priority product placement in products</li>

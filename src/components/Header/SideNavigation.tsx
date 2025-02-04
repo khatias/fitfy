@@ -93,7 +93,7 @@ const SideNavigation: React.FC<SideNavigationProps> = ({
                 <div className="flex items-center space-x-3">
                   <Link href="/profile">
                     <Image
-                      src={profile?.avatar_url ?? defaultAvatar.src}
+                      src={profile?.profile?.avatar_url ?? defaultAvatar.src}
                       alt="Profile Image"
                       width={40}
                       height={40}
@@ -102,10 +102,10 @@ const SideNavigation: React.FC<SideNavigationProps> = ({
                   </Link>
                   <div className="flex flex-col items-start">
                     <span className="text-base font-medium text-gray-800">
-                      {profile?.userName}
+                      {profile?.profile?.user_name}
                     </span>
                     <span className="text-sm text-gray-500">
-                      {profile?.email}
+                      {profile?.profile?.email}
                     </span>
                   </div>
                 </div>

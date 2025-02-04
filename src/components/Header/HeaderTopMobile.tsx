@@ -172,9 +172,9 @@ function HeaderTopMobile() {
                 ref={profileDropdownRef}
                 className="hidden lg:block absolute right-0 mt-2 w-60 rounded-lg shadow-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700"
               >
-                {profile?.firstName && (
+                {profile?.profile?.first_name && (
                   <div className="px-4 py-3 text-customRed font-medium text-xl border-b border-gray-200 dark:border-b-gray-700">
-                    {profile.firstName}
+                    {profile.profile.first_name}
                   </div>
                 )}
                 <Link

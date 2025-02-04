@@ -8,16 +8,6 @@ export async function handleSubmitProfileChange(
 ) {
   setLoading(true);
   try {
-    // Make API call to update profile on the server
-    const res = await fetch("api/update-profile", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
-    const result = await res.json();
-    console.log(formData);
-
-    // Fetch the authenticated user
     const { data: user, error: sessionError } = await supabase.auth.getUser();
 
     if (sessionError) {
@@ -32,39 +22,34 @@ export async function handleSubmitProfileChange(
       return;
     }
 
-    
-    const { data:data ,error: updateError } = await supabase
+    const { data: updateData, error: updateError } = await supabase
       .from("profiles")
       .update({
-        first_name: formData.firstName,
-        last_name: formData.lastName,
-        user_name: formData.userName,
+        first_name: formData.first_name,
+        last_name: formData.last_name,
+        user_name: formData.user_name,
         location: formData.location,
-        phone_number: formData.phoneNumber,
+        phone_number: formData.phone_number,
         avatar_url: formData.avatar_url,
-        address_street: formData.address.street,
-        address_city: formData.address.city,
-        address_state: formData.address.state,
-        address_postal_code: formData.address.postalCode,
-        address_country: formData.address.country,
+        address_street: formData.address_street,
+        address_city: formData.address_city,
+        address_state: formData.address_state,
+        address_postal_code: formData.address_postal_code,
+        address_country: formData.address_country,
       })
       .eq("user_id", user.user.id);
-console.log(user.user.id)
+
     if (updateError) {
       console.error("Error updating profile:", updateError.message);
       alert(`Failed to update profile: ${updateError.message}`);
+      return;
     }
-if(data){
-  console.log(data)
-}
-    // If update is successful, show success message
-    if (res.ok) {
-      alert("Profile updated successfully!");
-      setIsEditing(false);
-    } else {
-      console.error("Error updating profile:", result.error);
-      alert(`Failed to update profile: ${result.error || "Unknown error"}`);
+
+    if (updateData) {
+      console.log("Updated profile data:", updateData);
     }
+
+    setIsEditing(false);
   } catch (err) {
     console.error("Network error:", err);
     alert("Network error. Please try again.");

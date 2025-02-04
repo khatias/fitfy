@@ -47,7 +47,7 @@ const Input: React.FC<InputProps> = ({
           onBlur={() => setIsFocused(false)}
           aria-invalid={!!error}
           aria-describedby={error ? `${name}-error` : undefined}
-          className={`w-full p-4 pl-12 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border transition-all duration-300
+          className={`w-full p-4 pl-8 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border 
             border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-0 
             ${isFocused ? "shadow-inner" : ""}
             ${error ? "border-red-500" : ""}
