@@ -63,7 +63,7 @@ export default async function ResultPage(props: {
     stripe_price_id: product.stripe_price_id,
     user_id: userId,
     name: product.name,
-    name_: product.name_ka,
+    name_ka: product.name_ka,
     price: product.price,
     image: product.primary_image,
     product_id: product.id,

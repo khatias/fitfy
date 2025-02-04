@@ -1,5 +1,10 @@
 import { createClient } from "@/utils/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
+import Stripe from "stripe";
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
+  apiVersion: "2024-12-18.acacia",
+});
 
 export async function GET(req: NextRequest) {
   const url = new URL(req.url);
@@ -13,29 +18,36 @@ export async function GET(req: NextRequest) {
   const supabase = await createClient();
 
   try {
-    // Exchange the authorization code for a session (this step completes the OAuth flow)
-    const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
+    const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(
+      code
+    );
 
     if (exchangeError) {
       console.error("Error exchanging code for session:", exchangeError);
-      return NextResponse.json({ error: "Failed to authenticate" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Failed to authenticate" },
+        { status: 400 }
+      );
     }
 
-    // Wait for the session to be set and get the user
     const { data: user, error: sessionError } = await supabase.auth.getUser();
 
     if (sessionError) {
       console.error("Error retrieving user:", sessionError);
-      return NextResponse.json({ error: "Failed to get user" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Failed to get user" },
+        { status: 400 }
+      );
     }
 
-    // Check if user exists and has a valid user.id
     if (!user || !user.user.id) {
       console.error("User ID is missing from the session.");
-      return NextResponse.json({ error: "User ID is missing" }, { status: 400 });
+      return NextResponse.json(
+        { error: "User ID is missing" },
+        { status: 400 }
+      );
     }
 
-    // Fetch the user's profile
     const { data: profile, error: profileError } = await supabase
       .from("profiles")
       .select("*")
@@ -46,15 +58,13 @@ export async function GET(req: NextRequest) {
       console.error("Profile fetch error:", profileError);
 
       if (!profile) {
-        // If profile doesn't exist, create one
         const newProfile = {
           user_id: user.user.id,
           email: user.user.email,
-          first_name: "", // Default value for first name
-          last_name: "",  // Default value for last name
-          avatar_url: null // Avatar URL from user metadata
+          first_name: "",
+          last_name: "",
+          avatar_url: null,
         };
-
 
         const { error: insertProfileError } = await supabase
           .from("profiles")
@@ -62,26 +72,73 @@ export async function GET(req: NextRequest) {
 
         if (insertProfileError) {
           console.error("Profile creation failed:", insertProfileError);
-          return NextResponse.json({ error: "Failed to create profile" }, { status: 500 });
+          return NextResponse.json(
+            { error: "Failed to create profile" },
+            { status: 500 }
+          );
         }
 
         console.log("Profile created successfully for user:", user.user.id);
+
+        try {
+          const customer = await stripe.customers.create({
+            email: user.user.email,
+          });
+
+          const { error: updateError } = await supabase
+            .from("profiles")
+            .update({ stripe_customer_id: customer.id })
+            .eq("user_id", user.user.id);
+
+          if (updateError) {
+            console.error("Failed to link Stripe customer:", updateError);
+            return NextResponse.json(
+              { error: "Failed to link Stripe customer" },
+              { status: 500 }
+            );
+          }
+
+          console.log("Stripe customer created:", customer.id);
+        } catch (stripeError: unknown) {
+          if (stripeError instanceof Error) {
+            console.error("Stripe customer creation failed:", stripeError.message);
+            return NextResponse.json(
+              {
+                error: `Failed to create Stripe customer: ${stripeError.message}`,
+              },
+              { status: 500 }
+            );
+          } else {
+            console.error("Unexpected error during Stripe customer creation:", stripeError);
+            return NextResponse.json(
+              { error: "An unknown error occurred during Stripe customer creation." },
+              { status: 500 }
+            );
+          }
+        }
       } else {
-        // If the profileError isn't PGRST100, log the error and return
-        console.error("Unknown profile fetch error:", profileError);
-        return NextResponse.json({ error: "Failed to fetch user profile",  });
+        console.log("Profile already exists for user:", user.user.id);
       }
     } else {
       console.log("Profile already exists for user:", user.user.id);
     }
 
-    // Successfully authenticated and profile creation if necessary
-    console.log("Google login and profile creation successful!");
+    console.log("OAuth login and profile creation successful!");
 
-    // Redirect user back to the locale's main page
     return NextResponse.redirect(`${url.origin}/${locale}`);
-  } catch (err) {
-    console.error("Error during authentication process:", err);
-    return NextResponse.json({ error: "An error occurred during the authentication process" }, { status: 500 });
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      console.error("Error during authentication process:", err.message);
+      return NextResponse.json(
+        { error: `An error occurred during the authentication process: ${err.message}` },
+        { status: 500 }
+      );
+    } else {
+      console.error("Unexpected error during authentication process:", err);
+      return NextResponse.json(
+        { error: "An unknown error occurred during the authentication process." },
+        { status: 500 }
+      );
+    }
   }
 }

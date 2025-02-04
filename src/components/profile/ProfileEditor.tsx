@@ -11,12 +11,28 @@ import { Profile } from "@/types/profile";
 import { handleProfileFieldChange } from "@/utils/profile/handleProfileFieldChange";
 import { handleSubmitProfileChange } from "@/utils/profile/handleSubmitProfileChange";
 import { uploadFile } from "@/utils/files/uploadFile";
+
 export default function ProfileEditor({ profile }: { profile: Profile }) {
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState<Profile>(profile);
   const [loading, setLoading] = useState(false);
   const [activeSection, setActiveSection] = useState("accountInfo");
   const [avatarPreview, setAvatarPreview] = useState(profile.avatar_url || "");
+  
+  const handleManageSubscription = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("api/create-portal-session", {
+        method: "POST",
+      });
+      const { url } = await response.json();
+      window.location.href = url;
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     handleProfileFieldChange(e, setFormData);
@@ -107,9 +123,13 @@ export default function ProfileEditor({ profile }: { profile: Profile }) {
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
               Hello, {formData.firstName ? formData.firstName : "User"}!
             </h2>
+            <h3></h3>
             <p className="text-sm text-gray-600 dark:text-gray-400">
               {formData.email || "No email provided"}
             </p>
+            <button onClick={handleManageSubscription} disabled={loading}>
+              {loading ? "Loading..." : "Manage Subscription"}
+            </button>
           </div>
         </div>
         <input
