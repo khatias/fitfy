@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useTranslations } from "next-intl";
 import { formDataType } from "@/types/formData";
-
+import FormLanguageToggle from "../toggle/FormLanguageToggle";
 interface GeneralStepProps {
   formData: formDataType;
   handleProductTypeChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -17,7 +17,7 @@ export function GeneralStep({
   handleInputChange,
   handleUploadImage,
 }: GeneralStepProps) {
-  const t = useTranslations("GeneralStep");
+  const t = useTranslations("ProductForm");
   const te = useTranslations("FormErrors");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [showGeorgian, setShowGeorgian] = useState(false);
@@ -71,24 +71,13 @@ export function GeneralStep({
     setErrors((prev) => ({ ...prev, [name]: error }));
   };
 
-  const handleToggle = () => {
-    setShowGeorgian(!showGeorgian);
-  };
-
   return (
     <div className="lg:w-[576px] lg:h-[490px] justify-between">
-      {/* Toggle Language Button */}
-      <button
-        type="button"
-        onClick={handleToggle}
-        className={`mt-2 p-3 rounded-full text-sm font-semibold shadow-md mb-2 ${
-          showGeorgian
-            ? "bg-green-600 text-white hover:bg-green-700"
-            : "bg-gray-300 text-gray-800 hover:bg-gray-400"
-        } transition-all duration-300 transform `}
-      >
-        {showGeorgian ? "Switch to English" : "Switch to Georgian"}
-      </button>
+      <FormLanguageToggle
+        showGeorgian={showGeorgian}
+        setShowGeorgian={setShowGeorgian}
+      />
+
       <p>{t("question")}</p>
       <div className="flex space-x-4">
         <div className="border py-3 px-4 flex items-center gap-2 mt-2">
@@ -138,7 +127,7 @@ export function GeneralStep({
                 : "border-gray-300"
             }`}
             placeholder={
-              showGeorgian ? "შეიყვანე პროდუქტის სახელი" : t("nameplacholder")
+              showGeorgian ? "შეიყვანე პროდუქტის სახელი" : "Enter Product Name"
             }
             value={showGeorgian ? formData.name_ka : formData.name}
             onChange={handleInputChange}
@@ -155,7 +144,7 @@ export function GeneralStep({
         <div className="flex flex-col space-y-2">
           <label
             htmlFor="price"
-            className="text-sm font-medium text-gray-700 dark:text-gray-300"
+            className="block text-sm font-medium transition-all duration-300"
           >
             {t("price")}
           </label>
@@ -163,7 +152,8 @@ export function GeneralStep({
             type="number"
             id="price"
             name="price"
-            className={`w-full p-3 rounded border ${
+            className={`w-full p-4 pl-8 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border 
+            border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-0  ${
               errors.price ? "border-red-500" : "border-gray-300"
             }`}
             placeholder={t("priceplacholder")}
@@ -243,7 +233,7 @@ export function GeneralStep({
             placeholder={
               showGeorgian
                 ? "შეიყვანეთ მოკლე აღწერა პროდუქტის შესახებ"
-                : t("descriptionplacholder")
+                : "Enter a brief description of the product"
             }
             value={
               showGeorgian ? formData.description_ka : formData.description_en

@@ -189,7 +189,7 @@ export function CreateProductForm() {
   const prevStep = () => setStep((prevStep) => Math.max(prevStep - 1, 1));
 
   return (
-    <div className="w-full m-auto container max-w-5xl">
+    <div className="w-full m-auto container max-w-[1300px]">
       <h2 className="text-2xl text-center font-bold mb-6">{t("title")}</h2>
       {Object.values(formErrors).length > 0 && (
         <div className="text-red-500 text-sm mb-4 flex items-center justify-center gap-2">
@@ -199,7 +199,7 @@ export function CreateProductForm() {
         </div>
       )}
 
-      <div className="lg:flex  m-auto lg:justify-between max-w-5xl ">
+      <div className="lg:flex  m-auto lg:justify-between max-w-1300px] ">
         <div className="flex items-center justify-start gap-8 pb-8 lg:flex-col lg:items-start lg:min-w-60">
           <button
             onClick={() => setStep(1)}
