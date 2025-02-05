@@ -15,6 +15,7 @@ import { ImagesStep } from "./ImagesStep";
 import { Category, Material, Condition, Color } from "@/types/product";
 import { formDataType } from "@/types/formData";
 import { SuccessProductCreation } from "../modals/SuccessProductCreation";
+
 export function CreateProductForm() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [materials, setMaterials] = useState<Material[]>([]);
@@ -328,116 +329,120 @@ export function CreateProductForm() {
     //   />
     // </div>
     <div className="w-full m-auto mt-10 max-w-[900px] px-6 min-h-screen">
-  <h2 className="text-2xl font-bold text-center mb-6 lg:mb-14">{t("title")}</h2>
+      <h2 className="text-2xl font-bold text-center mb-6 lg:mb-14">
+        {t("title")}
+      </h2>
 
-  {/* Error Messages */}
-  {Object.values(formErrors).length > 0 && (
-    <div className="text-red-500 text-sm mb-4 flex items-center justify-center gap-2">
-      {Object.values(formErrors).map((error, index) => (
-        <p key={index}>{error}</p>
-      ))}
-    </div>
-  )}
-
-  <div className="lg:flex lg:justify-between gap-8 mb-10">
-    <div className="flex items-center justify-start gap-8 lg:flex-col lg:items-start lg:min-w-[280px]">
-      {["general", "details", "images"].map((stepLabel, index) => {
-        const stepIndex = index + 1;
-        return (
-          <button
-            key={stepLabel}
-            onClick={() => setStep(stepIndex)}
-            className={`w-10 h-10 rounded-full transition-colors duration-300 lg:w-auto lg:h-auto ${step === stepIndex
-              ? "bg-black text-white font-semibold border-2 border-gray-200 lg:bg-gray-200 lg:text-black lg:rounded-none lg:min-w-full lg:py-2"
-              : "bg-white border-2 border-gray-200 text-black lg:border-none lg:px-6 lg:py-2"
-              } flex items-center justify-center lg:justify-start lg:items-start lg:pl-2`}
-          >
-            <span className={`text-md lg:hidden ${step === stepIndex ? "text-white" : "text-black"}`}>
-              {stepIndex}
-            </span>
-            <span className="hidden lg:block">{t(stepLabel)}</span>
-          </button>
-        );
-      })}
-    </div>
-
-    {/* Step Components */}
-    <div className="lg:w-[576px]">
-      {step === 1 && (
-        <GeneralStep
-          formData={formData}
-          handleProductTypeChange={handleProductTypeChange}
-          handleInputChange={handleInputChange}
-          handleUploadImage={handleUploadImage}
-        />
-      )}
-
-      {step === 2 && (
-        <ProductDetailsStep
-          formData={formData}
-          handleSelectChange={handleSelectChange}
-          handleProductTypeChange={handleProductTypeChange}
-          handleInputChange={handleInputChange}
-          handleUploadImage={handleUploadImage}
-          isVintage={isVintage}
-          setIsVintage={setIsVintage}
-          categories={categories}
-          materials={materials}
-          conditions={conditions}
-          colors={colors}
-        />
-      )}
-
-      {step === 3 && (
-        <div className="flex flex-col justify-between items-end">
-          <ImagesStep
-            formData={formData}
-            handleUploadImage={handleUploadImage}
-            handleMultipleImageUpload={handleMultipleImageUpload}
-          />
-          <div className="flex justify-center mt-6">
-            <button
-              type="submit"
-              onClick={handleSubmit}
-              className="px-16 py-3 bg-black text-white rounded-sm hover:bg-gray-800 transition-colors duration-300"
-            >
-              {t("submit")}
-            </button>
-          </div>
+      {/* Error Messages */}
+      {Object.values(formErrors).length > 0 && (
+        <div className="text-red-500 text-sm mb-4 flex items-center justify-center gap-2">
+          {Object.values(formErrors).map((error, index) => (
+            <p key={index}>{error}</p>
+          ))}
         </div>
       )}
+
+      <div className="lg:flex lg:justify-between gap-8 mb-10">
+        <div className="flex items-center justify-start gap-8 lg:flex-col lg:items-start lg:min-w-[280px]">
+          {["general", "details", "images"].map((stepLabel, index) => {
+            const stepIndex = index + 1;
+            return (
+              <button
+                key={stepLabel}
+                onClick={() => setStep(stepIndex)}
+                className={`w-10 h-10 rounded-full transition-colors duration-300 lg:w-auto lg:h-auto ${
+                  step === stepIndex
+                    ? "bg-black text-white font-semibold border-2 border-gray-200 lg:bg-gray-200 lg:text-black lg:rounded-none lg:min-w-full lg:py-2"
+                    : "bg-white border-2 border-gray-200 text-black lg:border-none lg:px-6 lg:py-2"
+                } flex items-center justify-center lg:justify-start lg:items-start lg:pl-2`}
+              >
+                <span
+                  className={`text-md lg:hidden ${
+                    step === stepIndex ? "text-white" : "text-black"
+                  }`}
+                >
+                  {stepIndex}
+                </span>
+                <span className="hidden lg:block">{t(stepLabel)}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Step Components */}
+        <div className="lg:w-[576px]">
+          {step === 1 && (
+            <GeneralStep
+              formData={formData}
+              handleProductTypeChange={handleProductTypeChange}
+              handleInputChange={handleInputChange}
+              handleUploadImage={handleUploadImage}
+            />
+          )}
+
+          {step === 2 && (
+            <ProductDetailsStep
+              formData={formData}
+              handleSelectChange={handleSelectChange}
+              handleProductTypeChange={handleProductTypeChange}
+              handleInputChange={handleInputChange}
+              handleUploadImage={handleUploadImage}
+              isVintage={isVintage}
+              setIsVintage={setIsVintage}
+              categories={categories}
+              materials={materials}
+              conditions={conditions}
+              colors={colors}
+            />
+          )}
+
+          {step === 3 && (
+            <div className="flex flex-col justify-between items-end">
+              <ImagesStep
+                formData={formData}
+                handleUploadImage={handleUploadImage}
+                handleMultipleImageUpload={handleMultipleImageUpload}
+              />
+              <div className="flex justify-center mt-6">
+                <button
+                  type="submit"
+                  onClick={handleSubmit}
+                  className="px-16 py-3 bg-black text-white rounded-md hover:bg-gray-800 transition-colors duration-300"
+                >
+                  {t("submit")}
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="flex justify-between space-x-4 mt-8 lg:justify-end">
+        {step !== 3 && step > 1 && (
+          <button
+            onClick={prevStep}
+            disabled={step === 1}
+            className="px-6 py-3 bg-black text-white rounded-md hover:bg-gray-800 transition-colors duration-300"
+          >
+            {t("previous")}
+          </button>
+        )}
+
+        {step !== 3 && (
+          <button
+            onClick={nextStep}
+            disabled={step === 3}
+            className="px-6 py-3 bg-black text-white rounded-md hover:bg-gray-800 transition-colors duration-300"
+          >
+            {t("next")}
+          </button>
+        )}
+      </div>
+
+      <SuccessProductCreation
+        isOpen={showSuccessModal}
+        onClose={() => setShowSuccessModal(false)}
+      />
     </div>
-  </div>
-
-  {/* Navigation Buttons */}
-  <div className="flex justify-between space-x-4 mt-8 lg:justify-end">
-    {step !== 3 && step > 1 && (
-      <button
-        onClick={prevStep}
-        disabled={step === 1}
-        className="px-6 py-3 bg-black text-white rounded-sm hover:bg-gray-800 transition-colors duration-300"
-      >
-        {t("previous")}
-      </button>
-    )}
-
-    {step !== 3 && (
-      <button
-        onClick={nextStep}
-        disabled={step === 3}
-        className="px-6 py-3 bg-black text-white rounded-md hover:bg-gray-800 transition-colors duration-300"
-      >
-        {t("next")}
-      </button>
-    )}
-  </div>
-
-  {/* Success Modal */}
-  <SuccessProductCreation
-    isOpen={showSuccessModal}
-    onClose={() => setShowSuccessModal(false)}
-  />
-</div>
-
   );
 }

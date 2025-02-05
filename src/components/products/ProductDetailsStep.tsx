@@ -1,4 +1,3 @@
-// ProductDetailsStep.tsx
 "use client";
 import React, { useState } from "react";
 import { Material, Condition, Color, Category } from "@/types/product";
