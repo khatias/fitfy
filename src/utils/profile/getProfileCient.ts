@@ -12,7 +12,7 @@ export function useProfile() {
       const { data: user, error: sessionError } = await supabase.auth.getUser();
 
       if (sessionError || !user?.user) {
-        console.error("Error fetching user:", sessionError?.message);
+        console.log("Error fetching user:", sessionError?.message);
         setLoading(false);
         return;
       }
