@@ -74,14 +74,11 @@ export function GeneralStep({
 
   return (
     <div className="w-full  justify-between">
- 
-
       <p className="mb-4 text-xl font-medium text-gray-900 dark:text-gray-100">
         {t("question")}
       </p>
 
       <div className="mt-4 flex space-x-8 pb-6">
-        
         <label className="inline-flex items-center relative cursor-pointer">
           <input
             type="radio"
@@ -141,10 +138,10 @@ export function GeneralStep({
         </label>
       </div>
       <div className="space-y-4">
-      <FormLanguageToggle
-        showGeorgian={showGeorgian}
-        setShowGeorgian={setShowGeorgian}
-      />
+        <FormLanguageToggle
+          showGeorgian={showGeorgian}
+          setShowGeorgian={setShowGeorgian}
+        />
         <div className="flex flex-col space-y-1">
           <label
             htmlFor={showGeorgian ? "name_ka" : "name"}
@@ -175,57 +172,57 @@ export function GeneralStep({
           )}
         </div>
         <div className="flex w-full justify-between gap-x-3">
-        <div className="flex flex-col space-y-1 w-full ">
-          <label
-            htmlFor="price"
-            className="block text-sm font-medium transition-all duration-300"
-          >
-            {t("price")}
-          </label>
-          <input
-            type="number"
-            id="price"
-            name="price"
-            className={`w-full p-3 rounded-md border
+          <div className="flex flex-col space-y-1 w-full ">
+            <label
+              htmlFor="price"
+              className="block text-sm font-medium transition-all duration-300"
+            >
+              {t("price")}
+            </label>
+            <input
+              type="number"
+              id="price"
+              name="price"
+              className={`w-full p-3 rounded-md border
         ${
           errors.price
             ? "border-red-500 animate-shake focus:ring-red-500"
             : "border-gray-300 dark:border-gray-700 focus:ring-blue-500 dark:focus:ring-blue-500"
         }`}
-            placeholder={t("priceplacholder")}
-            value={formData.price}
-            onChange={handleInputChange}
-            onBlur={handleBlur}
-          />
-          {errors.price && (
-            <span className="text-red-500 text-sm">{errors.price}</span>
-          )}
-        </div>
-        <div className="flex flex-col space-y-1 w-full">
-          <label
-            htmlFor="brand"
-            className="block text-sm font-medium transition-all duration-300"
-          >
-            {t("brand")}
-          </label>
-          <input
-            type="text"
-            id="brand"
-            name="brand"
-            className={`w-full p-3 rounded-md border ${
-              errors.brand
-                ? "border-red-500 animate-shake focus:ring-red-500"
-                : "border-gray-300 dark:border-gray-700 focus:ring-blue-500 dark:focus:ring-blue-500"
-            }`}
-            placeholder={t("brandplacholder")}
-            value={formData.brand}
-            onChange={handleInputChange}
-            onBlur={handleBlur}
-          />
-          {errors.brand && (
-            <span className="text-red-500 text-sm">{errors.brand}</span>
-          )}
-        </div>
+              placeholder={t("priceplacholder")}
+              value={formData.price}
+              onChange={handleInputChange}
+              onBlur={handleBlur}
+            />
+            {errors.price && (
+              <span className="text-red-500 text-sm">{errors.price}</span>
+            )}
+          </div>
+          <div className="flex flex-col space-y-1 w-full">
+            <label
+              htmlFor="brand"
+              className="block text-sm font-medium transition-all duration-300"
+            >
+              {t("brand")}
+            </label>
+            <input
+              type="text"
+              id="brand"
+              name="brand"
+              className={`w-full p-3 rounded-md border ${
+                errors.brand
+                  ? "border-red-500 animate-shake focus:ring-red-500"
+                  : "border-gray-300 dark:border-gray-700 focus:ring-blue-500 dark:focus:ring-blue-500"
+              }`}
+              placeholder={t("brandplacholder")}
+              value={formData.brand}
+              onChange={handleInputChange}
+              onBlur={handleBlur}
+            />
+            {errors.brand && (
+              <span className="text-red-500 text-sm">{errors.brand}</span>
+            )}
+          </div>
         </div>
         <ImageUpload
           labelText={t("chooseImage")}

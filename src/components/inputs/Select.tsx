@@ -7,7 +7,7 @@
 // //     onBlur?: (e: React.FocusEvent<HTMLSelectElement>) => void;
 // //     error?: string;
 // //   }
-  
+
 // //   const Select: React.FC<SelectProps> = ({
 // //     label,
 // //     name,
@@ -42,7 +42,7 @@
 // //       </div>
 // //     );
 // //   };
-  
+
 // //   export default Select;
 //   interface SelectProps {
 //   label: string;
@@ -92,6 +92,8 @@
 // };
 
 // export default Select;
+import { useTranslations } from "next-intl";
+
 interface SelectProps {
   label: string;
   name: string;
@@ -111,9 +113,14 @@ const Select: React.FC<SelectProps> = ({
   onBlur,
   error,
 }) => {
+  const t = useTranslations("ProductForm");
+
   return (
     <div>
-      <label htmlFor={name} className="block font-medium">
+      <label
+        htmlFor={name}
+        className="block text-sm font-medium transition-all duration-300"
+      >
         {label}
       </label>
       <select
@@ -123,9 +130,11 @@ const Select: React.FC<SelectProps> = ({
         onChange={onChange}
         onBlur={onBlur}
         required
-        className="w-full border rounded p-2"
+        className="w-full border rounded p-3"
       >
-        <option value="">Select {label}</option>
+        <option value="">
+          {t("select")} {label}
+        </option>
         {options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}

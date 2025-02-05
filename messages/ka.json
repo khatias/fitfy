@@ -74,7 +74,8 @@
     "lowtohigh": "ფასი ზრდადობით",
     "hightolow": "ფასი კლებადობით",
     "search": "მოძებნე პროდუქტი",
-    "chooseImage": "აირჩიე ფოტო"
+    "chooseImage": "აირჩიე ფოტო",
+    "select": "აირჩიე"
   },
   "FormErrors": {
     "required": "ეს ველი სავალდებულოა.",
