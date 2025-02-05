@@ -9,7 +9,6 @@ export async function fetchCategories() {
     console.error("Error fetching category:", error);
     return [];
   } else {
-    console.log("Categories:", data);
     return data;
   }
 }
@@ -22,7 +21,6 @@ export async function fetchConditions() {
     console.error("Error fetching conditions:", error);
     return [];
   } else {
-    console.log("Conditions:", data);
     return data;
   }
 }
@@ -35,7 +33,6 @@ export async function fetchMaterials() {
     console.error("Error fetching materials:", error);
     return [];
   } else {
-    console.log("Materials:", data);
     return data;
   }
 }
@@ -48,7 +45,6 @@ export async function fetchColors() {
     console.error("Error fetching colors:", error);
     return [];
   } else {
-    console.log("colors:", data);
     return data;
   }
 }
@@ -150,7 +146,7 @@ export const updateProduct = async (product: ProductType) => {
   const supabase = await createClient();
 
   // Logging for debugging
-  console.log('Updating product:', product);
+  console.log("Updating product:", product);
 
   const { error } = await supabase
     .from("products")
@@ -162,10 +158,10 @@ export const updateProduct = async (product: ProductType) => {
       description_ka: product.description_ka,
       primary_image: product.primary_image,
       product_gender_id: product.product_gender_id,
-      product_category_id: product.product_category_id, 
-      // product_material_id: product.product_material_id, 
-      // product_color_id: product.product_color_id, 
-      // product_condition_id: product.product_condition_id, 
+      product_category_id: product.product_category_id,
+      // product_material_id: product.product_material_id,
+      // product_color_id: product.product_color_id,
+      // product_condition_id: product.product_condition_id,
     })
     .eq("id", product.id);
 
@@ -178,11 +174,10 @@ export const updateProduct = async (product: ProductType) => {
   const updatedProduct = await getMyProductById(product.id);
 
   if (updatedProduct) {
-    console.log('Updated product successfully:', updatedProduct);
+    console.log("Updated product successfully:", updatedProduct);
   } else {
-    console.log('Failed to fetch updated product');
+    console.log("Failed to fetch updated product");
   }
 
   return product;
 };
-

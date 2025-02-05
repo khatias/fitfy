@@ -14,18 +14,27 @@ import { ProductDetailsStep } from "./ProductDetailsStep";
 import { ImagesStep } from "./ImagesStep";
 import { Category, Material, Condition, Color } from "@/types/product";
 import { formDataType } from "@/types/formData";
-import { SuccessProductCreation } from "../modals/SuccessProductCreation";
+import { Modal } from "../modals/Modal";
+
+import { useProfile } from "@/utils/profile/getProfileCient";
+import { supabase } from "@/utils/supabase/supabaseClient";
+
 export function CreateProductForm() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [materials, setMaterials] = useState<Material[]>([]);
   const [colors, setColors] = useState<Color[]>([]);
   const [conditions, setConditions] = useState<Condition[]>([]);
   const [isVintage, setIsVintage] = useState(false);
-  const [showSuccessModal, setShowSuccessModal] = useState(false); 
+  const [showLimitModal, setShowLimitModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
+  const profile = useProfile();
+  const productCount = profile.profile?.product_count ?? 0;
+
+  console.log(productCount);
   const [formData, setFormData] = useState<formDataType>({
     name: "",
-    name_ka:"",
+    name_ka: "",
     price: "",
     brand: "",
     description_en: "",
@@ -150,7 +159,7 @@ export function CreateProductForm() {
     if (!formData.condition) errors.condition = te("conditionError");
     if (!formData.color) errors.color = te("colorError");
     if (!formData.size) errors.size = te("sizeError");
-    
+
     setFormErrors(errors);
     if (Object.keys(errors).length > 0) return;
     const formDataToSubmit = new FormData();
@@ -174,6 +183,30 @@ export function CreateProductForm() {
     formData.images.forEach((image, index) => {
       formDataToSubmit.append(`image_${index + 1}`, image);
     });
+    if (productCount <= 0) {
+      setShowLimitModal(true);
+      return;
+    } else {
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+
+      if (userError || !user) {
+        console.log(userError);
+        return;
+      }
+
+      const userId = user.id;
+      const { error: updateError } = await supabase
+        .from("profiles")
+        .update({ product_count: productCount - 1 })
+        .eq("user_id", userId);
+
+      if (updateError) {
+        console.log(updateError);
+      }
+    }
 
     const response = await createProduct(formDataToSubmit);
 
@@ -189,8 +222,11 @@ export function CreateProductForm() {
   const prevStep = () => setStep((prevStep) => Math.max(prevStep - 1, 1));
 
   return (
-    <div className="w-full m-auto container max-w-5xl">
-      <h2 className="text-2xl text-center font-bold mb-6">{t("title")}</h2>
+    <div className="w-full m-auto mt-10 max-w-[900px] px-6 min-h-screen mb-20">
+      <h2 className="text-2xl font-bold text-center mb-6 lg:mb-14">
+        {t("title")}
+      </h2>
+
       {Object.values(formErrors).length > 0 && (
         <div className="text-red-500 text-sm mb-4 flex items-center justify-center gap-2">
           {Object.values(formErrors).map((error, index) => (
@@ -199,116 +235,88 @@ export function CreateProductForm() {
         </div>
       )}
 
-      <div className="lg:flex  m-auto lg:justify-between max-w-5xl ">
-        <div className="flex items-center justify-start gap-8 pb-8 lg:flex-col lg:items-start lg:min-w-60">
-          <button
-            onClick={() => setStep(1)}
-            className={`w-10 h-10 rounded-full transition-colors duration-300 lg:w-auto lg:h-auto   ${
-              step === 1
-                ? "bg-black border-[1px] border-gray-200  lg:bg-gray-200 lg:rounded-none lg: py-2 lg:border-none lg:min-w-full lg:font-semibold "
-                : "bg-white border-2 border-gray-200 lg:border-none   lg:px-6 py-2 "
-            } flex items-center justify-center lg:justify-start lg:items-start lg:pl-2`}
-          >
-            <span
-              className={`text-md lg:hidden ${
-                step === 1 ? "text-white" : "text-black "
-              }`}
-            >
-              1
-            </span>
-            <span className="hidden lg:block">{t("general")}</span>
-          </button>
-          <button
-            onClick={() => setStep(2)}
-            className={`w-10 h-10 rounded-full transition-colors duration-300 lg:w-auto lg:h-auto ${
-              step === 2
-                ? "bg-black border-[1px] border-gray-200  lg:bg-gray-200 lg:rounded-none lg:py-2 lg:border-none lg:min-w-full lg:font-semibold"
-                : "bg-white border-2 border-gray-200 lg:border-none "
-            } flex items-center justify-center lg:justify-start lg:items-start lg:pl-2`}
-          >
-            <span
-              className={`text-md lg:hidden ${
-                step === 2 ? "text-white" : "text-black"
-              }`}
-            >
-              2
-            </span>
-            <span className="hidden lg:block">{t("details")}</span>
-          </button>
-          <button
-            onClick={() => setStep(3)}
-            className={`w-10 h-10 rounded-full transition-colors duration-300 lg:w-auto lg:h-auto${
-              step === 3
-                ? "bg-black border-[1px] border-gray-200  lg:bg-gray-200 lg:rounded-none lg:py-2 lg:border-none lg:min-w-full lg:font-semibold"
-                : "bg-white border-2 border-gray-200 lg:border-none "
-            } flex items-center justify-center lg:justify-start lg:items-start lg:pl-2`}
-          >
-            <span
-              className={`text-md lg:hidden ${
-                step === 3 ? "text-white" : "text-black "
-              }`}
-            >
-              3
-            </span>
-            <span className="hidden lg:block">{t("images")}</span>
-          </button>
+      <div className="lg:flex lg:justify-between gap-8 mb-10">
+        <div className="flex items-center justify-start gap-8 lg:flex-col lg:items-start lg:min-w-[280px]">
+          {["general", "details", "images"].map((stepLabel, index) => {
+            const stepIndex = index + 1;
+            return (
+              <button
+                key={stepLabel}
+                onClick={() => setStep(stepIndex)}
+                className={`w-10 h-10 rounded-full transition-colors duration-300 lg:w-auto lg:h-auto ${
+                  step === stepIndex
+                    ? "bg-black text-white font-semibold border-2 border-gray-200 lg:bg-gray-200 lg:text-black lg:rounded-none lg:min-w-full lg:py-2"
+                    : "bg-white border-2 border-gray-200 text-black lg:border-none lg:px-6 lg:py-2"
+                } flex items-center justify-center lg:justify-start lg:items-start lg:pl-2`}
+              >
+                <span
+                  className={`text-md lg:hidden ${
+                    step === stepIndex ? "text-white" : "text-black"
+                  }`}
+                >
+                  {stepIndex}
+                </span>
+                <span className="hidden lg:block">{t(stepLabel)}</span>
+              </button>
+            );
+          })}
         </div>
 
-        {/* Step 1: Item Type */}
-        {step === 1 && (
-          <GeneralStep
-            formData={formData}
-            handleProductTypeChange={handleProductTypeChange}
-            handleInputChange={handleInputChange}
-            handleUploadImage={handleUploadImage}
-          />
-        )}
-
-        {/* Step 2: Product Details */}
-        {step === 2 && (
-          <ProductDetailsStep
-            formData={formData}
-            handleSelectChange={handleSelectChange}
-            handleProductTypeChange={handleProductTypeChange}
-            handleInputChange={handleInputChange}
-            handleUploadImage={handleUploadImage}
-            isVintage={isVintage}
-            setIsVintage={setIsVintage}
-            categories={categories}
-            materials={materials}
-            conditions={conditions}
-            colors={colors}
-          />
-        )}
-
-        {/* Step 3: Images */}
-        {step === 3 && (
-          <div className="flex flex-col lg:w-[576px] lg:h-[490px] justify-between items-end">
-            <ImagesStep
+        <div className="lg:w-[576px]">
+          {step === 1 && (
+            <GeneralStep
               formData={formData}
+              handleProductTypeChange={handleProductTypeChange}
+              handleInputChange={handleInputChange}
               handleUploadImage={handleUploadImage}
-              handleMultipleImageUpload={handleMultipleImageUpload}
             />
-            <div className="flex justify-center mt-6">
-              <button
-                type="submit"
-                onClick={handleSubmit}
-                className="px-16 py-3 bg-black text-white rounded-sm"
-              >
-             {t("submit")}
-              </button>
+          )}
+
+          {step === 2 && (
+            <ProductDetailsStep
+              formData={formData}
+              handleSelectChange={handleSelectChange}
+              handleProductTypeChange={handleProductTypeChange}
+              handleInputChange={handleInputChange}
+              handleUploadImage={handleUploadImage}
+              isVintage={isVintage}
+              setIsVintage={setIsVintage}
+              categories={categories}
+              materials={materials}
+              conditions={conditions}
+              colors={colors}
+            />
+          )}
+
+          {step === 3 && (
+            <div className="flex flex-col justify-between items-end">
+              <ImagesStep
+                formData={formData}
+                handleUploadImage={handleUploadImage}
+                handleMultipleImageUpload={handleMultipleImageUpload}
+              />
+              <div className="flex justify-center mt-6">
+                <button
+                  type="submit"
+                  onClick={handleSubmit}
+                  className="px-16 py-3 bg-black text-white rounded-md hover:bg-gray-800 transition-colors duration-300"
+                >
+                  {t("submit")}
+                </button>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
-      <div className="flex space-x-4 mt-8  lg:justify-end">
+
+      <div className="flex justify-between space-x-4 mt-8 lg:justify-end">
         {step !== 3 && step > 1 && (
           <button
             onClick={prevStep}
             disabled={step === 1}
-            className="px-4 py-2 bg-black text-white rounded-sm"
+            className="px-6 py-3 bg-black text-white rounded-md hover:bg-gray-800 transition-colors duration-300"
           >
-          {t("previous")}
+            {t("previous")}
           </button>
         )}
 
@@ -316,15 +324,28 @@ export function CreateProductForm() {
           <button
             onClick={nextStep}
             disabled={step === 3}
-            className="px-4 py-2 bg-black text-white rounded-sm"
+            className="px-6 py-3 bg-black text-white rounded-md hover:bg-gray-800 transition-colors duration-300"
           >
-          {t("next")}
+            {t("next")}
           </button>
         )}
       </div>
-      <SuccessProductCreation 
-        isOpen={showSuccessModal} 
-        onClose={() => setShowSuccessModal(false)}  // Close the modal
+
+      <Modal
+        isOpen={showSuccessModal}
+        onClose={() => setShowSuccessModal(false)}
+        title="Success!"
+        message="Your product has been created successfully."
+        buttonText="Go to Products"
+        link="/products"
+      />
+      <Modal
+        isOpen={showLimitModal}
+        onClose={() => setShowLimitModal(false)}
+        title="Limit Reached"
+        message="You have reached your product limit."
+        buttonText="Upgrade Plan"
+        link="/subscription"
       />
     </div>
   );

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Material, Condition, Color, Category } from "@/types/product";
 import { useTranslations } from "next-intl";
 import { formDataType } from "@/types/formData";
+import Select from "../inputs/Select";
 
 interface ProductDetailsStepProps {
   formData: formDataType;
@@ -32,146 +33,83 @@ export function ProductDetailsStep({
   setIsVintage,
 }: ProductDetailsStepProps) {
   const locale = window.location.pathname.split("/")[1];
-  const t = useTranslations("ProductDetailsStep");
+  const t = useTranslations("ProductForm");
   const te = useTranslations("FormErrors");
-  
+
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  // Validation function, similar to how it's done in GeneralStep
   const validateField = (name: string, value: string | number | null) => {
     let error = "";
 
-    if (name === "category" && !value) {
-      error = te("required");
-    }
-    if (name === "material" && !value) {
-      error = te("required");
-    }
-    if (name === "condition" && !value) {
-      error = te("required");
-    }
-    if (name === "color" && !value) {
-      error = te("required");
-    }
-    if (name === "size" && !value) {
+    if (!value) {
       error = te("required");
     }
 
     setErrors((prev) => ({ ...prev, [name]: error }));
   };
 
-  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleBlur = (
+    e: React.FocusEvent<HTMLSelectElement | HTMLInputElement>
+  ) => {
     const { name, value } = e.target;
     validateField(name, value);
   };
 
   return (
-    <div className="space-y-6 lg:w-[576px] lg:h-[490px] justify-between">
-      {/* Category */}
-      <div>
-        <label htmlFor="category" className="block font-medium">
-          {t("category")}
-        </label>
-        <select
-          id="category"
-          name="category"
-          value={formData.category}
-          onChange={handleSelectChange}
-          onBlur={handleBlur}
-          required
-          className="w-full border rounded p-2"
-        >
-          <option value="">{t("selectcategory")}</option>
-          {categories.map((category: Category) => (
-            <option
-              key={category.product_category_id}
-              value={category.product_category_id}
-            >
-              {locale === "en" ? category.category_en : category.category_ka}
-            </option>
-          ))}
-        </select>
-        {errors.category && <span className="text-red-500">{errors.category}</span>}
-      </div>
+    <div className="space-y-6  justify-between">
+      <Select
+        label={t("category")}
+        name="category"
+        value={formData.category}
+        options={categories.map((category) => ({
+          value: category.product_category_id,
+          label: locale === "en" ? category.category_en : category.category_ka,
+        }))}
+        onChange={handleSelectChange}
+        onBlur={handleBlur}
+        error={errors.category}
+      />
 
-      {/* Material */}
-      <div>
-        <label htmlFor="material" className="block font-medium">
-          {t("material")}
-        </label>
-        <select
-          id="material"
-          name="material"
-          onChange={handleSelectChange}
-          onBlur={handleBlur}
-          value={formData.material}
-          className="w-full p-3 rounded border"
-        >
-          <option value="">{t("selectmaterial")}</option>
-          {materials.map((material: Material) => (
-            <option
-              key={material.product_material_id}
-              value={material.product_material_id}
-            >
-              {locale === "en" ? material.material_en : material.material_ka}
-            </option>
-          ))}
-        </select>
-        {errors.material && <span className="text-red-500">{errors.material}</span>}
-      </div>
+      <Select
+        label={t("material")}
+        name="material"
+        value={formData.material}
+        options={materials.map((material) => ({
+          value: material.product_material_id,
+          label: locale === "en" ? material.material_en : material.material_ka,
+        }))}
+        onChange={handleSelectChange}
+        onBlur={handleBlur}
+        error={errors.material}
+      />
 
-      {/* Condition */}
-      <div>
-        <label htmlFor="condition" className="block font-medium">
-          {t("condition")}
-        </label>
-        <select
-          id="condition"
-          name="condition"
-          onChange={handleSelectChange}
-          onBlur={handleBlur}
-          value={formData.condition}
-          className="w-full p-3 rounded border"
-        >
-          <option value="">{t("selectcondition")}</option>
-          {conditions.map((condition) => (
-            <option
-              key={condition.product_condition_id}
-              value={condition.product_condition_id}
-            >
-              {locale === "en"
-                ? condition.condition_en
-                : condition.condition_ka}
-            </option>
-          ))}
-        </select>
-        {errors.condition && <span className="text-red-500">{errors.condition}</span>}
-      </div>
+      <Select
+        label={t("condition")}
+        name="condition"
+        value={formData.condition}
+        options={conditions.map((condition) => ({
+          value: condition.product_condition_id,
+          label:
+            locale === "en" ? condition.condition_en : condition.condition_ka,
+        }))}
+        onChange={handleSelectChange}
+        onBlur={handleBlur}
+        error={errors.condition}
+      />
 
-      {/* Color */}
-      <div>
-        <label htmlFor="color" className="block font-medium">
-          {t("color")}
-        </label>
-        <select
-          id="color"
-          name="color"
-          onChange={handleSelectChange}
-          onBlur={handleBlur}
-          value={formData.color}
-          className="w-full p-3 rounded border"
-        >
-          <option value="">{t("selectcolor")}</option>
-          {colors.map((color) => (
-            <option key={color.product_color_id} value={color.product_color_id}>
-              {locale === "en" ? color.color_en : color.color_ka}
-            </option>
-          ))}
-        </select>
-        {errors.color && <span className="text-red-500">{errors.color}</span>}
-      </div>
+      <Select
+        label={t("color")}
+        name="color"
+        value={formData.color}
+        options={colors.map((color) => ({
+          value: color.product_color_id,
+          label: locale === "en" ? color.color_en : color.color_ka,
+        }))}
+        onChange={handleSelectChange}
+        onBlur={handleBlur}
+        error={errors.color}
+      />
 
-      {/* Vintage Checkbox */}
       <div className="flex items-center space-x-2">
         <input
           type="checkbox"
@@ -183,17 +121,16 @@ export function ProductDetailsStep({
         />
         <label
           htmlFor="vintage"
-          className="text-sm font-medium text-gray-700 dark:text-gray-300"
+          className="block text-sm font-medium transition-all duration-300"
         >
           {t("vintage")}
         </label>
       </div>
 
-      {/* Size */}
       <div className="flex flex-col space-y-2">
         <label
           htmlFor="size"
-          className="text-sm font-medium text-gray-700 dark:text-gray-300"
+          className="block text-sm font-medium transition-all duration-300"
         >
           {t("size")}
         </label>

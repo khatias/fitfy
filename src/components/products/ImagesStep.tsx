@@ -2,10 +2,10 @@
 import React from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { ArrowTrendingDownIcon } from "@heroicons/react/20/solid";
+import { CloudArrowUpIcon } from "@heroicons/react/20/solid";
 interface ImagesStepProps {
   formData: {
-    images: string[]; // Array to store image URLs
+    images: string[];
   };
   handleUploadImage: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleMultipleImageUpload: (
@@ -17,7 +17,7 @@ export function ImagesStep({
   formData,
   handleMultipleImageUpload,
 }: ImagesStepProps) {
-  const t = useTranslations("ImagesStep");
+  const t = useTranslations("ProductForm");
 
   return (
     <div className="space-y-6">
@@ -29,7 +29,7 @@ export function ImagesStep({
       </label>
 
       <div className="mt-4 grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4">
-        {Array(4)
+        {Array(8)
           .fill(null)
           .map((_, index) => (
             <div key={index} className="relative group">
@@ -47,7 +47,7 @@ export function ImagesStep({
                     className="object-cover rounded-lg"
                   />
                 ) : (
-                  <ArrowTrendingDownIcon className="h-16 w-16 text-gray-400" />
+                  <CloudArrowUpIcon className="h-16 w-10 text-gray-400" />
                 )}
               </div>
 
@@ -56,7 +56,7 @@ export function ImagesStep({
                 id={`image-${index}`}
                 accept="image/*"
                 onChange={handleMultipleImageUpload}
-                className="absolute inset-0 opacity-0 cursor-pointer z-10" 
+                className="absolute inset-0 opacity-0 cursor-pointer z-10"
               />
               <div className="absolute inset-0 bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
             </div>
