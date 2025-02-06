@@ -1,29 +1,41 @@
 {
   "HomePage": {
     "title": "Welcome to Our Store!",
-    "about": "Learn more about us"
+    "about": "Learn more about us",
+    "discoverBags": "Discover Bags",
+    "discoverglasses": "Discover Glasses",
+    "discoverAccessories": "Discover Accessories",
+    "shopnow": "Shop Now",
+    "subscriptionTitle": "  Unlock More Selling Potential!",
+    "subscriptionDesc": "Become a subscriber and increase your product limits to expand your sales opportunities. Get access to exclusive features",
+    "upgrade": "Upgrade Your Account",
+    "accessores": "Accessores",
+    "clothing": "Clothing",
+    "coats": "Coats",
+    "shoes": "Shoes",
+    "jewellery": "jewellery",
+    "dresses": "Dresses"
   },
- "General": {
+  "General": {
     "success": "Blog Updated successfully",
     "close": "close",
     "title": "title"
   },
-  
-    "Contact": {
-      "fullname": "Full Name",
-      "email": "Email Address",
-      "message": "Message",
-      "messageplaceholder": "Type your message",
-      "submit": "Submit",
-      "required": {
-        "name": "Full name is required",
-        "email": "Email address is required",
-        "message": "Message is required"
-      },
-      "invalidEmail": "Invalid email address"
+
+  "Contact": {
+    "fullname": "Full Name",
+    "email": "Email Address",
+    "message": "Message",
+    "messageplaceholder": "Type your message",
+    "submit": "Submit",
+    "required": {
+      "name": "Full name is required",
+      "email": "Email address is required",
+      "message": "Message is required"
     },
-  
-  
+    "invalidEmail": "Invalid email address"
+  },
+
   "Header": {
     "headerBanner": "First order? Get 10% off your purchase with us!",
     "products": "products",
@@ -76,7 +88,7 @@
     "lowtohigh": "low to high",
     "hightolow": "high to low",
     "search": "search your product",
-    "chooseImage":"choose image",
+    "chooseImage": "choose image",
     "select": "select"
   },
   "FormErrors": {
@@ -116,7 +128,7 @@
     "editTblogTitle": "edit Your Blog",
     "description": "description",
     "save_changes": "save changes",
-    "upload_image":" upload photo",
-     "content": "content"
+    "upload_image": " upload photo",
+    "content": "content"
   }
 }
