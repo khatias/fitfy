@@ -39,7 +39,7 @@ export default async function LocaleLayout({
       <body
         className={`${notoSansGeorgian.variable} ${montserrat.variable} antialiased bg-white dark:bg-black text-black dark:text-white transition-colors duration-200 ease-in`}
       >
-        <NextIntlClientProvider messages={messages}>
+        <NextIntlClientProvider messages={messages} locale={locale}>
           <ThemeProvider defaultTheme="system" enableSystem attribute="class">
             <Banner/>
             <Header/>

@@ -1,4 +1,3 @@
-"use client";
 import Image, { StaticImageData } from "next/image";
 import { useState, useEffect } from "react";
 import { ArrowRightIcon } from "@heroicons/react/20/solid";
@@ -18,22 +17,27 @@ interface CarouselProps {
 const Carousel: React.FC<CarouselProps> = ({ items }) => {
   const t = useTranslations("HomePage");
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
 
+  // Use effect to handle the interval
   useEffect(() => {
-    if (isPaused) return;
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % items.length);
-    }, 3000);
+    }, 2000); // Change slides every 2 seconds
+
+    // Cleanup interval on unmount
     return () => clearInterval(interval);
-  }, [isPaused, items.length]);
+  }, [items.length]); // Re-run effect when the number of items changes
+
+  const handleNextSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % items.length);
+  };
+
+  const handlePreviousSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + items.length) % items.length);
+  };
 
   return (
-    <div
-      className="relative overflow-hidden rounded-lg"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
-    >
+    <div className="relative overflow-hidden rounded-lg">
       <div
         className="flex transition-transform duration-1000 ease-in-out"
         style={{ transform: `translateX(-${currentIndex * 100}%)` }}
@@ -66,6 +70,22 @@ const Carousel: React.FC<CarouselProps> = ({ items }) => {
             </div>
           </div>
         ))}
+      </div>
+      <div className="absolute top-1/2 left-0 transform -translate-y-1/2">
+        <button
+          onClick={handlePreviousSlide}
+          className="text-white p-2 bg-black rounded-full"
+        >
+          {"<"}
+        </button>
+      </div>
+      <div className="absolute top-1/2 right-0 transform -translate-y-1/2">
+        <button
+          onClick={handleNextSlide}
+          className="text-white p-2 bg-black rounded-full"
+        >
+          {">"}
+        </button>
       </div>
     </div>
   );

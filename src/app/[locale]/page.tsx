@@ -13,7 +13,7 @@ import dresses from "../../assets/dresses.jpg";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import Image from "next/image";
-
+import BlogsLanding from "@/components/blogs/BlogsLanding";
 export default function HomePage() {
   const t = useTranslations("HomePage");
 
@@ -93,7 +93,10 @@ export default function HomePage() {
         <Link href="./subscription"></Link>
       </section>
 
-      <section></section>
+      <section className="pt-10">
+        <h2 className="text-3xl font-semibold mb-4 dark:text-white">     {t("blogsTitle")}</h2>
+        <BlogsLanding />
+      </section>
     </div>
   );
 }
