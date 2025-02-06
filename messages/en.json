@@ -137,5 +137,10 @@
     "save_changes": "save changes",
     "upload_image": " upload photo",
     "content": "content"
+  },
+  "Cart": {
+    "CartIsEmpty": "Your cart is empty. Add some products to it!",
+    "remove": "remove",
+    "shopNow": "Shop Now"
   }
 }

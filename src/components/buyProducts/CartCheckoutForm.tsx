@@ -62,7 +62,7 @@ export default function CheckoutFormCart({
   return (
     <div className="flex justify-center">
       <button
-        className={`px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition ${
+        className={`px-8 py-3 bg-black text-white rounded-lg hover:bg-slate-700 transition ${
           loading ? "opacity-50 cursor-not-allowed" : ""
         }`}
         onClick={formAction}
