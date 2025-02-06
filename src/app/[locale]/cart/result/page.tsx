@@ -2,7 +2,8 @@ import type { Stripe } from "stripe";
 import { createClient } from "@/utils/supabase/server";
 import { stripe } from "@/lib/stripe/stripe";
 import type { JSX } from "react";
-import { Link } from "@/i18n/routing";
+
+import ResultComponent from "@/components/result/ResultComponent";
 
 export default async function ResultPage(props: {
   searchParams: Promise<{ session_id: string }>;
@@ -20,10 +21,8 @@ export default async function ResultPage(props: {
 
   console.log("metadata", checkoutSession.metadata);
 
-  // Get all line items (contains product and quantity details)
   const lineItems = checkoutSession.line_items?.data || [];
 
-  // Extract product quantities using Stripe price IDs
   const productQuantities: Record<string, number> = {};
   const stripePriceIds: string[] = [];
 
@@ -40,7 +39,6 @@ export default async function ResultPage(props: {
   console.log("Product Quantities:", productQuantities);
   console.log("Stripe Price IDs:", stripePriceIds);
 
-  // Fetch product details using the Stripe price_id (which should be mapped in Supabase)
   const { data: products, error: productError } = await supabase
     .from("products")
     .select("id, name, primary_image, price, name_ka, stripe_price_id")
@@ -58,7 +56,6 @@ export default async function ResultPage(props: {
 
   if (!userId) throw new Error("User is not authenticated.");
 
-  // Prepare order data for insertion
   const ordersData = products.map((product) => ({
     stripe_price_id: product.stripe_price_id,
     user_id: userId,
@@ -67,14 +64,11 @@ export default async function ResultPage(props: {
     price: product.price,
     image: product.primary_image,
     product_id: product.id,
-    quantity: productQuantities[product.stripe_price_id] || 1, // Assign correct quantity
-    session_id: checkoutSession.id, // Storing session_id for tracking
-    created_at: new Date(), // Adding timestamp
+    quantity: productQuantities[product.stripe_price_id] || 1,
+    session_id: checkoutSession.id,
+    created_at: new Date(),
   }));
 
-  console.log("Orders Data:", ordersData);
-
-  // Insert order records
   const { data: orderData, error: orderError } = await supabase
     .from("orders")
     .insert(ordersData);
@@ -87,11 +81,47 @@ export default async function ResultPage(props: {
   console.log("Order added:", orderData);
 
   return (
-    <div className="container">
-      <h1>Thank you for your purchase!</h1>
-      <p>Your order is confirmed.</p>
+    // <div className="min-h-[81vh] flex flex-col items-center justify-center px-6 py-10 bg-white dark:bg-gray-900">
+    //   <div className="max-w-lg text-center">
+    //     <h1 className="text-3xl md:text-3xl font-bold text-gray-800 dark:text-white mb-4">
+    //       Thank You for Your Purchase!
+    //     </h1>
+    //     <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-6">
+    //       Your order has been confirmed.
+    //     </p>
 
-      <Link href="/">Go to home</Link>
-    </div>
+    //     <div className="mb-6 flex flex-col sm:flex-row items-center justify-center gap-4">
+    //       <Link
+    //         href="/orders"
+    //         className="w-full sm:w-auto bg-customRed hover:bg-opacity-80 text-white font-bold py-3 px-6 rounded-lg text-lg transition text-center"
+    //       >
+    //         See My Orders
+    //       </Link>
+    //       <Link
+    //         href="/"
+    //         className="w-full sm:w-auto bg-black hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-300 font-bold py-3 px-6 rounded-lg text-lg transition text-center"
+    //       >
+    //         Continue Shopping
+    //       </Link>
+    //     </div>
+
+    //     <div className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">
+    //       <p className="mb-2">
+    //         Order details have been sent to your email address.
+    //       </p>
+    //       <p>
+    //         Have questions?{" "}
+    //         <Link
+    //           href="/contact"
+    //           className="text-customRed hover:underline font-medium"
+    //         >
+    //           Contact us
+    //         </Link>
+    //         .
+    //       </p>
+    //     </div>
+    //   </div>
+    // </div>
+    <ResultComponent />
   );
 }

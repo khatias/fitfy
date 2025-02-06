@@ -142,5 +142,14 @@
     "CartIsEmpty": "Your cart is empty. Add some products to it!",
     "remove": "remove",
     "shopNow": "Shop Now"
+  },
+  "result": {
+    "thank": "Thank You for Your Purchase!",
+    "orderConf": "Your order has been confirmed.",
+    "seeOrders": "See my Orders",
+    "contShopping": "Continue Shopping",
+    "ordershavebeensent": "Order details have been sent to your email address.",
+    "HaveQuestions": "Have questions?",
+    "contactUs": "contact us"
   }
 }
