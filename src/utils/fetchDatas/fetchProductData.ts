@@ -181,3 +181,19 @@ export const updateProduct = async (product: ProductType) => {
 
   return product;
 };
+
+export async function fetchVintageProducts() {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .eq("vintage", true) // Filter for products where vintage is true
+    .limit(5);
+
+  if (error) {
+    console.error("Error fetching vintage products:", error);
+    return [];
+  }
+
+  return data;
+}
