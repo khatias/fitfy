@@ -123,11 +123,22 @@
     "passwordplaceholder": "Enter Your Password",
     "signuptitle": "Create Your Account",
     "login": "log In",
+    "changePassword": "შეცვალე პაროლი",
+    "changePsswordText": "Enter a new password below to change your password",
+    "newPassword": "ახალი პაროლი",
+    "confirmPassword": "დაადასტურეთ პაროლი",
+    "backtologin": "Back to login",
     "loginTitle": "Welcome Back to Fitify! Let's Continue Your Journey!",
     "continue": "Sign in to Continue",
     "forgorPassword": "Forgot Password?",
     "ressetPasswordTItile": "Reset Your Password and Get Back on Track!",
-    "forgotPasswordText": "Enter your email to reset your password."
+    "forgotPasswordText": "Enter your email to reset your password.",
+    "modalTitle1": "We have sent a password reset email to",
+    "modalTitle2": "Please check your",
+    "modalTitle3": "to reset your password.",
+    "modalText": "Didn't receive the email? Check your spam folder or try again later.",
+    "passwordchangemodaltitle": "Password Changed Successfully",
+    "passwordchangemodaltext": "Your password has been updated successfully."
   },
   "Blog": {
     "title": "The Future of Fashion: What's In and What's Out",

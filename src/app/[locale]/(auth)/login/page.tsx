@@ -112,7 +112,7 @@ const LoginPage = () => {
                 onClick={() => setIsResetView(false)}
                 className="mt-4 text-gray-600 hover:underline dark:text-gray-300 text-center"
               >
-                Back to Login
+             {t("backtologin")} 
               </button>
             </>
           )}

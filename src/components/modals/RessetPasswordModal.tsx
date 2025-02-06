@@ -3,7 +3,7 @@
 import React from "react";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import { Link } from "@/i18n/routing";
-
+import { useTranslations } from "next-intl";
 interface ResetPasswordModalProps {
   email: string;
   isOpen: boolean;
@@ -19,7 +19,7 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
     const domain = email.split("@")[1];
     return domain ? `https://${domain}` : "#";
   };
-
+  const t = useTranslations("Auth");
   if (!isOpen) return null;
 
   return (
@@ -32,25 +32,22 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
           <XMarkIcon />
         </button>
 
-        <p className="text-lg text-gray-700 mb-6 mt-4">
-          We have sent a password reset email to <strong>{email}</strong>
-          Please check your{" "}
+        <p className="text-lg text-gray-700 mb-6 mt-4 ">
+          {t("modalTitle1")} <strong className="pr-2">{email}</strong>
+          {t("modalTitle2")}
           <a
             href={getEmailDomain()}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-500 hover:underline"
+            className="text-blue-500 hover:underline px-2"
           >
             inbox
-          </a>{" "}
-          to reset your password.
+          </a>
+          {t("modalTitle3")}
         </p>
-        <p className="text-md text-gray-500 mb-8">
-          Didn&apos;t receive the email? Check your spam folder or try again
-          later.
-        </p>
+        <p className="text-md text-gray-500 mb-8">{t("modalText")}</p>
         <button onClick={onClose}>
-          <Link href="/login">Go to Login</Link>
+          <Link href="/login"> {t("backtologin")} </Link>
         </button>
       </div>
     </div>
