@@ -94,7 +94,10 @@ export default function HomePage() {
       </section>
 
       <section className="pt-10">
-        <h2 className="text-3xl font-semibold mb-4 dark:text-white">     {t("blogsTitle")}</h2>
+        <h2 className="text-3xl font-semibold mb-4 dark:text-whiteyellow-400">
+          {" "}
+          {t("blogsTitle")}
+        </h2>
         <BlogsLanding />
       </section>
     </div>
