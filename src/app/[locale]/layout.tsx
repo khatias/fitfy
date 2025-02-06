@@ -6,6 +6,7 @@ import { Montserrat, Noto_Sans_Georgian } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import Header from "@/components/Header/Header";
 import Banner from "@/components/Header/Banner";
+import Footer from "@/components/Footer/Footer";
 import "../globals.css";
 
 interface LocaleLayoutProps {
@@ -44,6 +45,7 @@ export default async function LocaleLayout({
             <Banner/>
             <Header/>
             {children}
+            <Footer/>
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>
