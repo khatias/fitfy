@@ -52,7 +52,7 @@ export default async function Category({
   }
 
   return (
-    <div className="bg-gray-100 dark:bg-black pb-20">
+    <div className="bg-gray-100 dark:bg-black pb-20 min-h-screen">
       <div className="lg:grid grid-cols-5 max-w-[1300px] m-auto lg:pt-10 gap-8 ">
         {products.map((product) => (
           <ProductCard key={product.id} product={product as ProductType} />

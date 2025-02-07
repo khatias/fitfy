@@ -4,11 +4,12 @@ import { fetchCategories } from "@/utils/fetchDatas/fetchProductData";
 import { usePathname } from "next/navigation";
 import { Category } from "@/types/product";
 import { Link } from "@/i18n/routing";
-
+import { useTranslations } from "next-intl";
 function HeaderBottom() {
   const [categories, setCategories] = useState<Category[]>([]);
   const pathname = usePathname();
   const currentLocale = pathname.split("/")[1];
+  const t = useTranslations("Header");
 
   const getLocalizedText = (enText: string, kaText: string = "") => {
     return currentLocale === "en" ? enText : kaText;
@@ -31,7 +32,7 @@ function HeaderBottom() {
               href={`/products`}
               className="text-sm font-medium text-gray-800 dark:text-gray-200 pb-3 hover:text-customRed transition-all duration-300 ease-in-out relative"
             >
-              All Products
+             {t("all")}
             </Link>
           </li>
           {categories.map((category) => (

@@ -73,7 +73,8 @@
     "logOut": "გასვლა",
     "home": "მთავარი",
     "categories": "კატეგორიები",
-    "profile": "პროფილი"
+    "profile": "პროფილი",
+    "all": "ყველა"
   },
   "createProductForm": {
     "title": "გაყიდე პროდუქტი",
@@ -151,7 +152,8 @@
     "edit": "შეცვლა",
     "successTitle": "ნივთი დაემატა!",
     "successMessage": "თქვენი ნივთი წარმატებით დაემატა კალათში.",
-    "goToProducts": "პროდუქტები"
+    "goToProducts": "პროდუქტები",
+    "seller": "Seller"
   },
   "Auth": {
     "email": "ელფოსტა",

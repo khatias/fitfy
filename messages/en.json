@@ -24,7 +24,7 @@
     "title": "title",
     "hello": "hello",
     "myitems": " My items for sale",
-    "myBlogs": " My items for sale",
+    "myBlogs": " My Blogs",
     "myOrders": " My Orders",
     "limit": "Selling Limit:",
     "contactinformation": "Contact Information",
@@ -76,7 +76,8 @@
     "logOut": "log out",
     "home": "home",
     "categories": "categories",
-    "profile": "profile"
+    "profile": "profile",
+    "all":"all"
   },
   "createProductForm": {
     "title": "Sell an Item",
@@ -154,7 +155,8 @@
     "edit": "edit",
     "successTitle": "Item Added!",
     "successMessage": "Your item has been added to the cart successfully.",
-    "goToProducts": "Go to products"
+    "goToProducts": "Go to products",
+    "seller":"Seller"
   },
   "Auth": {
     "email": "Email Adress",

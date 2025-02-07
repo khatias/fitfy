@@ -50,7 +50,6 @@ const Page: React.FC = () => {
               first_name: profileData?.first_name,
               last_name: profileData?.last_name,
               avatar_url: profileData?.avatar_url,
-              username: profileData?.username,
             };
           })
         );
@@ -156,6 +155,7 @@ const Page: React.FC = () => {
                       sizes="100vw"
                       style={{ objectFit: "cover" }}
                       className="rounded-t-lg border-b-2 border-b-gray-100"
+                      priority
                     />
                   </div>
                 )}
@@ -179,14 +179,6 @@ const Page: React.FC = () => {
                         className="rounded-full"
                       />
                     )}
-                    <div>
-                      <p className="text-gray-700 dark:text-gray-200 font-medium">
-                        {post.username || "Unknown"} {post.last_name || ""}
-                      </p>
-                      <p className="text-gray-400 dark:text-gray-500 text-xs">
-                      {t("author")}
-                      </p>
-                    </div>
                   </div>
                 </div>
               </div>

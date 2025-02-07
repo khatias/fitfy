@@ -46,9 +46,12 @@ interface ProductType {
   product_material?: ProductMaterial | null;
   product_color_id?: number;
   product_color?: ProductColor | null;
-  primary_image?: string 
-  description_ka?:string
-  description_en?:string
+  primary_image?: string;
+  description_ka?: string;
+  description_en?: string;
   images?: string[];
-  brand?:string
+  brand?: string;
+  first_name?: string;
+  last_name?: string;
+  avatar_url?: string;
 }

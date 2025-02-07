@@ -45,10 +45,26 @@ export default async function ProductDetailPage({
   if (!product && error) {
     return <NotFound />;
   }
+  const { data: profileData, error: profileError } = await supabase
+  .from("profiles")
+  .select("first_name, last_name, avatar_url")
+  .eq("user_id", product.user_id)
+  .single();
+
+if (profileError) {
+  console.error(profileError);
+  return <div>Error fetching profile details. Please try again later.</div>;
+}
+const productData = {
+  ...product,
+  first_name: profileData?.first_name,
+  last_name: profileData?.last_name,
+  avatar_url: profileData?.avatar_url,
+};
 
   return (
     <div className="">
-      <ProductDetails product={product as ProductType} />
+      <ProductDetails product={productData as ProductType} />
     </div>
   );
 }
