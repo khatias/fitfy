@@ -7,6 +7,7 @@ import React from "react";
 import { usePathname } from "next/navigation";
 import { getLocalizedText } from "@/utils/localization/localization";
 import Loader from "../Loader/Loader";
+import { Link } from "@/i18n/routing";
 
 function BlogsLanding() {
   const [blogPosts, setBlogPosts] = useState<BlogPostType[] | null>(null);
@@ -45,11 +46,19 @@ function BlogsLanding() {
   }
 
   if (error) {
-    return <div className="text-red-500 dark:text-red-400">Error loading blog posts: {error.message}</div>;
+    return (
+      <div className="text-red-500 dark:text-red-400">
+        Error loading blog posts: {error.message}
+      </div>
+    );
   }
 
   if (!blogPosts || blogPosts.length === 0) {
-    return <div className="text-gray-800 dark:text-gray-300">No blog posts found.</div>;
+    return (
+      <div className="text-gray-800 dark:text-gray-300">
+        No blog posts found.
+      </div>
+    );
   }
 
   return (
@@ -57,23 +66,31 @@ function BlogsLanding() {
       {blogPosts.map((post) => (
         <div
           key={post.id}
-          className="bg-white dark:bg-gray-800  rounded-lg transition-transform transform shadow-sm dark:shadow-lg"
+          className="bg-white dark:bg-gray-800 rounded-lg transition-transform transform shadow-sm dark:shadow-lg"
         >
-          {post.featured_image && (
-            <div className="relative w-full mb-4 overflow-hidden rounded-lg">
-              <Image
-                src={post.featured_image}
-                alt={post.title_en}
-                width={500}
-                height={200}
-                style={{ objectFit: "cover" }}
-                className=" w-full max-h-60 object-top"
-              />
-            </div>
-          )}
-          <h2 className="text-base font-semibold text-gray-800 dark:text-white mb-4 hover:text-blue-500 dark:hover:text-blue-400 transition duration-300">
-            {getLocalizedText(currentLocale, post.title_en || "", post.title_ka || "")}
-          </h2>
+          <Link key={post.id} href={`/blog/${post.id}`}>
+            {" "}
+            {/* Wrap the content inside Link */}
+            {post.featured_image && (
+              <div className="relative w-full mb-4 overflow-hidden rounded-lg">
+                <Image
+                  src={post.featured_image}
+                  alt={post.title_en}
+                  width={500}
+                  height={200}
+                  style={{ objectFit: "cover" }}
+                  className="w-full max-h-60 object-top"
+                />
+              </div>
+            )}
+            <h2 className="text-base font-semibold text-gray-800 dark:text-white mb-4 hover:text-blue-500 dark:hover:text-blue-400 transition duration-300">
+              {getLocalizedText(
+                currentLocale,
+                post.title_en || "",
+                post.title_ka || ""
+              )}
+            </h2>
+          </Link>
         </div>
       ))}
     </div>

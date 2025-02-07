@@ -201,11 +201,45 @@
     "ordershavebeensent": "Order details have been sent to your email address.",
     "HaveQuestions": "Have questions?",
     "contactUs": "contact us",
-    "orderDetails":"Order Details",
-    "orderON":"Ordered on:",
-    "paymentInformation":"Payment Information:",
-    "backtomyORders":"Back To My Orders:",
-    "HomePAge":"Go to Homepage:"
+    "orderDetails": "Order Details",
+    "orderON": "Ordered on:",
+    "paymentInformation": "Payment Information:",
+    "backtomyORders": "Back To My Orders:",
+    "HomePAge": "Go to Homepage:"
+  },
 
+"Subscription": {
+  "title": "Sell More. Earn More.",
+  "description": "Choose a plan that gives your fashion brand the visibility it deserves.",
+  "plans": {
+    "basicSeller": {
+      "name": "Basic Seller",
+      "price": "₾30/month",
+      "features": [
+        "List 15 products per month",
+        "Standard listing visibility"
+      ]
+    },
+    "premiumSeller": {
+      "name": "Premium Seller",
+      "price": "₾60/month",
+      "features": [
+        "List up to 50 products per month",
+        "Priority product placement in products",
+        "Featured in category pages"
+      ]
+    },
+    "brandPartner": {
+      "name": "Brand Partner",
+      "price": "₾100/month",
+      "features": [
+        "List up to 1000 products per month",
+        "Homepage feature placement",
+        "Featured in category pages",
+        "Priority product placement in products"
+      ]
+    }
   }
+}
+
 }

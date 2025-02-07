@@ -17,9 +17,19 @@ export async function middleware(req: NextRequest) {
   const session = data?.session;
 
   const isLoginPage = req.nextUrl.pathname.includes("/login");
-  const isRestrictedPage = ["/profile","create-product"].some((path) =>
-    req.nextUrl.pathname.includes(path)
-  );
+  const isRestrictedPage = [
+    "/profile",
+    "create-product",
+    "blog",
+    "orders",
+    "cart",
+    "my-products",
+    "my-blogs",
+    "category",
+    "contact",
+    "subscription",
+    "products"
+  ].some((path) => req.nextUrl.pathname.includes(path));
 
   if (!session && !isLoginPage && isRestrictedPage) {
     const locale = req.nextUrl.pathname.startsWith("/ka") ? "ka" : "en";
