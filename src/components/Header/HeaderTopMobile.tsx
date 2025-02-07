@@ -3,30 +3,29 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import { PlusIcon } from "@heroicons/react/20/solid";
 import { Link } from "@/i18n/routing";
 import { useLocale } from "next-intl";
-import SideNavigation from "./SideNavigation";
 import { useTranslations } from "next-intl";
+import SideNavigation from "./SideNavigation";
 import { handleLogout } from "@/utils/auth/handleLogout";
 import { useProfile } from "@/utils/profile/getProfileCient";
 import logo from "../../assets/logo.png";
 import Image from "next/image";
 
-function HeaderTopMobile() {
+const HeaderTopMobile = () => {
   const [session, setSession] = useState<boolean | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+
   const t = useTranslations("Header");
   const locale = useLocale();
   const profile = useProfile();
-
   const profileDropdownRef = useRef<HTMLDivElement | null>(null);
 
-  const toggleProfileDropdown = () => {
-    setIsProfileDropdownOpen((prev) => !prev);
-  };
-
-  const handleDrawerToggle = useCallback(() => {
-    setIsDrawerOpen((prev) => !prev);
-  }, []);
+  const toggleProfileDropdown = () => setIsProfileDropdownOpen((prev) => !prev);
+  const handleDrawerToggle = useCallback(
+    () => setIsDrawerOpen((prev) => !prev),
+    []
+  );
+  const closeDropdownAndNavigate = () => setIsProfileDropdownOpen(false);
 
   const closeDropdownIfClickedOutside = (e: MouseEvent) => {
     if (
@@ -50,7 +49,6 @@ function HeaderTopMobile() {
     };
 
     checkAuthStatus();
-
     document.addEventListener("mousedown", closeDropdownIfClickedOutside);
 
     return () => {
@@ -64,56 +62,132 @@ function HeaderTopMobile() {
     setSession(false);
   };
 
-  const closeDropdownAndNavigate = () => {
-    setIsProfileDropdownOpen(false);
+  const renderProfileDropdown = () => {
+    if (!profile?.profile) return null;
+
+    return (
+      <div
+        ref={profileDropdownRef}
+        className="absolute z-50 right-0 mt-2 w-72 rounded-xl shadow-lg bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 overflow-hidden"
+      >
+        <div className="px-6 py-4 text-customRed font-bold text-2xl border-b border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50">
+          {profile.profile.first_name}
+        </div>
+        <Link
+          href="/profile"
+          className="block py-3 px-6 hover:bg-gray-100 dark:hover:bg-gray-700/70 text-gray-800 dark:text-gray-300 transition duration-200 font-medium"
+          onClick={closeDropdownAndNavigate}
+        >
+          {t("profile")}
+        </Link>
+        <Link
+          href="/my-products"
+          className="block py-3 px-6 hover:bg-gray-100 dark:hover:bg-gray-700/70 text-gray-800 dark:text-gray-300 transition duration-200 font-medium"
+          onClick={closeDropdownAndNavigate}
+        >
+          {t("myProducts")}
+        </Link>
+        <button
+          onClick={handleLogoutAndCloseDropdown}
+          className="block py-3 px-6 hover:bg-gray-100 dark:hover:bg-gray-700/70 text-gray-800 dark:text-gray-300 transition duration-200 w-full text-left font-medium"
+        >
+          {t("logOut")}
+        </button>
+      </div>
+    );
+  };
+
+  const renderSessionStatus = () => {
+    if (session === null) {
+      return (
+        <div className="w-5 h-5 border-2 border-gray-300 border-t-customRed rounded-full animate-spin"></div>
+      );
+    }
+
+    if (session) {
+      return (
+        <div className="relative">
+          <button
+            onClick={toggleProfileDropdown}
+            className="hidden lg:flex items-center justify-between w-full py-2 px-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-200"
+          >
+            <div className="flex items-center space-x-2">
+              <svg
+                aria-hidden="true"
+                focusable="false"
+                viewBox="0 0 24 24"
+                role="img"
+                width="24px"
+                height="24px"
+                fill="none"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  d="M3.75 21v-3a3.75 3.75 0 013.75-3.75h9A3.75 3.75 0 0120.25 18v3M12 3.75a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5z"
+                ></path>
+              </svg>
+            </div>
+          </button>
+          {isProfileDropdownOpen && renderProfileDropdown()}
+        </div>
+      );
+    }
+
+    return (
+      <Link
+        href="/login"
+        className="hidden lg:flex items-center justify-between w-full py-2 px-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-200"
+      >
+        <div className="flex items-center space-x-2">
+          <svg
+            aria-hidden="true"
+            focusable="false"
+            viewBox="0 0 24 24"
+            role="img"
+            width="24px"
+            height="24px"
+            fill="none"
+          >
+            <path
+              stroke="currentColor"
+              strokeWidth="1.5"
+              d="M3.75 21v-3a3.75 3.75 0 013.75-3.75h9A3.75 3.75 0 0120.25 18v3M12 3.75a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5z"
+            ></path>
+          </svg>
+        </div>
+      </Link>
+    );
   };
 
   return (
-    <div className="flex w-full justify-between items-center px-6 pr-0 py-2 max-h-[60px] max-w-[1300px] m-auto border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
-      <div className="w-auto h-full">
+    <div className="flex w-full mt-2 justify-between items-center px-6 pr-0 max-h-14 max-w-[1300px] m-auto border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-black">
+      <Link
+        href="/create-product"
+        className="hidden lg:block px-6 py-2 rounded-md bg-black text-white font-medium shadow-clay transition duration-300 group relative overflow-hidden dark:bg-gray-600"
+      >
+        <span className="absolute inset-0 bg-red-200/0 transition-all duration-300 group-hover:bg-slate-950 rounded-md z-0"></span>
+        <span className="relative z-10">Sell</span>
+      </Link>
+
+      <div className="w-auto h-full pt-2">
         <Link href="/">
           <Image
             src={logo.src}
             alt="Product Logo"
-            width={150}
-            height={50}
+            width={130}
+            height={120}
             quality={100}
             priority
-            className="object-contain max-h-full"
+            className="object-cover"
           />
         </Link>
       </div>
-      <ul className="hidden lg:flex lg:space-x-20">
-        <li>
-          <Link
-            href="/products"
-            className="font-medium hover:text-gray-600 dark:hover:text-white transition duration-300"
-          >
-            {t("products")}
-          </Link>
-        </li>
-        <li>
-          <Link
-            href="/contact"
-            className="font-medium hover:text-gray-600 dark:hover:text-white transition duration-300"
-          >
-            {t("contact")}
-          </Link>
-        </li>
-        <li>
-          <Link
-            href="/aboutus"
-            className="font-medium hover:text-gray-600 dark:hover:text-white transition duration-300"
-          >
-            {t("aboutUs")}
-          </Link>
-        </li>
-      </ul>
 
       <div className="flex items-center gap-3 pr-3">
         <Link
           href="/create-product"
-          className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-200"
+          className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-200 lg:hidden"
         >
           <PlusIcon className="hidden md:block h-6 text-gray-800 dark:text-gray-300" />
         </Link>
@@ -139,91 +213,7 @@ function HeaderTopMobile() {
           </svg>
         </Link>
 
-        {session === null ? (
-          <div className="flex items-center justify-center">
-            <div className="w-5 h-5 border-2 border-gray-300 border-t-customRed rounded-full animate-spin"></div>
-          </div>
-        ) : session ? (
-          <div className="relative">
-            <button
-              onClick={toggleProfileDropdown}
-              className="hidden lg:flex items-center justify-between w-full py-2 px-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-200"
-            >
-              <div className="flex items-center space-x-2">
-                <svg
-                  aria-hidden="true"
-                  focusable="false"
-                  viewBox="0 0 24 24"
-                  role="img"
-                  width="24px"
-                  height="24px"
-                  fill="none"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    d="M3.75 21v-3a3.75 3.75 0 013.75-3.75h9A3.75 3.75 0 0120.25 18v3M12 3.75a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5z"
-                  ></path>
-                </svg>
-              </div>
-            </button>
-            {isProfileDropdownOpen && (
-              <div
-                ref={profileDropdownRef}
-                className="hidden lg:block absolute right-0 mt-2 w-60 rounded-lg shadow-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700"
-              >
-                {profile?.profile?.first_name && (
-                  <div className="px-4 py-3 text-customRed font-medium text-xl border-b border-gray-200 dark:border-b-gray-700">
-                    {profile.profile.first_name}
-                  </div>
-                )}
-                <Link
-                  href="/profile"
-                  className="block py-2 px-4 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-300 transition duration-200"
-                  onClick={() => closeDropdownAndNavigate()}
-                >
-                  {t("profile")}
-                </Link>
-                <Link
-                  href="/my-products"
-                  className="block py-2 px-4 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-300 transition duration-200"
-                  onClick={() => closeDropdownAndNavigate()}
-                >
-                  {t("myProducts")}
-                </Link>
-                <button
-                  onClick={handleLogoutAndCloseDropdown}
-                  className="block py-2 px-4 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-300 transition duration-200 w-full text-left"
-                >
-                  {t("logOut")}
-                </button>
-              </div>
-            )}
-          </div>
-        ) : (
-          <Link
-            href="/login"
-            className="hidden lg:flex items-center justify-between w-full py-2 px-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-200"
-          >
-            <div className="flex items-center space-x-2">
-              <svg
-                aria-hidden="true"
-                focusable="false"
-                viewBox="0 0 24 24"
-                role="img"
-                width="24px"
-                height="24px"
-                fill="none"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  d="M3.75 21v-3a3.75 3.75 0 013.75-3.75h9A3.75 3.75 0 0120.25 18v3M12 3.75a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5z"
-                ></path>
-              </svg>
-            </div>
-          </Link>
-        )}
+        {renderSessionStatus()}
 
         <button
           onClick={handleDrawerToggle}
@@ -254,6 +244,6 @@ function HeaderTopMobile() {
       />
     </div>
   );
-}
+};
 
 export default HeaderTopMobile;

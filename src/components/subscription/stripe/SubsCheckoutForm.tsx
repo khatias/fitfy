@@ -71,7 +71,7 @@ export default function SubsCheckoutForm({
     <>
       <h3>{planName}</h3>
       <button
-        className="block bg-pink-300 hover:bg-pink-800 transition-all text-white rounded-md px-10 py-4 mt-6 text-center"
+        className="block bg-black hover:bg-slate-700 transition-all text-white rounded-md px-10 py-4 mt-6 text-center"
         onClick={formAction}
         disabled={loading || !stripeCustomerId}
       >

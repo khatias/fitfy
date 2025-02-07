@@ -2,8 +2,11 @@
 import React, { useState } from "react";
 import { uploadFile } from "@/utils/files/uploadFile";
 import { createBlog } from "@/utils/blogs/blogCreator";
+import { useTranslations } from "next-intl";
 import Input from "../inputs/Input";
 import Image from "next/image";
+import { Link } from "@/i18n/routing";
+import FormLanguageToggle from "../toggle/FormLanguageToggle";
 
 export function CreateBlogForm() {
   const [formData, setFormData] = useState({
@@ -16,7 +19,7 @@ export function CreateBlogForm() {
     status: "Draft",
     featured_image: null as File | string | null,
   });
-
+  const t = useTranslations("Blog");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [showGeorgian, setShowGeorgian] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
@@ -87,9 +90,9 @@ export function CreateBlogForm() {
     try {
       const response = await createBlog(formDataToSubmit);
       if (response?.success) {
-        setSuccessMessage("Blog created successfully!");
+        setSuccessMessage(t("successMessage"));
         setTimeout(() => {
-          setSuccessMessage(""); 
+          setSuccessMessage("");
         }, 5000);
       } else {
         console.error("Error:", response?.message || "Unknown error");
@@ -100,32 +103,27 @@ export function CreateBlogForm() {
   };
 
   return (
-    <div className="flex justify-center items-center fixed inset-0 z-50 bg-black bg-opacity-50 overflow-y-auto">
-      <div className="bg-white dark:bg-gray-800 p-8 rounded-lg w-full max-w-3xl shadow-xl max-h-[90vh] overflow-y-auto">
+    <div className="flex  justify-center items-center fixed inset-0 z-50 bg-black bg-opacity-85 overflow-y-auto ">
+      <div className="bg-white relative dark:bg-gray-800 p-8 rounded-lg w-full max-w-3xl shadow-xl max-h-[90vh] overflow-y-auto">
         <h2 className="text-3xl font-bold text-gray-800 dark:text-white text-center pb-6">
-          Create Your Article
+          {t("createYourArticle")}
         </h2>
-
-        <div className="flex justify-end mb-4">
-          <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">
-            {showGeorgian ? "KA" : "EN"}
-          </label>
-          <button
-            type="button"
-            onClick={() => setShowGeorgian(!showGeorgian)}
-            className={`w-14 h-7 rounded-full relative transition duration-300 ${
-              showGeorgian ? "bg-red-500" : "bg-gray-300"
-            }`}
+        <div className="flex justify-between pb-4 items-center">
+          <FormLanguageToggle
+            showGeorgian={showGeorgian}
+            setShowGeorgian={setShowGeorgian}
+          />
+          <Link
+            href="/blog"
+            className="inline-flex absolute top-6 right-6 items-center justify-center w-10 h-10 bg-gray-100 hover:bg-gray-300 rounded-full transition duration-300 ease-in-out"
           >
-            <div
-              className={`absolute w-5 h-5 rounded-full bg-white shadow-sm left-1 top-1 transition duration-300 ${
-                showGeorgian ? "translate-x-7" : ""
-              }`}
-            />
-          </button>
+            <span className="text-black font-bold">X</span>
+          </Link>
         </div>
-
-        <form onSubmit={handleSubmit} className="space-y-6 overflow-y-auto max-h-[60vh] scroll-auto pr-2">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-6 overflow-y-auto max-h-[60vh] scroll-auto pr-2"
+        >
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
             <div>
               <Input
@@ -139,7 +137,7 @@ export function CreateBlogForm() {
             </div>
             <div className="mt-2">
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                Status
+                {t("status")}
               </label>
               <select
                 name="status"
@@ -147,12 +145,11 @@ export function CreateBlogForm() {
                 onChange={handleSelectChange}
                 className="w-full p-4 border rounded-lg shadow-sm bg-gray-100 dark:bg-gray-700  text-gray-700 dark:text-gray-300 focus:ring-indigo-500 dark:border-gray-600"
               >
-                <option value="Draft">Draft</option>
-                <option value="Published">Published</option>
+                <option value="Draft"> {t("draft")}</option>
+                <option value="Published"> {t("published")}</option>
               </select>
             </div>
           </div>
-
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
               {showGeorgian ? "კონტენტი" : "Content"}
@@ -177,7 +174,9 @@ export function CreateBlogForm() {
             </label>
             <textarea
               name={showGeorgian ? "description_ka" : "description_en"}
-              value={showGeorgian ? formData.description_ka : formData.description_en}
+              value={
+                showGeorgian ? formData.description_ka : formData.description_en
+              }
               onChange={handleInputChange}
               className="w-full p-4 border rounded-lg shadow-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 focus:ring-indigo-500 dark:border-gray-600"
             />
@@ -188,13 +187,12 @@ export function CreateBlogForm() {
             )}
           </div>
 
-          {/* Image Upload */}
           <div>
             <label
               htmlFor="image"
               className="block text-sm font-medium text-gray-700 dark:text-gray-300"
             >
-              Image
+              {t("chooseFile")}
             </label>
             <div className="mt-2 flex items-center">
               <label
@@ -214,7 +212,7 @@ export function CreateBlogForm() {
                   />
                 </svg>
                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Choose a file
+                  {t("chooseFile")}
                 </span>
                 <input
                   type="file"
@@ -231,7 +229,11 @@ export function CreateBlogForm() {
           {formData.featured_image && (
             <div className="mt-4">
               <Image
-                src={typeof formData.featured_image === "string" ? formData.featured_image : ""}
+                src={
+                  typeof formData.featured_image === "string"
+                    ? formData.featured_image
+                    : ""
+                }
                 alt="Featured Image"
                 width={500}
                 height={300}
@@ -251,7 +253,7 @@ export function CreateBlogForm() {
               type="submit"
               className="w-full sm:w-auto py-3 px-6 bg-customRed text-white font-medium rounded-lg shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-300 transition duration-300"
             >
-              Save Blog
+              {t("saveBlog")}
             </button>
           </div>
         </form>

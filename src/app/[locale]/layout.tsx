@@ -6,6 +6,7 @@ import { Montserrat, Noto_Sans_Georgian } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import Header from "@/components/Header/Header";
 import Banner from "@/components/Header/Banner";
+import Footer from "@/components/Footer/Footer";
 import "../globals.css";
 
 interface LocaleLayoutProps {
@@ -39,11 +40,12 @@ export default async function LocaleLayout({
       <body
         className={`${notoSansGeorgian.variable} ${montserrat.variable} antialiased bg-white dark:bg-black text-black dark:text-white transition-colors duration-200 ease-in`}
       >
-        <NextIntlClientProvider messages={messages}>
+        <NextIntlClientProvider messages={messages} locale={locale}>
           <ThemeProvider defaultTheme="system" enableSystem attribute="class">
             <Banner/>
             <Header/>
             {children}
+            <Footer/>
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

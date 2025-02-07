@@ -2,6 +2,7 @@ import React from "react";
 import { createClient } from "@/utils/supabase/server";
 import BlogPostDetails from "@/components/blogs/BlogPostDetails";
 import { BlogPostType } from "@/types/blog";
+import NotFound from "@/components/NotFound/NotFound";
 
 interface Params {
   id: string;
@@ -23,8 +24,10 @@ export default async function BlogPostDetailPage({
     .single();
 
   if (postError || !postData) {
-    console.error(postError);
-    return <div>Error fetching blog post details. Please try again later.</div>;
+    
+    return (
+    <NotFound/>
+    );
   }
 
   const { data: profileData, error: profileError } = await supabase

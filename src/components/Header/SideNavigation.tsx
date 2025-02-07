@@ -162,7 +162,7 @@ const SideNavigation: React.FC<SideNavigationProps> = ({
                 className="px-4 hover:bg-gray-100 transition duration-300 py-3 border-b dark:border-b-gray-700"
               >
                 <Link
-                  href={`category/${category.product_category_id}`}
+                   href={`/category/${category.product_category_id}`}
                   className="text-base font-medium text-gray-800 dark:text-gray-300 pb-3 hover:text-customRed transition-all duration-300 ease-in-out relative"
                   onClick={onClose}
                 >

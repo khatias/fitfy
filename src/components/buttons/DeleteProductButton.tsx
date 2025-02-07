@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { deleteProduct } from "@/utils/products/deleteProduct";
-
+import { useTranslations } from "next-intl";
 interface DeleteProductProps {
   id: number;
   onDelete: (productId: number) => void;
@@ -10,7 +10,7 @@ const DeleteProduct: React.FC<DeleteProductProps> = ({ id, onDelete }) => {
   const [modalMessage, setModalMessage] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [isConfirming, setIsConfirming] = useState(false);
-
+  const t = useTranslations("Products");
   const handleDeleteProduct = async () => {
     try {
       const result = await deleteProduct(id);
@@ -48,9 +48,9 @@ const DeleteProduct: React.FC<DeleteProductProps> = ({ id, onDelete }) => {
       <button
         data-cy="delete-my-product-button"
         onClick={openModal}
-        className="py-2 px-5 m-auto bg-purple-600 text-white rounded-md hover:bg-red-700 transition duration-200"
+        className="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-500 transition duration-300"
       >
-        Delete
+      {t("delete")}
       </button>
 
       {modalVisible && (
@@ -62,20 +62,20 @@ const DeleteProduct: React.FC<DeleteProductProps> = ({ id, onDelete }) => {
             {isConfirming ? (
               <>
                 <p data-cy="delete-confirmation-alert" className="mb-4 text-lg">
-                  Are you sure you want to delete this product?
+                  {t("deleteQuestion")}
                 </p>
                 <div className="flex justify-center gap-4">
                   <button
                     onClick={handleConfirmDelete}
                     className="py-2 px-4 bg-red-600 text-white rounded-md hover:bg-red-700 transition duration-200"
                   >
-                    Yes, Delete
+                    {t("yesDelete")}
                   </button>
                   <button
                     onClick={closeModal}
                     className="py-2 px-4 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition duration-200"
                   >
-                    Cancel
+                    {t("cancel")}
                   </button>
                 </div>
               </>

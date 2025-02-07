@@ -36,7 +36,7 @@ interface ProductInputProps {
           value={value}
           onChange={onChange}
           onBlur={onBlur}
-          className={`w-full p-3 rounded border ${className}`}
+          className={`w-full p-3 rounded border dark:border-gray-600 ${className}`}
           placeholder={placeholder}
         />
       </div>
