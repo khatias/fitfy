@@ -9,7 +9,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
 export async function GET(req: NextRequest) {
   const url = new URL(req.url);
   const code = url.searchParams.get("code");
-  const locale = url.pathname.split("/")[1];
+  // const locale = url.pathname.split("/")[1];
 
   if (!code) {
     return NextResponse.json({ error: "No code provided" }, { status: 400 });
@@ -125,7 +125,7 @@ export async function GET(req: NextRequest) {
 
     console.log("OAuth login and profile creation successful!");
 
-    return NextResponse.redirect(`${url.origin}/${locale}`);
+    return NextResponse.redirect(`https://fitify-app-chi.vercel.app/en`);
   } catch (err: unknown) {
     if (err instanceof Error) {
       console.error("Error during authentication process:", err.message);

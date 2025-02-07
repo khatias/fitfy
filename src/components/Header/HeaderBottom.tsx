@@ -26,14 +26,33 @@ function HeaderBottom() {
   return (
     <div className="hidden lg:flex m-auto max-w-[1300px] h-10 px-6 border-b border-gray-200 bg-white dark:bg-black">
       <nav aria-label="Product Categories" className="w-full">
-        <ul className="flex items-start justify-center space-x-12  w-full">
-          <li className="py-1 group relative">
+        <ul className="flex items-start justify-center space-x-10  w-full">
+        <li className="py-1 group relative">
             <Link
-              href={`/products`}
+              href={`/blog`}
               className="text-sm font-medium text-gray-800 dark:text-gray-200 pb-3 hover:text-customRed transition-all duration-300 ease-in-out relative"
             >
-             {t("all")}
+             {t("blog")}
             </Link>
+            
+          </li>
+          <li className="py-1 group relative">
+            <Link
+              href={`/contact`}
+              className="text-sm font-medium text-gray-800 dark:text-gray-200 pb-3 hover:text-customRed transition-all duration-300 ease-in-out relative"
+            >
+             {t("contact")}
+            </Link>
+            
+          </li>
+          <li className="py-1 group relative">
+            <Link
+              href={`/about-us`}
+              className="text-sm font-medium text-gray-800 dark:text-gray-200 pb-3 hover:text-customRed transition-all duration-300 ease-in-out relative"
+            >
+             {t("aboutUs")}
+            </Link>
+            
           </li>
           {categories.map((category) => (
             <li

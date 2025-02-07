@@ -156,13 +156,37 @@ const SideNavigation: React.FC<SideNavigationProps> = ({
           ) : null}
 
           <ul className="mt-2 w-full ">
+          <li className="px-4 hover:bg-gray-100 transition duration-300 py-3 border-b dark:border-b-gray-700">
+          <Link
+                href={`/blog`}
+                className="text-base font-medium text-gray-800 dark:text-gray-300 pb-3 hover:text-customRed transition-all duration-300 ease-in-out relative"
+              >
+                {t("blog")}
+              </Link>
+            </li>
+            <li className="px-4 hover:bg-gray-100 transition duration-300 py-3 border-b dark:border-b-gray-700">
+              <Link
+                href={`/contact`}
+                className="text-base font-medium text-gray-800 dark:text-gray-300 pb-3 hover:text-customRed transition-all duration-300 ease-in-out relative"
+              >
+                {t("contact")}
+              </Link>
+            </li>
+            <li className="px-4 hover:bg-gray-100 transition duration-300 py-3 border-b dark:border-b-gray-700">
+              <Link
+                href={`/about-us`}
+                className="text-base font-medium text-gray-800 dark:text-gray-300 pb-3 hover:text-customRed transition-all duration-300 ease-in-out relative"
+              >
+                {t("aboutUs")}
+              </Link>
+            </li>
             {categories.map((category) => (
               <li
                 key={category.product_category_id}
                 className="px-4 hover:bg-gray-100 transition duration-300 py-3 border-b dark:border-b-gray-700"
               >
                 <Link
-                   href={`/category/${category.product_category_id}`}
+                  href={`/category/${category.product_category_id}`}
                   className="text-base font-medium text-gray-800 dark:text-gray-300 pb-3 hover:text-customRed transition-all duration-300 ease-in-out relative"
                   onClick={onClose}
                 >
