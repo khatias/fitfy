@@ -64,7 +64,12 @@
     "images": "images",
     "next": "next",
     "previous": "previous",
-    "submit": "submit"
+    "submit": "submit",
+    "succssesProductadd": "Success!",
+    "succssesProductmessage": "Your Product has been created successfully",
+    "limittitle": "Limit Reached",
+    "limitText": "You have reached your product limit.",
+    "upgradePlan": "Upgrade Plan"
   },
   "ProductForm": {
     "question": "What type of product are you selling?",
@@ -119,7 +124,12 @@
     "sizeError": "Size is missing"
   },
   "Products": {
-    "addtocart": "Add to Cart"
+    "addtocart": "Add to Cart",
+    "deleteQuestion": "Are you sure you want to delete this product?",
+    "yesDelete": "Yes, Delete",
+    "cancel": "cancel",
+    "delete": "delete",
+    "edit": "edit"
   },
   "Auth": {
     "email": "Email Adress",
@@ -181,5 +191,21 @@
     "ordershavebeensent": "Order details have been sent to your email address.",
     "HaveQuestions": "Have questions?",
     "contactUs": "contact us"
+  },
+
+  "Orders": {
+    "quantity": "Quantity",
+    "viewDetails": "View Details",
+    "seeOrders": "See my Orders",
+    "noOrders": "You have no orders yet.",
+    "ordershavebeensent": "Order details have been sent to your email address.",
+    "HaveQuestions": "Have questions?",
+    "contactUs": "contact us",
+    "orderDetails":"Order Details",
+    "orderON":"Ordered on:",
+    "paymentInformation":"Payment Information:",
+    "backtomyORders":"Back To My Orders:",
+    "HomePAge":"Go to Homepage:"
+
   }
 }

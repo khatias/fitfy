@@ -7,7 +7,7 @@ interface ModalProps {
   title: string;
   message: string;
   buttonText: string;
-  link?: string; // Optional link prop
+  link?: string; 
 }
 
 export const Modal: React.FC<ModalProps> = ({

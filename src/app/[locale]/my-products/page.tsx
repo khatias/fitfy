@@ -6,11 +6,12 @@ import { ProductType } from "@/types/product";
 import Image from "next/image";
 import DeleteProduct from "@/components/buttons/DeleteProductButton";
 import { Link } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
 
 export default function MyProducts() {
   const [myProducts, setMyProducts] = useState<ProductType[]>([]);
   const [loading, setLoading] = useState(true);
-
+  const t = useTranslations("Products");
   useEffect(() => {
     const fetchMyProducts = async () => {
       try {
@@ -47,13 +48,13 @@ export default function MyProducts() {
   return (
     <div className="flex items-center justify-center flex-grow bg-gray-100 dark:bg-gray-900 pt-10 pb-10">
       {myProducts.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 max-w-[1300px] mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 max-w-[1300px] mx-auto">
           {myProducts.map((product) => (
             <div
               key={product.id}
-              className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm transition duration-300 hover:shadow-lg flex flex-col"
+              className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm transition duration-300 hover:shadow-lg flex flex-col"
             >
-              <div className="relative h-48 w-full overflow-hidden rounded-lg mb-4">
+              <div className="relative  w-full overflow-hidden rounded-lg mb-4">
                 <Image
                   src={product.primary_image || "/path/to/default/image.jpg"}
                   alt={product.name || "Product image"}
@@ -77,7 +78,7 @@ export default function MyProducts() {
                 <DeleteProduct id={product.id} onDelete={handleProductDelete} />
                 <Link href={`/my-products/${product.id}`}>
                   <button className="py-2 px-4 bg-black hover:bg-gray-800 text-white rounded-md transition duration-300">
-                    Edit Product
+                  {t("edit")}
                   </button>
                 </Link>
               </div>

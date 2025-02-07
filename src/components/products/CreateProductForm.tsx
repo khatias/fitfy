@@ -334,17 +334,17 @@ export function CreateProductForm() {
       <Modal
         isOpen={showSuccessModal}
         onClose={() => setShowSuccessModal(false)}
-        title="Success!"
-        message="Your product has been created successfully."
-        buttonText="Go to Products"
+        title={t("succssesProductadd")}
+        message={t("succssesProductmessage")}
+        buttonText={t("goToProducts")}
         link="/products"
       />
       <Modal
         isOpen={showLimitModal}
         onClose={() => setShowLimitModal(false)}
-        title="Limit Reached"
-        message="You have reached your product limit."
-        buttonText="Upgrade Plan"
+        title={t("limittitle")}
+        message={t("limitText")}
+        buttonText={t("upgradePlan")}
         link="/subscription"
       />
     </div>

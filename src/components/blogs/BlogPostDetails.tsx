@@ -44,11 +44,11 @@ const BlogPostDetails: React.FC<BlogPostDetailsProps> = ({ blogPost }) => {
 
       <div className="prose prose-lg dark:prose-dark mx-auto mb-8">
         <p>
-          {" "}
+       
           {getLocalizedText(
             blogPost.content_en || "",
             blogPost.content_ka || ""
-          )}{" "}
+          )}
         </p>
       </div>
 
