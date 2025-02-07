@@ -130,7 +130,10 @@
     "yesDelete": "Yes, Delete",
     "cancel": "cancel",
     "delete": "delete",
-    "edit": "edit"
+    "edit": "edit",
+    "successTitle": "Item Added!",
+    "successMessage": "Your item has been added to the cart successfully.",
+    "goToProducts": "Go to products"
   },
   "Auth": {
     "email": "Email Adress",
@@ -182,7 +185,8 @@
   "Cart": {
     "CartIsEmpty": "Your cart is empty. Add some products to it!",
     "remove": "remove",
-    "shopNow": "Shop Now"
+    "shopNow": "Shop Now",
+    "total": "Total"
   },
   "result": {
     "thank": "Thank You for Your Purchase!",
@@ -209,38 +213,37 @@
     "HomePAge": "Go to Homepage:"
   },
 
-"Subscription": {
-  "title": "Sell More. Earn More.",
-  "description": "Choose a plan that gives your fashion brand the visibility it deserves.",
-  "plans": {
-    "basicSeller": {
-      "name": "Basic Seller",
-      "price": "₾30/month",
-      "features": [
-        "List 15 products per month",
-        "Standard listing visibility"
-      ]
-    },
-    "premiumSeller": {
-      "name": "Premium Seller",
-      "price": "₾60/month",
-      "features": [
-        "List up to 50 products per month",
-        "Priority product placement in products",
-        "Featured in category pages"
-      ]
-    },
-    "brandPartner": {
-      "name": "Brand Partner",
-      "price": "₾100/month",
-      "features": [
-        "List up to 1000 products per month",
-        "Homepage feature placement",
-        "Featured in category pages",
-        "Priority product placement in products"
-      ]
+  "Subscription": {
+    "title": "Sell More. Earn More.",
+    "description": "Choose a plan that gives your fashion brand the visibility it deserves.",
+    "plans": {
+      "basicSeller": {
+        "name": "Basic Seller",
+        "price": "₾30/month",
+        "features": [
+          "List 15 products per month",
+          "Standard listing visibility"
+        ]
+      },
+      "premiumSeller": {
+        "name": "Premium Seller",
+        "price": "₾60/month",
+        "features": [
+          "List up to 50 products per month",
+          "Priority product placement in products",
+          "Featured in category pages"
+        ]
+      },
+      "brandPartner": {
+        "name": "Brand Partner",
+        "price": "₾100/month",
+        "features": [
+          "List up to 1000 products per month",
+          "Homepage feature placement",
+          "Featured in category pages",
+          "Priority product placement in products"
+        ]
+      }
     }
   }
-}
-
 }

@@ -7,7 +7,7 @@ interface ModalProps {
   title: string;
   message: string;
   buttonText: string;
-  link?: string; 
+  link?: string;
 }
 
 export const Modal: React.FC<ModalProps> = ({
@@ -27,7 +27,11 @@ export const Modal: React.FC<ModalProps> = ({
         <p className="mt-2">{message}</p>
 
         {link ? (
-          <Link href={link} className="mt-4 px-4 py-2 bg-black text-white rounded inline-block">
+          <Link
+            href={link}
+            onClick={onClose}
+            className="mt-4 px-4 py-2 bg-black text-white rounded inline-block"
+          >
             {buttonText}
           </Link>
         ) : (
@@ -37,14 +41,13 @@ export const Modal: React.FC<ModalProps> = ({
           >
             {buttonText}
           </button>
-          
         )}
-          <button
-            onClick={onClose}
-            className="absolute w-8 h-8 top-2 right-4 text-gray-500 hover:text-gray-700 focus:outline-none"
-            >
-               <XMarkIcon />
-          </button>
+        <button
+          onClick={onClose}
+          className="absolute w-8 h-8 top-2 right-4 text-gray-500 hover:text-gray-700 focus:outline-none"
+        >
+          <XMarkIcon />
+        </button>
       </div>
     </div>
   );

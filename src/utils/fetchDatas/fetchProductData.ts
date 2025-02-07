@@ -64,7 +64,7 @@ export async function getCartData() {
   const { data: cart, error: cartError } = await supabase
     .from("cart")
     .select(
-      "id, cart_item (id, quantity, product_id, name, image, price, stripe_price_id)"
+      "id, cart_item (id, quantity, product_id, name, name_ka, image, price, stripe_price_id)"
     )
     .eq("user_id", user.id)
     .single();

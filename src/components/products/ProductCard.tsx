@@ -1,12 +1,12 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { ProductType } from "@/types/product";
 import { usePathname } from "next/navigation";
 import { addToCart } from "@/utils/cart/AddToCart";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
-
+import { Modal } from "../modals/Modal";
 interface ProductCardProps {
   product: ProductType;
 }
@@ -14,6 +14,8 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const pathname = usePathname();
   const currentLocale = pathname.split("/")[1];
+
+  const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
 
   const isValidImageUrl = (url: string) => {
     try {
@@ -27,6 +29,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const handleAddToCart = async () => {
     const message = await addToCart(product);
     console.log(message);
+    setIsModalOpen(true);
   };
 
   const t = useTranslations("Products");
@@ -76,7 +79,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </div>
       </Link>
 
-      {/* Add to Cart button should be outside the Link */}
+      {/* Add to Cart button */}
       <div>
         <button
           onClick={handleAddToCart}
@@ -85,6 +88,18 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           {t("addtocart")}
         </button>
       </div>
+
+      {/* Modal */}
+      {isModalOpen && (
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          title={t("successTitle")}
+          message={t("successMessage")}
+          buttonText={t("goToProducts")}
+          link="/products"
+        />
+      )}
     </div>
   );
 };
