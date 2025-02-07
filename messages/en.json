@@ -1,0 +1,273 @@
+{
+  "HomePage": {
+    "title": "Welcome to Our Store!",
+    "about": "Learn more about us",
+    "discoverBags": "Discover Bags",
+    "discoverglasses": "Discover Glasses",
+    "discoverAccessories": "Discover Accessories",
+    "shopnow": "Shop Now",
+    "subscriptionTitle": "  Unlock More Selling Potential!",
+    "subscriptionDesc": "Become a subscriber and increase your product limits to expand your sales opportunities. Get access to exclusive features",
+    "upgrade": "Upgrade Your Account",
+    "accessores": "Accessores",
+    "clothing": "Clothing",
+    "coats": "Coats",
+    "shoes": "Shoes",
+    "jewellery": "jewellery",
+    "dresses": "Dresses",
+    "blogsTitle": "Wardrobe Diaries: Style Tips & More",
+    "VintageTitle": "Explore Classic Treasures from Vintage Collection"
+  },
+  "General": {
+    "success": "Blog Updated successfully",
+    "close": "close",
+    "title": "title",
+    "hello": "hello",
+    "myitems": " My items for sale",
+    "myBlogs": " My items for sale",
+    "myOrders": " My Orders",
+    "limit": "Selling Limit:",
+    "contactinformation": "Contact Information",
+    "adress":"Address",
+    "accountinfo":"Account Info",
+    "cancel":"cancel",
+    "edit":"edit",
+    "save":"save",
+    "saving":"saving..."
+  },
+  "About": {
+    "title": "About Us - Your Sustainable Style Destination",
+    "welcome": "Welcome to Fitify, a community-driven platform where fashion finds a second life. We believe in a circular economy and the power of sustainable style. Our mission is to make buying and selling pre-loved clothing easy, affordable, and fun!",
+    "about1": "We’re passionate about reducing textile waste and promoting conscious consumerism. By connecting individuals who want to refresh their wardrobes with those seeking unique and affordable pieces, we’re creating a more sustainable fashion ecosystem.",
+    "about2": "Whether you’re decluttering your closet or searching for that perfect vintage find, Fitify is your go-to destination. Join our community of stylish and eco-conscious individuals and discover a new way to love fashion.",
+    "myitems": "ჩემი პროდუქტები",
+    "sss":"     Start Selling / Start Shopping"
+ 
+  },
+
+  "Contact": {
+    "fullname": "Full Name",
+    "email": "Email Address",
+    "message": "Message",
+    "messageplaceholder": "Type your message",
+    "submit": "Submit",
+    "required": {
+      "name": "Full name is required",
+      "email": "Email address is required",
+      "message": "Message is required"
+    },
+    "invalidEmail": "Invalid email address"
+  },
+
+  "Header": {
+    "headerBanner": "First order? Get 10% off your purchase with us!",
+    "products": "products",
+    "aboutUs": "about us",
+    "contact": "contact",
+    "privacyPolicy": "privacy policy",
+    "phone": "phone",
+    "aboutcontent": "Buy and sell clothes easily on our marketplace. Find trendy fashion or unique second-hand pieces. Join us today!",
+    "rigtsReserved": "All rights reserved.",
+    "email": "email",
+    "quilLink": "Quick Links",
+    "blog": "blog",
+    "sellProduct": "Sell you product",
+    "myProducts": "my products",
+    "logOut": "log out",
+    "home": "home",
+    "categories": "categories",
+    "profile": "profile"
+  },
+  "createProductForm": {
+    "title": "Sell an Item",
+    "general": "general info",
+    "details": "product details",
+    "images": "images",
+    "next": "next",
+    "previous": "previous",
+    "submit": "submit",
+    "succssesProductadd": "Success!",
+    "succssesProductmessage": "Your Product has been created successfully",
+    "limittitle": "Limit Reached",
+    "limitText": "You have reached your product limit.",
+    "upgradePlan": "Upgrade Plan",
+    "goToProducts": "Go To Products"
+  },
+  "ProductForm": {
+    "question": "What type of product are you selling?",
+    "name": "Product Name",
+    "price": "Product Price",
+    "brand": "Brand Name",
+    "image": "Product Image",
+    "description": "Product Description",
+    "menswear": "Men's Clothing",
+    "womenswear": "Women's Clothing",
+    "nameplaceholder": "Enter the product name",
+    "priceplacholder": "Enter the price",
+    "brandplacholder": "Enter the brand name",
+    "descriptionplacholder": "Enter a brief description of the product",
+    "category": "Category",
+    "selectcategory": "Select a category",
+    "material": "Material",
+    "selectmaterial": "Select material",
+    "condition": "Condition",
+    "selectcondition": "Select condition",
+    "color": "Color",
+    "selectcolor": "Select color",
+    "vintage": "Vintage",
+    "size": "Size",
+    "sizeplaceholder": "Enter product size",
+    "uploadImages": "Upload additional images",
+    "sort": "sort",
+    "lowtohigh": "low to high",
+    "hightolow": "high to low",
+    "search": "search your product",
+    "chooseImage": "choose image",
+    "select": "select",
+    "clearFilter": "Clear Filter",
+    "filter": "Filter",
+    "updateProduct": "Update Product",
+    "successTitle": "Success!",
+    "successMessage": "Product Updated successfuly",
+    "goToProducts": "Go To Products"
+  },
+  "FormErrors": {
+    "required": "This field is required.",
+    "priceError": "Price must be a positive number.",
+    "pricenotError": "Price is missing",
+    "imageError": "Please upload an image.",
+    "nameError": "Name is missing",
+    "brandError": "Brand is missing",
+    "descriptionError": "Description is missing",
+    "categoryError": "Category is missing",
+    "materialError": "Material is missing",
+    "conditionError": "Condition is missing",
+    "colorError": "Color is missing",
+    "sizeError": "Size is missing"
+  },
+  "Products": {
+    "addtocart": "Add to Cart",
+    "deleteQuestion": "Are you sure you want to delete this product?",
+    "yesDelete": "Yes, Delete",
+    "cancel": "cancel",
+    "delete": "delete",
+    "edit": "edit",
+    "successTitle": "Item Added!",
+    "successMessage": "Your item has been added to the cart successfully.",
+    "goToProducts": "Go to products"
+  },
+  "Auth": {
+    "email": "Email Adress",
+    "password": "password",
+    "signUp": "sign up",
+    "emailplaceholder": "Enter Your Email",
+    "passwordplaceholder": "Enter Your Password",
+    "signuptitle": "Create Your Account",
+    "login": "log In",
+    "changePassword": "შეცვალე პაროლი",
+    "changePsswordText": "Enter a new password below to change your password",
+    "newPassword": "ახალი პაროლი",
+    "confirmPassword": "დაადასტურეთ პაროლი",
+    "backtologin": "Back to login",
+    "loginTitle": "Welcome Back to Fitify! Let's Continue Your Journey!",
+    "continue": "Sign in to Continue",
+    "forgorPassword": "Forgot Password?",
+    "ressetPasswordTItile": "Reset Your Password and Get Back on Track!",
+    "forgotPasswordText": "Enter your email to reset your password.",
+    "modalTitle1": "We have sent a password reset email to",
+    "modalTitle2": "Please check your",
+    "modalTitle3": "to reset your password.",
+    "modalText": "Didn't receive the email? Check your spam folder or try again later.",
+    "passwordchangemodaltitle": "Password Changed Successfully",
+    "passwordchangemodaltext": "Your password has been updated successfully."
+  },
+  "Blog": {
+    "title": "The Future of Fashion: What's In and What's Out",
+    "myblogstitle": "Welcome to Your Blog Space",
+    "editTblogTitle": "edit Your Blog",
+    "description": "description",
+    "save_changes": "save changes",
+    "upload_image": " upload photo",
+    "content": "content",
+    "addyourblog": "Add your blog",
+    "searchblogs": "Search blog...",
+    "author": "Author",
+    "createYourArticle": "Create your Article",
+    "titleForm": "title",
+    "status": "Status",
+    "contentForm": "content",
+    "image": "Image",
+    "saveBlog": "Save Blog",
+    "chooseFile": "choose an image",
+    "draft": "Draft",
+    "published": "Published",
+    "successMessage": "Blog created successfully",
+    "noBlogs": "No blog posts available. Start writing your first blog post!",
+    "editBlog": "Edit my Blog",
+    "deleteBlog": "delete"
+  },
+  "Cart": {
+    "CartIsEmpty": "Your cart is empty. Add some products to it!",
+    "remove": "remove",
+    "shopNow": "Shop Now",
+    "total": "Total"
+  },
+  "result": {
+    "thank": "Thank You for Your Purchase!",
+    "orderConf": "Your order has been confirmed.",
+    "seeOrders": "See my Orders",
+    "contShopping": "Continue Shopping",
+    "ordershavebeensent": "Order details have been sent to your email address.",
+    "HaveQuestions": "Have questions?",
+    "contactUs": "contact us"
+  },
+
+  "Orders": {
+    "quantity": "Quantity",
+    "viewDetails": "View Details",
+    "seeOrders": "See my Orders",
+    "noOrders": "You have no orders yet.",
+    "ordershavebeensent": "Order details have been sent to your email address.",
+    "HaveQuestions": "Have questions?",
+    "contactUs": "contact us",
+    "orderDetails": "Order Details",
+    "orderON": "Ordered on:",
+    "paymentInformation": "Payment Information:",
+    "backtomyORders": "Back To My Orders:",
+    "HomePAge": "Go to Homepage:"
+  },
+
+  "Subscription": {
+    "title": "Sell More. Earn More.",
+    "description": "Choose a plan that gives your fashion brand the visibility it deserves.",
+    "plans": {
+      "basicSeller": {
+        "name": "Basic Seller",
+        "price": "₾30/month",
+        "features": [
+          "List 15 products per month",
+          "Standard listing visibility"
+        ]
+      },
+      "premiumSeller": {
+        "name": "Premium Seller",
+        "price": "₾60/month",
+        "features": [
+          "List up to 50 products per month",
+          "Priority product placement in products",
+          "Featured in category pages"
+        ]
+      },
+      "brandPartner": {
+        "name": "Brand Partner",
+        "price": "₾100/month",
+        "features": [
+          "List up to 1000 products per month",
+          "Homepage feature placement",
+          "Featured in category pages",
+          "Priority product placement in products"
+        ]
+      }
+    }
+  }
+}

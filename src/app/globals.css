@@ -2,6 +2,12 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+@layer base {
+  img {
+    width: auto;
+    height: auto;
+  }
+}
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -13,9 +19,117 @@
     --foreground: #ededed;
   }
 }
-
+html[lang="ka"] body {
+  font-family: var(--font-noto-sans-georgian);
+}
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: var(--font-montserrat), sans-serif; 
+  font-family: var(--font-montserrat), sans-serif;
+}
+
+ ::-webkit-scrollbar {
+  width: 6px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #e9ccc5;
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #e43d12;
+}
+
+::-webkit-scrollbar-corner {
+  background: #f1f1f1;
+} 
+ 
+.animate-shake {
+  animation: shake 0.5s;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  } 
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+/* .shadow-clay {
+     box-shadow: 4px 4px 8px #00000020, 6px 6px 12px #00000030, -4px -4px 8px #ffffff10, -6px -6px 12px #ffffff20;
+   }
+   .shadow-clay-inset {
+     box-shadow: inset 4px 4px 8px #00000020, inset 6px 6px 12px #00000030, inset -4px -4px 8px #ffffff10, inset -6px -6px 12px #ffffff20;
+   } */
+/* .neumorphism {
+  box-shadow: 6px 6px 12px #c8d0e7, -6px -6px 12px #ffffff;
+}
+.neumorphism-inset {
+  box-shadow: inset 6px 6px 12px #c8d0e7, inset -6px -6px 12px #ffffff;
+} */
+/* .shadow-clay {
+  box-shadow: 2px 2px 6px #00000020, 4px 4px 10px #00000030, -4px -4px 8px #ffffff10, -6px -6px 12px #ffffff20;
+} */
+
+/* No need for shadow-clay-inset if you're using the overlay effect */
+
+/* Optional: Add a subtle scale on hover */
+.group:hover {
+  transform: scale(1.02);
+}
+
+.group:active {
+  transform: scale(0.98);
+}
+
+.lds-ring {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-ring div {
+  box-sizing: border-box;
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  border: 8px solid #4285f4;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0.8, 0.6, 1) infinite;
+  border-color: #f44842 transparent transparent transparent;
+}
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
