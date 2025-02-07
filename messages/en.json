@@ -69,7 +69,8 @@
     "succssesProductmessage": "Your Product has been created successfully",
     "limittitle": "Limit Reached",
     "limitText": "You have reached your product limit.",
-    "upgradePlan": "Upgrade Plan"
+    "upgradePlan": "Upgrade Plan",
+    "goToProducts": "Go To Products"
   },
   "ProductForm": {
     "question": "What type of product are you selling?",

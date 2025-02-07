@@ -24,7 +24,7 @@ const Footer: React.FC = () => {
               {t("privacyPolicy")}
             </Link>
             <Link
-              href="/about"
+              href="/about-us"
               className="mr-4 hover:underline  text-white text-sm"
             >
               {t("aboutUs")}

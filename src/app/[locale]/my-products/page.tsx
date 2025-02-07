@@ -86,7 +86,7 @@ export default function MyProducts() {
           ))}
         </div>
       ) : (
-        <p className="text-center text-gray-600 dark:text-gray-400">
+        <p className="text-center text-gray-600 dark:text-gray-400 h-screen">
           No products found.
         </p>
       )}

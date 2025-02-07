@@ -63,7 +63,7 @@ const HeaderTopMobile = () => {
   };
 
   const renderProfileDropdown = () => {
-    if (!profile?.profile?.first_name) return null;
+    if (!profile?.profile) return null;
 
     return (
       <div

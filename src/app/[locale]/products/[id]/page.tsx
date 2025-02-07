@@ -2,6 +2,7 @@ import React from "react";
 import { createClient } from "@/utils/supabase/server";
 import ProductDetails from "@/components/products/ProductDetail";
 import { ProductType } from "@/types/product";
+import NotFound from "@/components/NotFound/NotFound";
 
 interface Params {
   id: string;
@@ -41,12 +42,8 @@ export default async function ProductDetailPage({
 
     .single();
 
-  if (error) {
-    return <div>Error fetching product details. Please try again later.</div>;
-  }
-
-  if (!product) {
-    return <div>Product not found.</div>;
+  if (!product && error) {
+    return <NotFound />;
   }
 
   return (
