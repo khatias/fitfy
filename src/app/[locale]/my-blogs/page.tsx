@@ -5,12 +5,15 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { BlogPostType } from "@/types/blog";
+import { usePathname } from "next/navigation";
 
 const MyBlogs: React.FC = () => {
+  const pathname = usePathname();
   const [blogPosts, setBlogPosts] = useState<BlogPostType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null); // Handle errors
+  const [error, setError] = useState<string | null>(null); 
   const t = useTranslations("Blog");
+  const currentLocale = pathname.split("/")[1];
 
   useEffect(() => {
     const fetchMyBlogPosts = async () => {
@@ -78,9 +81,15 @@ const MyBlogs: React.FC = () => {
       }
     }
   };
-
+  const getLocalizedText = (enText: string, kaText: string = "") => {
+    return currentLocale === "en" ? enText : kaText;
+  };
   if (loading) {
-    return <div className="text-center text-gray-600 py-6">Loading...</div>;
+    return (
+      <div className="flex items-center justify-center flex-grow bg-gray-100 dark:bg-gray-900 pt-10 pb-10 min-h-screen">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-gray-500 dark:border-gray-300"></div>
+      </div>
+    );
   }
 
   if (error) {
@@ -90,12 +99,12 @@ const MyBlogs: React.FC = () => {
   return (
     <div className="max-w-[1300px] mx-auto p-6 font-sans min-h-screen">
       <h1 className="text-3xl font-semibold text-center text-gray-800 dark:text-gray-300 mt-10 mb-10">
-        {t("editTblogTitle")}
+        {t("myblogstitle")}
       </h1>
 
       {blogPosts.length === 0 ? (
         <p className="text-center text-gray-500 dark:text-gray-400">
-          No blog posts available. Start writing your first blog post!
+          {t("noBlogs")}
         </p>
       ) : (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
@@ -119,10 +128,13 @@ const MyBlogs: React.FC = () => {
                 )}
                 <div className="p-6">
                   <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2 line-clamp-2 hover:text-customAmber transition duration-300">
-                    {post.title_en}
+                    {getLocalizedText(post.title_en || "", post.title_ka || "")}
                   </h2>
                   <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-3 mb-3">
-                    {post.description_en}
+                    {getLocalizedText(
+                      post.description_en || "",
+                      post.description_ka || ""
+                    )}
                   </p>
                 </div>
               </Link>
@@ -131,14 +143,14 @@ const MyBlogs: React.FC = () => {
                   href={`/my-blogs/${post.id}`}
                   className="bg-gray-200 text-gray-700 hover:bg-gray-300 rounded-md px-3 py-1 text-sm transition duration-200 ease-in-out"
                 >
-                  Edit my Blog
+                  {t("editBlog")}
                 </Link>
 
                 <button
                   onClick={() => handleDelete(post.id)}
                   className="bg-gray-200 text-gray-700 hover:bg-gray-300 rounded-md px-3 py-1 text-sm transition duration-200 ease-in-out"
                 >
-                  Delete
+                  {t("deleteBlog")}
                 </button>
               </div>
             </div>

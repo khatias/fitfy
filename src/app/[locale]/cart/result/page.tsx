@@ -80,48 +80,5 @@ export default async function ResultPage(props: {
 
   console.log("Order added:", orderData);
 
-  return (
-    // <div className="min-h-[81vh] flex flex-col items-center justify-center px-6 py-10 bg-white dark:bg-gray-900">
-    //   <div className="max-w-lg text-center">
-    //     <h1 className="text-3xl md:text-3xl font-bold text-gray-800 dark:text-white mb-4">
-    //       Thank You for Your Purchase!
-    //     </h1>
-    //     <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-6">
-    //       Your order has been confirmed.
-    //     </p>
-
-    //     <div className="mb-6 flex flex-col sm:flex-row items-center justify-center gap-4">
-    //       <Link
-    //         href="/orders"
-    //         className="w-full sm:w-auto bg-customRed hover:bg-opacity-80 text-white font-bold py-3 px-6 rounded-lg text-lg transition text-center"
-    //       >
-    //         See My Orders
-    //       </Link>
-    //       <Link
-    //         href="/"
-    //         className="w-full sm:w-auto bg-black hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-300 font-bold py-3 px-6 rounded-lg text-lg transition text-center"
-    //       >
-    //         Continue Shopping
-    //       </Link>
-    //     </div>
-
-    //     <div className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">
-    //       <p className="mb-2">
-    //         Order details have been sent to your email address.
-    //       </p>
-    //       <p>
-    //         Have questions?{" "}
-    //         <Link
-    //           href="/contact"
-    //           className="text-customRed hover:underline font-medium"
-    //         >
-    //           Contact us
-    //         </Link>
-    //         .
-    //       </p>
-    //     </div>
-    //   </div>
-    // </div>
-    <ResultComponent />
-  );
+  return <ResultComponent />;
 }

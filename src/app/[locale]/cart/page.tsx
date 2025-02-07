@@ -9,11 +9,13 @@ import Loader from "@/components/Loader/Loader";
 import { ArrowRightIcon } from "@heroicons/react/20/solid";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
+import { usePathname } from "next/navigation";
 interface CartItem {
   id: string;
   quantity: number;
   product_id: string;
   name: string;
+  name_ka: string;
   image: string;
   price: number;
   stripe_price_id: string;
@@ -23,8 +25,9 @@ export default function Cart() {
   const t = useTranslations("Cart");
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const locale = "en";
 
+  const pathname = usePathname();
+  const currentLocale = pathname.split("/")[1];
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -64,7 +67,9 @@ export default function Cart() {
     (total, item) => total + (item.price / 100) * item.quantity,
     0
   );
-
+  const getLocalizedText = (enText: string, kaText: string = "") => {
+    return currentLocale === "en" ? enText : kaText;
+  };
   return (
     <div className="bg-gray-100 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8 h-screen">
       <div className="max-w-[1300px] mx-auto">
@@ -99,7 +104,7 @@ export default function Cart() {
                   </div>
                   <div className="flex-grow md:flex-grow-0 md:w-1/2 ">
                     <h3 className="text-lg font-medium text-gray-800 dark:text-white">
-                      {item.name}
+                      {getLocalizedText(item.name || "", item.name_ka || "")}
                     </h3>
                     <p className="text-gray-500 dark:text-gray-300">
                       {" "}
@@ -136,7 +141,7 @@ export default function Cart() {
                       onClick={() => handleRemoveItem(item.id)}
                       className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-600 font-medium px-3 py-1 rounded-md transition w-full md:w-auto"
                     >
-                      Remove
+                      {t("remove")}
                     </button>
                   </div>
                 </li>
@@ -145,17 +150,17 @@ export default function Cart() {
 
             <div className="px-6 py-4 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 flex justify-between">
               <span className="text-lg font-medium text-gray-800 dark:text-white">
-                Total:
+                {t("total")}
               </span>
               <span className="text-lg font-bold text-gray-800 dark:text-white">
-                ${totalPrice.toFixed(2)}
+                ₾{totalPrice.toFixed(2)}
               </span>
             </div>
 
             <div className="px-6 py-4 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 flex justify-end">
               <CheckoutFormCart
                 uiMode="hosted"
-                locale={locale}
+                locale={currentLocale}
                 cartItems={cartItems}
               />
             </div>

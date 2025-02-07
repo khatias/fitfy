@@ -7,7 +7,7 @@ import useFetchProductsData from "@/hooks/useFetchProductsData";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { useTranslations } from "next-intl";
-import Loader from "@/components/Loader/Loader";
+
 export default function Products() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -110,7 +110,11 @@ export default function Products() {
   };
 
   if (!products || !categories || !colors || !materials) {
-    return <Loader />;
+    return (
+      <div className="flex items-center justify-center flex-grow bg-gray-100 dark:bg-gray-900 pt-10 pb-10 min-h-screen">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-gray-500 dark:border-gray-300"></div>
+      </div>
+    );
   }
 
   return (
@@ -151,7 +155,7 @@ export default function Products() {
                 className="border w-full h-14 font-medium uppercase -tracking-tighter bg-white dark:border-gray-700 lg:hidden"
                 onClick={toggleFilterVisibility}
               >
-          {t("filter")}
+                {t("filter")}
               </button>
             </div>
           </div>
@@ -215,7 +219,7 @@ export default function Products() {
               <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md overflow-y-auto h-[90vh]">
                 <div className="flex justify-between items-center mb-6">
                   <h2 className="text-2xl font-semibold text-gray-900">
-                  {t("filter")}
+                    {t("filter")}
                   </h2>
                   <button
                     onClick={toggleFilterVisibility}
@@ -226,7 +230,7 @@ export default function Products() {
                 </div>
                 <div className="space-y-4">
                   <FilterComponent
-                    label= {t("category")}
+                    label={t("category")}
                     options={categories.map((category) => ({
                       id: category.product_category_id,
                       name: getLocalizedText(
@@ -279,13 +283,13 @@ export default function Products() {
                     className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 mr-2"
                     onClick={handleClearFilters}
                   >
-                {t("clearFilter")}
+                    {t("clearFilter")}
                   </button>
                   <button
                     className="px-6 py-2 bg-customRed text-white rounded-md hover:bg-blue-700"
                     onClick={toggleFilterVisibility}
                   >
-                   {t("filter")}
+                    {t("filter")}
                   </button>
                 </div>
               </div>

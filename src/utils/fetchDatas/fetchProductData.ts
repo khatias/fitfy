@@ -64,7 +64,7 @@ export async function getCartData() {
   const { data: cart, error: cartError } = await supabase
     .from("cart")
     .select(
-      "id, cart_item (id, quantity, product_id, name, image, price, stripe_price_id)"
+      "id, cart_item (id, quantity, product_id, name, name_ka, image, price, stripe_price_id)"
     )
     .eq("user_id", user.id)
     .single();
@@ -115,13 +115,24 @@ export async function getMyProduct() {
 
 export const getMyProductById = async (id: number) => {
   const supabase = await createClient();
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
+
+  if (userError || !user) {
+    console.log("User not found or error occurred");
+    return null; // or handle it differently
+  }
+
+  const userId = user?.id;
   const { data, error } = await supabase
     .from("products")
     .select(
       `
       *,
       product_category:product_category_id (
-       category_ka, category_en, product_category_id
+        category_ka, category_en, product_category_id
       ),
       product_condition:product_condition_id (
         condition_ka, condition_en, product_condition_id
@@ -135,13 +146,17 @@ export const getMyProductById = async (id: number) => {
     `
     )
     .eq("id", id)
+    .eq("user_id", userId)
     .single();
-  if (error) {
-    console.error("Error fetching product:", error);
+
+  if (error || !data) {
+    console.error("Error fetching product:", error || "No data found");
     return null;
   }
+
   return data;
 };
+
 export const updateProduct = async (product: ProductType) => {
   const supabase = await createClient();
 

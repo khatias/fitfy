@@ -16,6 +16,8 @@ import { Category, Material, Color, Condition } from "@/types/product";
 import Select from "@/components/inputs/Select";
 import FormLanguageToggle from "@/components/toggle/FormLanguageToggle";
 import { Modal } from "@/components/modals/Modal";
+import NotFound from "@/components/NotFound/NotFound";
+
 export default function UpdateProductPage({
   params,
 }: {
@@ -23,7 +25,7 @@ export default function UpdateProductPage({
 }) {
   const [id, setId] = useState<string | null>(null);
 
-  const [formData, setFormData] = useState<ProductType>({
+  const [formData, setFormData] = useState<ProductType | null>({
     id: 0,
     name: "",
     name_ka: "",
@@ -38,6 +40,7 @@ export default function UpdateProductPage({
     material_en: "",
     material_ka: "",
   });
+
   const [loading, setLoading] = useState(true);
   const [showGeorgian, setShowGeorgian] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -70,13 +73,19 @@ export default function UpdateProductPage({
         setColors(fetchedColors || []);
         const data = await getMyProductById(Number(id));
         if (data) {
+          setLoading(true);
           setFormData(data);
           setLoading(false);
+        } else {
+          setFormData(null);
         }
       };
       fetchProduct();
     }
   }, [id]);
+  if (!formData) {
+    return <NotFound />;
+  }
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -127,10 +136,13 @@ export default function UpdateProductPage({
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+
+    if (formData) {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
 
   const handleBlur = (
@@ -166,10 +178,32 @@ export default function UpdateProductPage({
       const file = e.target.files[0];
       try {
         const uploadedImageUrl = await uploadFile(file, "products");
-        setFormData((prev) => ({
-          ...prev,
-          primary_image: uploadedImageUrl || "",
-        }));
+
+        setFormData((prev) => {
+          if (prev) {
+            return {
+              ...prev,
+              primary_image: uploadedImageUrl || "",
+            };
+          } else {
+            return {
+              id: 0,
+              name: "",
+              name_ka: "",
+              brand: "",
+              price: 0,
+              description_en: "",
+              description_ka: "",
+              product_category: 0,
+              product_material: 0,
+              product_color: 0,
+              product_condition: 0,
+              material_en: "",
+              material_ka: "",
+              primary_image: uploadedImageUrl || "",
+            };
+          }
+        });
       } catch (error) {
         console.error("Error uploading image:", error);
       }
@@ -216,7 +250,8 @@ export default function UpdateProductPage({
           value={formData?.product_category || ""}
           options={categories.map((category) => ({
             value: category.product_category_id,
-            label: locale === "en" ? category.category_en : category.category_ka,
+            label:
+              locale === "en" ? category.category_en : category.category_ka,
           }))}
           onChange={handleSelectChange}
           onBlur={handleBlur}
@@ -229,7 +264,8 @@ export default function UpdateProductPage({
           value={formData?.product_material || ""}
           options={materials.map((material) => ({
             value: material.product_material_id,
-            label: locale === "en" ? material.material_en : material.material_ka,
+            label:
+              locale === "en" ? material.material_en : material.material_ka,
           }))}
           onChange={handleSelectChange}
           onBlur={handleBlur}
