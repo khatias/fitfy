@@ -180,7 +180,11 @@
     "chooseFile": "choose an image",
     "draft": "Draft",
     "published": "Published",
-    "successMessage": "Blog created successfully"
+    "successMessage": "Blog created successfully",
+    "noBlogs": "No blog posts available. Start writing your first blog post!",
+    "editBlog": "Edit my Blog",
+    "deleteBlog":"delete"
+  
   },
   "Cart": {
     "CartIsEmpty": "Your cart is empty. Add some products to it!",

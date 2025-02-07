@@ -4,6 +4,7 @@ import { supabase } from "@/utils/supabase/supabaseClient";
 import { useTranslations } from "next-intl";
 import { BlogPostType } from "@/types/blog";
 import { uploadFile } from "@/utils/files/uploadFile";
+import NotFound from "@/components/NotFound/NotFound";
 
 const EditBlog = ({ params }: { params: Promise<{ id: string }> }) => {
   const [formData, setFormData] = useState<BlogPostType>({
@@ -38,36 +39,43 @@ const EditBlog = ({ params }: { params: Promise<{ id: string }> }) => {
     if (id) {
       const fetchBlog = async () => {
         try {
+          const {
+            data: { user },
+            error: userError,
+          } = await supabase.auth.getUser();
+
+          if (userError || !user) {
+            console.log("error");
+            return;
+          }
+          const userId = user.id;
           const { data, error } = await supabase
             .from("blog_posts")
             .select("*")
             .eq("id", id)
+            .eq("user_id", userId)
             .single();
 
-          if (error) {
-            setErrors({ fetch: "Error fetching the blog post." });
+          if (error || !data) {
+            setErrors({ fetch: "Blog post not found." });
             return;
           }
 
-          if (data) {
-            setFormData({
-              id: data.id,
-              title_en: data.title_en,
-              title_ka: data.title_ka,
-              description_en: data.description_en,
-              description_ka: data.description_ka,
-              content_en: data.content_en,
-              content_ka: data.content_ka,
-              featured_image: data.featured_image,
-            });
-          }
+          setFormData({
+            id: data.id,
+            title_en: data.title_en,
+            title_ka: data.title_ka,
+            description_en: data.description_en,
+            description_ka: data.description_ka,
+            content_en: data.content_en,
+            content_ka: data.content_ka,
+            featured_image: data.featured_image,
+          });
         } catch (err: unknown) {
           if (err instanceof Error) {
             console.error("Error occurred while fetching the blog post:", err);
             setErrors({
-              fetch:
-                "An unexpected error occurred while fetching the blog post: " +
-                err.message,
+              fetch: `An unexpected error occurred while fetching the blog post: ${err.message}`,
             });
           } else {
             setErrors({
@@ -142,7 +150,12 @@ const EditBlog = ({ params }: { params: Promise<{ id: string }> }) => {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading)
+    return (
+      <div className="flex items-center justify-center flex-grow bg-gray-100 dark:bg-gray-900 pt-10 pb-10 min-h-screen">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-gray-500 dark:border-gray-600"></div>
+      </div>
+    );
 
   return (
     <div className="max-w-[1300px] mx-auto p-6 font-sans min-h-screen">
@@ -167,100 +180,95 @@ const EditBlog = ({ params }: { params: Promise<{ id: string }> }) => {
           />
         </button>
       </div>
+      {errors.fetch && <NotFound />}
+      {!errors.fetch && (
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label
+              htmlFor="title"
+              className="block text-sm font-semibold text-gray-700 dark:text-gray-300"
+            >
+              {te("title")}
+            </label>
+            <input
+              type="text"
+              id="title"
+              value={showGeorgian ? formData.title_ka : formData.title_en}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  [showGeorgian ? "title_ka" : "title_en"]: e.target.value,
+                })
+              }
+              className="mt-2 w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md"
+              required
+            />
+          </div>
 
-      {errors.fetch && <div className="text-red-600">{errors.fetch}</div>}
-      {errors.form && <div className="text-red-600">{errors.form}</div>}
+          <div>
+            <label
+              htmlFor="description"
+              className="block text-sm font-semibold text-gray-700 dark:text-gray-300"
+            >
+              {t("description")}
+            </label>
+            <textarea
+              id="description"
+              value={
+                showGeorgian ? formData.description_ka : formData.description_en
+              }
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  [showGeorgian ? "description_ka" : "description_en"]:
+                    e.target.value,
+                })
+              }
+              className="mt-2 w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md"
+              rows={4}
+              required
+            />
+          </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div>
-          <label
-            htmlFor="title"
-            className="block text-sm font-semibold text-gray-700 dark:text-gray-300"
-          >
-            {te("title")}
-          </label>
-          <input
-            type="text"
-            id="title"
-            value={showGeorgian ? formData.title_ka : formData.title_en}
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                [showGeorgian ? "title_ka" : "title_en"]: e.target.value,
-              })
-            }
-            className="mt-2 w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md"
-            required
-          />
-        </div>
+          <div>
+            <label
+              htmlFor="content"
+              className="block text-sm font-semibold text-gray-700 dark:text-gray-300"
+            >
+              {t("content")}
+            </label>
+            <textarea
+              id="content"
+              value={showGeorgian ? formData.content_ka : formData.content_en}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  [showGeorgian ? "content_ka" : "content_en"]: e.target.value,
+                })
+              }
+              className="mt-2 w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md"
+              rows={4}
+              required
+            />
+          </div>
 
-        <div>
-          <label
-            htmlFor="description"
-            className="block text-sm font-semibold text-gray-700 dark:text-gray-300"
-          >
-            {t("description")}
-          </label>
-          <textarea
-            id="description"
-            value={
-              showGeorgian ? formData.description_ka : formData.description_en
-            }
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                [showGeorgian ? "description_ka" : "description_en"]:
-                  e.target.value,
-              })
-            }
-            className="mt-2 w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md"
-            rows={4}
-            required
-          />
-        </div>
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
+              {t("upload_image")}
+            </label>
+            <input type="file" onChange={handleUploadImage} className="mt-2" />
+          </div>
 
-        
-        <div>
-          <label
-            htmlFor="content"
-            className="block text-sm font-semibold text-gray-700 dark:text-gray-300"
-          >
-            {t("content")}
-          </label>
-          <textarea
-            id="content"
-            value={
-              showGeorgian ? formData.content_ka : formData.content_en
-            }
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                [showGeorgian ? "content_ka" : "content_en"]:
-                  e.target.value,
-              })
-            }
-            className="mt-2 w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md"
-            rows={4}
-            required
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
-            {t("upload_image")}
-          </label>
-          <input type="file" onChange={handleUploadImage} className="mt-2" />
-        </div>
-
-        <div className="flex justify-end">
-          <button
-            type="submit"
-            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-          >
-            {t("save_changes")}
-          </button>
-        </div>
-      </form>
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+            >
+              {t("save_changes")}
+            </button>
+          </div>
+        </form>
+      )}
 
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
