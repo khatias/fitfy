@@ -98,7 +98,11 @@
     "chooseImage": "choose image",
     "select": "select",
     "clearFilter": "Clear Filter",
-    "filter": "Filter"
+    "filter": "Filter",
+    "updateProduct": "Update Product",
+    "successTitle": "Success!",
+    "successMessage": "Product Updated successfuly",
+    "goToProducts": "Go To Products"
   },
   "FormErrors": {
     "required": "This field is required.",

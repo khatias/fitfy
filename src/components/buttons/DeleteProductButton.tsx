@@ -48,7 +48,7 @@ const DeleteProduct: React.FC<DeleteProductProps> = ({ id, onDelete }) => {
       <button
         data-cy="delete-my-product-button"
         onClick={openModal}
-        className="py-2 px-5 m-auto bg-purple-600 text-white rounded-md hover:bg-red-700 transition duration-200"
+        className="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-500 transition duration-300"
       >
         Delete
       </button>

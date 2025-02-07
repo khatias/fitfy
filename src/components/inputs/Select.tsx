@@ -36,7 +36,7 @@ const Select: React.FC<SelectProps> = ({
         onChange={onChange}
         onBlur={onBlur}
         required
-        className="w-full border rounded p-3"
+        className="w-full border dark:border-gray-600 rounded p-3"
       >
         <option value="">
           {t("select")} {label}

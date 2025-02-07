@@ -97,7 +97,11 @@
     "chooseImage": "აირჩიე ფოტო",
     "select": "აირჩიე",
     "clearFilter": "წაშალე ფილტრი",
-    "filter":"ფილტრი"
+    "filter": "ფილტრი",
+    "updateProduct": "განაახლე პროდუქტი",
+    "successTitle": "პროდუქტი განახლდა",
+    "successMessage": "თქვენი პროდუქტი წარმატებით განახლდა",
+    "goToProducts":"დაბრუნდი პროდუქტის გვერდზე"
   },
   "FormErrors": {
     "required": "ეს ველი სავალდებულოა.",
