@@ -53,7 +53,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             </p>
           )}
         </div>
-        <div className="mt-4 flex flex-col items-start justify-between min-h-44">
+        <div className="mt-4 flex flex-col items-start justify-between min-h-36">
           <h2 className="text-[16px] font-semibold text-gray-800 dark:text-gray-300">
             {currentLocale === "en" ? product.name : product.name_ka}
           </h2>

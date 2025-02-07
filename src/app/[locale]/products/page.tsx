@@ -7,6 +7,7 @@ import useFetchProductsData from "@/hooks/useFetchProductsData";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { useTranslations } from "next-intl";
+import Loader from "@/components/Loader/Loader";
 export default function Products() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -109,12 +110,12 @@ export default function Products() {
   };
 
   if (!products || !categories || !colors || !materials) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   return (
-    <div className="bg-gray-100 dark:bg-black pb-20">
-      <div className="lg:grid grid-cols-[1fr_4fr] max-w-[1300px] m-auto lg:pt-10 gap-8 ">
+    <div className="bg-gray-100 dark:bg-black pb-20 ">
+      <div className="lg:grid grid-cols-[1fr_4fr] max-w-[1300px] m-auto lg:pt-10 gap-8  ">
         <div className="py-8 pt-10 lg:pt-0">
           <div>
             <div className="relative mb-4">
@@ -150,7 +151,7 @@ export default function Products() {
                 className="border w-full h-14 font-medium uppercase -tracking-tighter bg-white dark:border-gray-700 lg:hidden"
                 onClick={toggleFilterVisibility}
               >
-                Filter
+          {t("filter")}
               </button>
             </div>
           </div>
@@ -209,13 +210,12 @@ export default function Products() {
             </div>
           </div>
 
-          {/* Modal filter for small screens */}
           {isFilterVisible && (
             <div className="fixed top-0 left-0 right-0 bottom-0 bg-black/50 z-50 flex items-center justify-center ">
               <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md overflow-y-auto h-[90vh]">
                 <div className="flex justify-between items-center mb-6">
                   <h2 className="text-2xl font-semibold text-gray-900">
-                    Filters
+                  {t("filter")}
                   </h2>
                   <button
                     onClick={toggleFilterVisibility}
@@ -226,10 +226,13 @@ export default function Products() {
                 </div>
                 <div className="space-y-4">
                   <FilterComponent
-                    label="Categories"
+                    label= {t("category")}
                     options={categories.map((category) => ({
                       id: category.product_category_id,
-                      name: category.category_en || category.category_ka,
+                      name: getLocalizedText(
+                        category.category_en || "",
+                        category.category_ka || ""
+                      ),
                     }))}
                     type="category"
                     selectedValues={selectedCategories}
@@ -239,10 +242,13 @@ export default function Products() {
                     )}
                   />
                   <FilterComponent
-                    label="Colors"
+                    label={t("color")}
                     options={colors.map((color) => ({
                       id: color.product_color_id,
-                      name: color.color_en || color.color_ka,
+                      name: getLocalizedText(
+                        color.color_en || "",
+                        color.color_ka || ""
+                      ),
                     }))}
                     type="color"
                     selectedValues={selectedColors}
@@ -252,10 +258,13 @@ export default function Products() {
                     )}
                   />
                   <FilterComponent
-                    label="Materials"
+                    label={t("material")}
                     options={materials.map((material) => ({
                       id: material.product_material_id,
-                      name: material.material_en || material.material_ka,
+                      name: getLocalizedText(
+                        material.material_en || "",
+                        material.material_ka || ""
+                      ),
                     }))}
                     type="material"
                     selectedValues={selectedMaterials}
@@ -270,13 +279,13 @@ export default function Products() {
                     className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 mr-2"
                     onClick={handleClearFilters}
                   >
-                    Clear
+                {t("clearFilter")}
                   </button>
                   <button
                     className="px-6 py-2 bg-customRed text-white rounded-md hover:bg-blue-700"
                     onClick={toggleFilterVisibility}
                   >
-                    Apply Filters
+                   {t("filter")}
                   </button>
                 </div>
               </div>
@@ -288,7 +297,7 @@ export default function Products() {
           >
             <span className="absolute inset-0 w-0 h-0 transition-all duration-500 ease-out bg-white rounded-lg group-hover:w-full group-hover:h-full"></span>
             <span className="relative text-gray-900 group-hover:text-black">
-              Clear Filter
+              {t("clearFilter")}
             </span>
           </button>
         </div>

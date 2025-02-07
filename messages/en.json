@@ -96,7 +96,9 @@
     "hightolow": "high to low",
     "search": "search your product",
     "chooseImage": "choose image",
-    "select": "select"
+    "select": "select",
+    "clearFilter": "Clear Filter",
+    "filter": "Filter"
   },
   "FormErrors": {
     "required": "This field is required.",
@@ -160,7 +162,7 @@
     "chooseFile": "choose an image",
     "draft": "Draft",
     "published": "Published",
-  "successMessage":  "Blog created successfully"
+    "successMessage": "Blog created successfully"
   },
   "Cart": {
     "CartIsEmpty": "Your cart is empty. Add some products to it!",
