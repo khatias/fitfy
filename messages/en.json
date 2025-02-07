@@ -34,8 +34,15 @@
     "edit":"edit",
     "save":"save",
     "saving":"saving..."
-
-
+  },
+  "About": {
+    "title": "About Us - Your Sustainable Style Destination",
+    "welcome": "Welcome to Fitify, a community-driven platform where fashion finds a second life. We believe in a circular economy and the power of sustainable style. Our mission is to make buying and selling pre-loved clothing easy, affordable, and fun!",
+    "about1": "We’re passionate about reducing textile waste and promoting conscious consumerism. By connecting individuals who want to refresh their wardrobes with those seeking unique and affordable pieces, we’re creating a more sustainable fashion ecosystem.",
+    "about2": "Whether you’re decluttering your closet or searching for that perfect vintage find, Fitify is your go-to destination. Join our community of stylish and eco-conscious individuals and discover a new way to love fashion.",
+    "myitems": "ჩემი პროდუქტები",
+    "sss":"     Start Selling / Start Shopping"
+ 
   },
 
   "Contact": {
