@@ -147,7 +147,20 @@
     "description": "description",
     "save_changes": "save changes",
     "upload_image": " upload photo",
-    "content": "content"
+    "content": "content",
+    "addyourblog": "Add your blog",
+    "searchblogs": "Search blog...",
+    "author": "Author",
+    "createYourArticle": "Create your Article",
+    "titleForm": "title",
+    "status": "Status",
+    "contentForm": "content",
+    "image": "Image",
+    "saveBlog": "Save Blog",
+    "chooseFile": "choose an image",
+    "draft": "Draft",
+    "published": "Published",
+  "successMessage":  "Blog created successfully"
   },
   "Cart": {
     "CartIsEmpty": "Your cart is empty. Add some products to it!",

@@ -2,8 +2,9 @@
 import React from "react";
 import Image from "next/image";
 import { BlogPostType } from "@/types/blog";
-
+import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
+
 interface BlogPostDetailsProps {
   blogPost: BlogPostType;
 }
@@ -11,6 +12,7 @@ interface BlogPostDetailsProps {
 const BlogPostDetails: React.FC<BlogPostDetailsProps> = ({ blogPost }) => {
   const pathname = usePathname();
   const currentLocale = pathname.split("/")[1];
+  const t = useTranslations("Blog");
   const getLocalizedText = (enText: string, kaText: string = "") => {
     return currentLocale === "en" ? enText : kaText;
   };
@@ -20,7 +22,10 @@ const BlogPostDetails: React.FC<BlogPostDetailsProps> = ({ blogPost }) => {
         {getLocalizedText(blogPost.title_en || "", blogPost.title_ka || "")}
       </h1>
       <p className="text-gray-600 dark:text-gray-400 mb-6">
-      {getLocalizedText(blogPost.description_en || "", blogPost.description_ka || "")}
+        {getLocalizedText(
+          blogPost.description_en || "",
+          blogPost.description_ka || ""
+        )}
       </p>
 
       {blogPost.featured_image && (
@@ -61,7 +66,9 @@ const BlogPostDetails: React.FC<BlogPostDetailsProps> = ({ blogPost }) => {
           <p className="text-gray-700 dark:text-gray-200 font-medium">
             {blogPost.first_name || "Unknown"} {blogPost.last_name || ""}
           </p>
-          <p className="text-gray-500 dark:text-gray-400 text-sm">Author</p>
+          <p className="text-gray-500 dark:text-gray-400 text-sm">
+            {t("author")}
+          </p>
         </div>
       </div>
     </div>

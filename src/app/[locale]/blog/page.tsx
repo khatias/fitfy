@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { usePathname, useSearchParams } from "next/navigation";
 import { BlogPostType } from "@/types/blog";
-
+import Loader from "@/components/Loader/Loader";
 const Page: React.FC = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -15,7 +15,7 @@ const Page: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const t = useTranslations("Blog");
   const currentLocale = pathname.split("/")[1];
-  
+
   const getLocalizedText = (enText: string, kaText: string = "") => {
     return currentLocale === "en" ? enText : kaText;
   };
@@ -82,11 +82,12 @@ const Page: React.FC = () => {
 
   const filteredBlogPosts = blogPosts.filter(
     (post) =>
-      // Searching in the title and description based on the current locale
       (currentLocale === "en" &&
         post.title_en.toLowerCase().includes(searchQuery.toLowerCase())) ||
       (currentLocale === "en" &&
-        post.description_en.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        post.description_en
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase())) ||
       (currentLocale === "ka" &&
         post.title_ka.toLowerCase().includes(searchQuery.toLowerCase())) ||
       (currentLocale === "ka" &&
@@ -94,38 +95,46 @@ const Page: React.FC = () => {
   );
 
   if (loading) {
-    return <div className="text-center text-gray-600 py-6">Loading...</div>;
+    return (
+      <div className="h-screen">
+        <Loader />
+      </div>
+    );
   }
 
   return (
     <div className="max-w-[1300px] mx-auto p-6 font-sans min-h-screen">
-      <h1 className="text-3xl font-semibold text-center text-gray-800 dark:text-gray-300 mt-10 mb-10">
-        {t("title")}
-      </h1>
-
       <div className="flex justify-center mb-6">
-        <div className="relative w-full sm:w-96">
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={handleSearch}
-            placeholder="Search blog posts..."
-            className="border border-gray-300 dark:border-gray-700 rounded-xl p-3 pl-10 w-full bg-[#f2f3f4] dark:bg-gray-800 text-[#ababab] dark:text-[#e4e4e4] focus:outline-none focus:ring-1 focus:ring-red-500 transition duration-300 shadow-sm"
-          />
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 absolute left-3 top-1/2 transform -translate-y-1/2 text-[#ababab] dark:text-[#e4e4e4] pointer-events-none"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+        <div className="flex flex-col w-full justify-between  gap-7 items-center md:flex-row lg:mb-8">
+          <div className="relative w-full sm:w-96">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={handleSearch}
+              placeholder={t("searchblogs")}
+              className="border border-gray-300 dark:border-gray-700 rounded-xl p-3 pl-10 w-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 focus:outline-none focus:ring-2 focus:ring-rose-500 transition duration-300 shadow-inner" // Changed styles
             />
-          </svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 pointer-events-none"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+          </div>
+          <Link
+            href="/blog/create"
+            className="bg-black hover:bg-slate-700 text-white font-medium py-2.5 px-5 rounded-lg transition duration-300 ease-in-out shadow-sm"
+          >
+            {t("addyourblog")}
+          </Link>
         </div>
       </div>
 
@@ -137,7 +146,7 @@ const Page: React.FC = () => {
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {filteredBlogPosts.map((post) => (
             <Link key={post.id} href={`/blog/${post.id}`}>
-              <div className="bg-white dark:bg-gray-800 rounded-lg flex flex-col justify-between overflow-hidden transition-transform duration-300 hover:scale-105 shadow-md dark:shadow-none">
+              <div className="bg-white dark:bg-gray-800 rounded-lg flex flex-col justify-between overflow-hidden transition-transform duration-300  shadow-md dark:shadow-none">
                 {post.featured_image && (
                   <div className="relative h-[350px] w-full">
                     <Image
@@ -175,7 +184,7 @@ const Page: React.FC = () => {
                         {post.username || "Unknown"} {post.last_name || ""}
                       </p>
                       <p className="text-gray-400 dark:text-gray-500 text-xs">
-                        Author
+                      {t("author")}
                       </p>
                     </div>
                   </div>

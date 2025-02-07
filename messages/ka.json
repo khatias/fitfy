@@ -146,7 +146,20 @@
     "description": "აღწერა",
     "save_changes": "შეინახე ცვლიელება",
     "upload_image": "ატვირთე ფოტო",
-    "content": "კონტენტი"
+    "content": "კონტენტი",
+    "addyourblog": "დაამატე შენი ბლოგი",
+    "searchblogs": "მოძებნე ბლოგი...",
+    "author": "ავტორი",
+    "createYourArticle": "შექმენი შენი ბლოგი",
+    "titleForm": "სათაური",
+    "status": "სტატუსი",
+    "contentForm": "კონტენტი",
+    "image": "ფოტო",
+    "saveBlog": "შეინახე ბლოგი",
+    "chooseFile": "აირჩიე ფოტო",
+    "draft": "დრაფტი",
+    "published": "გამოსაქვეყნებელი",
+"successMessage":"ბლოგი წარმატებით დაემატა"
   },
   "Cart": {
     "CartIsEmpty": "თქვენი კალათა ცარიელია , დაამატე პროდუქტი",
