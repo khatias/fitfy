@@ -21,7 +21,21 @@
   "General": {
     "success": "Blog Updated successfully",
     "close": "close",
-    "title": "title"
+    "title": "title",
+    "hello": "hello",
+    "myitems": " My items for sale",
+    "myBlogs": " My items for sale",
+    "myOrders": " My Orders",
+    "limit": "Selling Limit:",
+    "contactinformation": "Contact Information",
+    "adress":"Address",
+    "accountinfo":"Account Info",
+    "cancel":"cancel",
+    "edit":"edit",
+    "save":"save",
+    "saving":"saving..."
+
+
   },
 
   "Contact": {
@@ -183,8 +197,7 @@
     "successMessage": "Blog created successfully",
     "noBlogs": "No blog posts available. Start writing your first blog post!",
     "editBlog": "Edit my Blog",
-    "deleteBlog":"delete"
-  
+    "deleteBlog": "delete"
   },
   "Cart": {
     "CartIsEmpty": "Your cart is empty. Add some products to it!",

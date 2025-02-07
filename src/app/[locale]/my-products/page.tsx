@@ -7,11 +7,13 @@ import Image from "next/image";
 import DeleteProduct from "@/components/buttons/DeleteProductButton";
 import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
-
+import { usePathname } from "next/navigation";
 export default function MyProducts() {
+    const pathname = usePathname();
   const [myProducts, setMyProducts] = useState<ProductType[]>([]);
   const [loading, setLoading] = useState(true);
   const t = useTranslations("Products");
+  const currentLocale = pathname.split("/")[1];
   useEffect(() => {
     const fetchMyProducts = async () => {
       try {
@@ -35,6 +37,9 @@ export default function MyProducts() {
     setMyProducts((prevProducts) =>
       prevProducts.filter((product) => product.id !== productId)
     );
+  };
+  const getLocalizedText = (enText: string, kaText: string = "") => {
+    return currentLocale === "en" ? enText : kaText;
   };
 
   if (loading) {
@@ -65,7 +70,7 @@ export default function MyProducts() {
               </div>
 
               <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-2 line-clamp-2">
-                {product.name}
+              {getLocalizedText(product.name || "", product.name_ka || "")}
               </h3>
               <p className="mt-2 text-sm font-bold text-gray-800 dark:text-gray-300">
                 ₾{" "}

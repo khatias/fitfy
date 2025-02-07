@@ -14,13 +14,14 @@ import Input from "../inputs/Input";
 import SidebarButton from "./SideBarButton";
 import EditButtons from "./EditButtons";
 import { Link } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
 export default function ProfileEditor({ profile }: { profile: Profile }) {
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState<Profile>(profile);
   const [loading, setLoading] = useState(false);
   const [activeSection, setActiveSection] = useState("accountInfo");
   const [avatarPreview, setAvatarPreview] = useState(profile.avatar_url || "");
-
+  const t = useTranslations("General");
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     handleProfileFieldChange(e, setFormData);
   };
@@ -54,13 +55,13 @@ export default function ProfileEditor({ profile }: { profile: Profile }) {
         <div className="px-4 py-6 border-b border-gray-200 dark:border-gray-600">
           <SidebarButton
             icon={faUser}
-            label="Account Info"
+            label={t("accountinfo")}
             isActive={activeSection === "accountInfo"}
             onClick={() => setActiveSection("accountInfo")}
           />
           <SidebarButton
             icon={faMapMarkerAlt}
-            label="Address"
+            label={t("adress")}
             isActive={activeSection === "address"}
             onClick={() => setActiveSection("address")}
           />
@@ -71,7 +72,7 @@ export default function ProfileEditor({ profile }: { profile: Profile }) {
               href={"/my-products"}
               className="block text-gray-700 font-medium dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md transition duration-300"
             >
-              My items for sale
+              {t("myitems")}
             </Link>
           </li>
           <li>
@@ -79,7 +80,7 @@ export default function ProfileEditor({ profile }: { profile: Profile }) {
               href={"/my-blogs"}
               className="block text-gray-700 font-medium dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md transition duration-300"
             >
-              My Blogs
+              {t("myBlogs")}
             </Link>
           </li>
           <li>
@@ -87,7 +88,7 @@ export default function ProfileEditor({ profile }: { profile: Profile }) {
               href={"/orders"}
               className="block text-gray-700 font-medium dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md transition duration-300"
             >
-              My Orders
+              {t("myOrders")}
             </Link>
           </li>
         </ul>
@@ -117,7 +118,7 @@ export default function ProfileEditor({ profile }: { profile: Profile }) {
           </div>
           <div className="flex-grow pb-2 lg:pb-0">
             <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-1">
-              Hello, {formData.first_name || "User"}!
+              {t("hello")}, {formData.first_name || "User"}!
             </h2>
             <p className="text-sm text-gray-600 dark:text-gray-400">
               {formData.email || "No email provided"}
@@ -126,7 +127,7 @@ export default function ProfileEditor({ profile }: { profile: Profile }) {
           <div className="lg:ml-auto text-center">
             <div className="w-full text-center">
               <div className="text-gray-600 dark:text-gray-400 text-sm flex justify-center gap-2 pb-2 lg:justify-end lg:-4 items-center">
-                <span>Selling Limit:</span>
+                <span> {t("limit")}</span>
                 <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
                   {profile?.product_count ?? "No Limit"}
                 </h2>
@@ -163,7 +164,7 @@ export default function ProfileEditor({ profile }: { profile: Profile }) {
         {activeSection === "accountInfo" && (
           <div className="mb-6">
             <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 pb-2 pl-2">
-              Contact Information
+              {t("contactinformation")}
             </h3>
             <div className="p-4 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-800 grid gap-6 md:grid-cols-2 xl:gap-6">
               {[
@@ -204,7 +205,7 @@ export default function ProfileEditor({ profile }: { profile: Profile }) {
         {activeSection === "address" && (
           <div className="mb-6">
             <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 pb-2 pl-1">
-              Address
+              {t("adress")}
             </h3>
             <div className="p-4 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-800 grid gap-6 md:grid-cols-2 xl:gap-6">
               {[
